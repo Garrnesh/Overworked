@@ -1,6 +1,7 @@
 //Product_table
 const getProducts  = "SELECT * FROM product_table";
 const getProductByID = "SELECT * FROM product_table WHERE product_id = $1";
+const checkIfProductExist = "SELECT * FROM product_table WHERE listing_id = $1 AND product_description = $2 AND product_brand = $3 AND product_size = $4";
 const addProduct = "INSERT INTO product_table (product_id, listing_id, product_image, product_description, product_brand, product_size) VALUES (DEFAULT, $1, $2, $3, $4, $5)";
 const removeProduct = "DELETE FROM product_table WHERE product_id = $1";
 const getProductByListingID = "SELECT * FROM product_table WHERE listing_id = $1";
@@ -35,6 +36,7 @@ const removeOrderItemByOrderID = "DELETE FROM orderitem_table WHERE order_id = $
 module.exports = {
     getProducts,
     getProductByID,
+    checkIfProductExist,
     addProduct,
     removeProduct,
     getProductByListingID,
