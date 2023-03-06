@@ -16,6 +16,7 @@ const addListing = "INSERT INTO listing_table (listing_id, business_id, listing_
 const getListingByListingName = "SELECT * FROM listing_table WHERE listing_name = $1";
 const getListingByBusinessID = "SELECT * FROM listing_table WHERE business_id = $1";
 const removeListingByBusinessID = "DELECT FROM listing_table WHERE business_id = $1";
+const checkifListingExists = "SELECT * FROM listing_table WHERE business_id = $1 AND listing_name = $2";
 
 //Order_table
 const getOrders = "SELECT * FROM order_table";
@@ -41,6 +42,7 @@ module.exports = {
     removeProduct,
     getProductByListingID,
     removeProductByListingID,
+    checkifListingExists,
     getProductByProductType,
     getListings,
     getListingByID,
