@@ -31,3 +31,31 @@ const addOrderItem = "INSERT INTO orderitem_table (orderitem_id, order_id, produ
 const getOrderItemByOrderID = "SELECT * FROM orderitem_table WHERE order_id = $1";
 const removeOrderItem = "DELETE FROM orderitem_table WHERE orderitem_id = $1";
 const removeOrderItemByOrderID = "DELETE FROM orderitem_table WHERE order_id = $1";
+
+module.exports = {
+    getProducts,
+    getProductByID,
+    addProduct,
+    removeProduct,
+    getProductByListingID,
+    removeProductByListingID,
+    getProductByProductType,
+    getListings,
+    getListingByID,
+    removeListing,
+    addListing,
+    getListingByListingName,
+    getListingByBusinessID,
+    removeListingByBusinessID,
+    getOrders,
+    getOrderByID,
+    addOrder,
+    removeOrder,
+    getOrderByBuyerID,
+    getOrderItems,
+    getOrderItemByID,
+    addOrderItem,
+    getOrderItemByOrderID,
+    removeOrderItem,
+    removeOrderItemByOrderID,
+};
