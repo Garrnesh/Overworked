@@ -19,6 +19,6 @@
   "homepage": "https://github.com/Garrnesh/Overworked#readme",
   "dependencies": {
     "express": "^4.18.2",
-    "firebase": "^9.17.2"
+    "firebase-admin": "^11.5.0"
   }
 }

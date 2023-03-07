@@ -1,17 +1,13 @@
-import { initializeApp } from 'firebase/app'
-import { getFirestore, collection } from 'firebase/firestore'
+import admin from "firebase-admin"
+var admin = require("firebase-admin");
 
-const firebaseConfig = {
-    apiKey: "AIzaSyA8l0fmTYLAF5siKdax5-TPPo6Dq1Jx3T8",
-    authDomain: "thriftit-e5d7a.firebaseapp.com",
-    projectId: "thriftit-e5d7a",
-    storageBucket: "thriftit-e5d7a.appspot.com",
-    messagingSenderId: "953372158135",
-    appId: "1:953372158135:web:b1c49b272c5f865b808532",
-    measurementId: "G-FJMMCJQTQ0"
-  };
+var serviceAccount = require("./service-account.json");
 
-initializeApp(firebaseConfig);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const authorisation = admin.auth();
 const db = getFirestore();
 
 const buyers = collection(db, 'Buyers');
@@ -24,6 +20,7 @@ const orders = collection(db, 'Orders');
 const orderitems = collection(db, 'OrderItems');
 
 module.exports = {
+    authorisation,
     db,
     buyers,
     business,
