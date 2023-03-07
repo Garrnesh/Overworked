@@ -14,6 +14,10 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const buyers = collection(db, 'Buyers');
+const business = collection(db, 'Business');
+const payments = collection(db, 'Payments');
+const shops = collection(db, 'Shops');
 const products = collection(db, 'Products');
 const listings = collection(db, 'Listings');
 const orders = collection(db, 'Orders');
@@ -21,6 +25,10 @@ const orderitems = collection(db, 'OrderItems');
 
 module.exports = {
     db,
+    buyers,
+    business,
+    payments,
+    shops,
     products,
     listings,
     orders,
