@@ -24,6 +24,7 @@ const getOrderByID = "SELECT * FROM order_table WHERE order_id = $1";
 const addOrder = "INSERT INTO order_table (order_id, buyer_id, total_price, date, status) VALUES (DEFAULT, $1, $2, $3, $4)";
 const removeOrder = "DELETE FROM order_table WHERE order_id = $1";
 const getOrderByBuyerID = "SELECT * FROM order_table WHERE buyer_id = $1";
+const checkifOrderExists = "SELECT * FROM order_table WHERE buyer_id = $1 AND total_price = $2 AND date = $3 AND status = $4";
 
 //OrderItem_table
 
@@ -56,6 +57,7 @@ module.exports = {
     addOrder,
     removeOrder,
     getOrderByBuyerID,
+    checkifOrderExists,
     getOrderItems,
     getOrderItemByID,
     addOrderItem,

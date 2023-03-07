@@ -173,3 +173,55 @@ const removeListingByBusinessID = (req,res) => {
 };
 
 //Order_table
+const getOrders = (req,res) => {
+    DB.query(queries.getOrders, (err,result) => {
+        if(err){
+            res.status(500).send(err.message);
+        }
+        res.status(200).json(result.rows);
+    });
+};
+
+const getOrderByID = (req,res) => {
+    const order_id = parseInt(req.params.order_id);
+    DB.query(queries.getOrderByID, [order_id], (err,result) => {
+        if(err){
+            return res.status(404).send(err.message);
+        }
+        res.status(200).json(result.rows);       
+    });
+};
+
+const addOrder = (req,res) => {
+    const {buyer_id, total_price, date, status} = req.body;
+    DB.query(queries.checkifOrderExists, [buyer_id, total_price, date, status], (err, result) =>{
+        if (result.rows && result.rows.length){
+            return res.status(409).send('Order already exists'); //Not sure if I should have a status here
+        }
+        DB.query(queries.addOrder, [buyer_id, total_price, date, status], (req,res) => {
+            if(err){
+                return res.status(500).send(err.message);
+            }
+            res.status(201).send('Order has been added to database');
+        });
+    });
+};
+
+const removeOrder = (req,res) => {
+    const order_id = parseInt(req.params.order_id);
+    DB.query(queries.getOrderByID, [order_id], (err,request) => {
+        if(!(result.rows && result.rows.length)){
+            res.status(404).send('Order not found');
+        }
+        DB.query(queries.removeOrder, [order_id], (err,result) => {
+            if(err){
+                return res.status(500).send(err.message);
+            }
+            res.status(200).send('Order removed from database');
+        })
+    });
+};
+
+const getOrderByBuyerID = (req,res) => {
+    
+}
