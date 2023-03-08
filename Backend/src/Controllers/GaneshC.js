@@ -1,5 +1,4 @@
-const DB = require('../../db');
-const queries = require('../Queries/GaneshQ');
+const DB = require('../firebase');
 
 //Product_table
 const getProducts = (req, res) => {
