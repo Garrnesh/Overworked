@@ -1,24 +1,44 @@
-const DB = require('../firebase');
+import { FieldValue } from "firebase-admin/firestore";
+import { buyers, business, payments, shops, products, listings, orders, orderitems } from "../firebase.js";
 
 //Product_table
-const getProducts = (req, res) => {
-    DB.query(queries.getProducts, (err, result) => {
-        if(err){
-            return res.status(500).send(err.message);
-        }
-        res.status(200).json(result.rows);
-    });
+const getproducts = async (req,res) => {
+    try{
+        const product = await products.get();
+        res.status(200).json(product.data());
+    }catch(err){
+        res.status(500).send(err.message);
+    }
 };
 
-const getProductByID = (req,res) => {
+// const getProducts = (req, res) => {
+//     DB.query(queries.getProducts, (err, result) => {
+//         if(err){
+//             return res.status(500).send(err.message);
+//         }
+//         res.status(200).json(result.rows);
+//     });
+// };
+
+const getProductByID = async (req,res) => {
     const product_id = parseInt(req.params.product_id);
-    DB.query(queries.getProductByID, [product_id], (err, result) => {
-        if(err){
-            return res.status(404).send(err.message);
-        }
-        res.status(200).json(result.rows);
-    });
+    try{
+        const product = await products.doc(product_id).get();
+        res.status(200).json(product.data());
+    }catch(err){
+        res.status(404).send(err.message);
+    }
 };
+
+// const getProductByID = (req,res) => {
+//     const product_id = parseInt(req.params.product_id);
+//     DB.query(queries.getProductByID, [product_id], (err, result) => {
+//         if(err){
+//             return res.status(404).send(err.message);
+//         }
+//         res.status(200).json(result.rows);
+//     });
+// };
 
 const addProduct = (req,res) => {
     const {listing_id, product_image, product_description, product_brand, product_size} = req.body;
