@@ -10,14 +10,14 @@ admin.initializeApp({
 const authorisation = admin.auth();
 const db = getFirestore();
 
-const Buyers = collection(db, 'Buyers');
-const Business = collection(db, 'Business');
-const Payments = collection(db, 'Payments');
-const Shops = collection(db, 'Shops');
-const Products = collection(db, 'Products');
-const Listings = collection(db, 'Listings');
-const Orders = collection(db, 'Orders');
-const Orderitems = collection(db, 'OrderItems');
+const Buyers = db.collection('Buyers');
+const Business = db.collection('Business');
+const Payments = db.collection('Payments');
+const Shops = db.collection('Shops');
+const Products = db.collection('Products');
+const Listings = db.collection('Listings');
+const Orders = db.collection('Orders');
+const Orderitems = db.collection('OrderItems');
 
 module.exports = {
     authorisation,

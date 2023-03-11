@@ -15,14 +15,15 @@ router.get('/product/:product_id', async (req,res) => {
 });
 
 router.post('/product/', async(req,res) => {
-    const { product_id, listing_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
+    const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
     if((controller.getProductByID(product_id)).exists){
         throw new Error("Product already exists");
     }else{
         try{
-            await controller.addProduct(product_id, listing_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
-        }catch(err){
+            await controller.addProduct(product_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
             res.status(201).send('Product has been added to database');
+        }catch(err){
+            res.status(500).send(err.message);
         }
     }
 });
@@ -99,8 +100,7 @@ router.get('/api/product/listing_id/:product_type', async(req,res) => {
     }
 });
 
-//Listings
-
+//Orders
 
 
 
