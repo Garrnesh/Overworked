@@ -20,10 +20,11 @@ const getProductByID = async (product_id) => {
     }
 };
 
-const addProduct = async (product_id, listing_id, product_image, product_description, product_brand, product_size) => {
+const addProduct = async (product_id, product_image, product_description, product_brand, product_size, business_id, listing_name) => {
     const product = Products.doc(product_id);
     try{
-        await product.set(listing_id, product_image, product_description, product_brand, product_size);
+        await product.set(product_image, product_description, product_brand, product_size);
+        await product.collection('Listing').doc.set(business_id, listing_name);
     }catch(err){
         throw new Error("Unable to create new product");
     }
@@ -37,18 +38,35 @@ const removeProduct = async (product_id) => {
     }
 };
 
-const getProductByListingID = async(listing_id) => {
-    const product = await Products.where('listing_id', '==', listing_id).get();
+const getProductByListingName = async(listing_name) => {
+    const product = await Products.collection('Listing').where('listing_name', '==', listing_name).get();
     if(product.exists){
         return product.data();
     }else{
-        throw new Error("No products with stated Listing ID");
+        throw new Error("No products with stated Listing name");
     }
 }
 
-const removeProductByListingID = async(listing_id) => {
+const removeProductByListingName = async(listing_name) => {
     try{
-        await  Products.where('listing_id', '==', listing_id).delete();
+        await Products.collection('Listing').where('listing_name', '==', listing_name).delete();
+    }catch(err){
+        throw new Error("Unable to detele product");
+    }
+}
+
+const getProductByBusinessID = async(business_id) => {
+    const product = await Products.collection('Listing').where('business_id', '==', business_id).get();
+    if(product.exists){
+        return product.data();
+    }else{
+        throw new Error("No products with stated Business ID");
+    }
+}
+
+const removeProductByBusinessID = async(business_id) => {
+    try{
+        await Products.collection('Listing').where('business_id', '==', business_id).delete();
     }catch(err){
         throw new Error("Unable to detele product");
     }
@@ -62,6 +80,9 @@ const getProductByProductType = async(product_type) => {
         throw new Error("No products with stated Product Type");
     }
 }
+
+//Listing table
+
 
 
 //------------------------------------------------------------------------------------
@@ -208,7 +229,9 @@ module.exports = {
     getProductByID,
     addProduct,
     removeProduct,
-    getProductByListingID,
-    removeProductByListingID,
+    getProductByListingName,
+    removeProductByListingName,
+    getProductByBusinessID,
+    removeProductByBusinessID,
     getProductByProductType,
 }
