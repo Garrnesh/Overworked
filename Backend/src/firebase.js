@@ -10,24 +10,24 @@ admin.initializeApp({
 const authorisation = admin.auth();
 const db = getFirestore();
 
-const buyers = collection(db, 'Buyers');
-const business = collection(db, 'Business');
-const payments = collection(db, 'Payments');
-const shops = collection(db, 'Shops');
-const products = collection(db, 'Products');
-const listings = collection(db, 'Listings');
-const orders = collection(db, 'Orders');
-const orderitems = collection(db, 'OrderItems');
+const Buyers = collection(db, 'Buyers');
+const Business = collection(db, 'Business');
+const Payments = collection(db, 'Payments');
+const Shops = collection(db, 'Shops');
+const Products = collection(db, 'Products');
+const Listings = collection(db, 'Listings');
+const Orders = collection(db, 'Orders');
+const Orderitems = collection(db, 'OrderItems');
 
 module.exports = {
     authorisation,
     db,
-    buyers,
-    business,
-    payments,
-    shops,
-    products,
-    listings,
-    orders,
-    orderitems,
+    Buyers,
+    Business,
+    Payments,
+    Shops,
+    Products,
+    Listings,
+    Orders,
+    Orderitems,
 };

@@ -1,85 +1,54 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { buyers, business, payments, shops, products, listings, orders, orderitems } from "../firebase.js";
+import { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } from "../firebase.js";
 
 //Product_table
 const getproducts = async (req,res) => {
     try{
-        const product = await products.get();
+        const product = await Products.get();
         res.status(200).json(product.data());
     }catch(err){
         res.status(500).send(err.message);
     }
 };
 
-// const getProducts = (req, res) => {
-//     DB.query(queries.getProducts, (err, result) => {
-//         if(err){
-//             return res.status(500).send(err.message);
-//         }
-//         res.status(200).json(result.rows);
-//     });
-// };
-
-const getProductByID = async (req,res) => {
-    const product_id = parseInt(req.params.product_id);
-    try{
-        const product = await products.doc(product_id).get();
-        res.status(200).json(product.data());
-    }catch(err){
-        res.status(404).send(err.message);
+const getProductByID = async (product_id) => {
+    const product = await Products.doc(product_id).get();
+    if(product.exists){
+        return product.data();
+    }else{
+        throw new Error("Product does not exist");
     }
 };
 
-// const getProductByID = (req,res) => {
-//     const product_id = parseInt(req.params.product_id);
-//     DB.query(queries.getProductByID, [product_id], (err, result) => {
+const addProduct = async (product_id, listing_id, product_image, product_description, product_brand, product_size) => {
+    const product = Products.doc(product_id);
+    try{
+        await product.set(listing_id, product_image, product_description, product_brand, product_size);
+    }catch(err){
+        throw new Error("Unable to create new product");
+    }
+};
+
+const removeProduct = async (product_id) => {
+    try{
+        await Products.doc(product_id).delete();
+    }catch(err){
+        throw new Error("Unable to delete product");
+    }
+};
+
+const getProductByListingID = async(listing_id)
+
+
+// const getProductByListingID = (req,res) => {
+//     const listing_id = parseInt(req.params.listing_id);
+//     DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
 //         if(err){
-//             return res.status(404).send(err.message);
+//             return res.staus(404).send(err.message);
 //         }
 //         res.status(200).json(result.rows);
 //     });
 // };
-
-const addProduct = (req,res) => {
-    const {listing_id, product_image, product_description, product_brand, product_size} = req.body;
-    
-    DB.query(queries.checkIfProductExist, [listing_id, product_description, product_brand, product_size], (err, result) =>{
-        if (result.rows && result.rows.length){
-            return res.status(409).send('Product already exists'); //Not sure if I should have a status here
-        }
-        DB.query(queries.addProduct, [listing_id, product_image, product_description, product_brand, product_size], (req,res) => {
-            if(err){
-                return res.status(500).send(err.message);
-            }
-            res.status(201).send('Product has been added to database');
-        });
-    });
-};
-
-const removeProduct = (req, res) => {
-    const product_id = parseInt(req.params.product_id);
-    DB.query(queries.getProductByID, [product_id], (err,result) => {
-        if(!(result.rows && result.rows.length)){
-            return res.status(404).send('Product not found');
-        }
-        DB.query(queries.removeProduct, [product_id], (err,result) => {
-            if(err){
-                return res.status(500).send(err.message);
-            }
-            res.status(200).send('Product has been removed from database');
-        });
-    });
-};
-
-const getProductByListingID = (req,res) => {
-    const listing_id = parseInt(req.params.listing_id);
-    DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
-        if(err){
-            return res.staus(404).send(err.message);
-        }
-        res.status(200).json(result.rows);
-    });
-};
 
 const removeProductByListingID = (req,res) => {
     const listing_id = parseInt(req.params.listing_id);
