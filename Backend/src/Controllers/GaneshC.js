@@ -37,43 +37,35 @@ const removeProduct = async (product_id) => {
     }
 };
 
-const getProductByListingID = async(listing_id)
+const getProductByListingID = async(listing_id) => {
+    const product = await Products.where('listing_id', '==', listing_id).get();
+    if(product.exists){
+        return product.data();
+    }else{
+        throw new Error("No products with stated Listing ID");
+    }
+}
+
+const removeProductByListingID = async(listing_id) => {
+    try{
+        await  Products.where('listing_id', '==', listing_id).delete();
+    }catch(err){
+        throw new Error("Unable to detele product");
+    }
+}
+
+const getProductByProductType = async(product_type) => {
+    const product = await Products.where('product_type', '==', product_type).get();
+    if(product.exists){
+        return product.data();
+    }else{
+        throw new Error("No products with stated Product Type");
+    }
+}
 
 
-// const getProductByListingID = (req,res) => {
-//     const listing_id = parseInt(req.params.listing_id);
-//     DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
-//         if(err){
-//             return res.staus(404).send(err.message);
-//         }
-//         res.status(200).json(result.rows);
-//     });
-// };
-
-const removeProductByListingID = (req,res) => {
-    const listing_id = parseInt(req.params.listing_id);
-    DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
-        if(!(result.rows && result.rows.length)){
-            res.status(404).send('Product not found');
-        }
-        DB.query(queries.removeProductByListingID, [listing_id], (err,response) => {
-            if(err){
-                return res.status(500).send(err.message);
-            }
-            res.status(200).send('Product removed from database');
-        });
-    });
-};
-
-const getProductByProductType = (req,res) => {
-    const product_type = req.params.product_type;
-    DB.query(queries.getProductByProductType, [product_type], (err,result) => {
-        if(err){
-            return res.status(404).send('Product not found');
-        }
-        res.status(200).json(result.rows);
-    });
-};
+//------------------------------------------------------------------------------------
+//UNDER CONSTRUCTION DO NOT REFERENCE!!!!!
 
 //Listing_table
 const getListings = (req,res) => {
@@ -210,6 +202,13 @@ const removeOrder = (req,res) => {
     });
 };
 
-const getOrderByBuyerID = (req,res) => {
-    
+
+module.exports = {
+    getproducts,
+    getProductByID,
+    addProduct,
+    removeProduct,
+    getProductByListingID,
+    removeProductByListingID,
+    getProductByProductType,
 }

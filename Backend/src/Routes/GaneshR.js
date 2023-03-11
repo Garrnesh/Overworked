@@ -38,6 +38,39 @@ router.delete('/product/:product_id', async(req,res) => {
         res.status(404).send("Product not found");
     }
 }); 
+router.get('/api/product/listing_id/:listing_id', async(req,res) => {
+    const listing_id = parseInt(req.params.listing_id);
+    try{
+        const product = await controller.getProductByListingID(listing_id);
+        res.status(200).json(product);
+    }catch(err){
+        res.status(404).send(err.message); //Come back to check if error is correct
+    }
+});
+router.delete('/api/product/listing_id/:listing_id', async(req,res) => {
+    const listing_id = parseInt(req.params.listing_id);
+    if((controller.getProductByListingID(listing_id)).exists){
+        try{
+            await controller.removeProductByListingID(listing_id);
+            res.status(200).send("Product has been removed");
+        }catch(err){
+            res.status(500).send(err.message);
+        }
+    }else{
+        res.status(404).send("Product not found");
+    }
+});
+router.get('/api/product/listing_id/:product_type', async(req,res) => {
+    const { product_type } = req.body;
+    try{
+        const product = await controller.getProductByProductType(product_type);
+        res.status(200).json(product);
+    }catch(err){
+        res.status(404).send(err.message); //Come back to check if error is correct
+    }
+});
+
+//Listings
 
 
 
