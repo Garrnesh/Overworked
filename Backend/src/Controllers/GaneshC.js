@@ -81,7 +81,7 @@ const getProductByProductType = async(product_type) => {
     }
 }
 
-//Order_table
+//Order table
 const getOrder = async (req,res) => {
     try{
         const order = await Orders.get();
@@ -100,16 +100,84 @@ const getOrderByID = async (order_id) => {
     }
 };
 
-const addOrder = async (product_id, product_image, product_description, product_brand, product_size, business_id, listing_name) => {
-    const product = Products.doc(product_id);
+const addOrder = async (order_id, buyer_id, total_price, date, status) => {
+    const order = Orders.doc(order_id);
     try{
-        await product.set(product_image, product_description, product_brand, product_size);
-        await product.collection('Listing').doc.set(business_id, listing_name);
+        await order.set(buyer_id, total_price, date, status);
     }catch(err){
-        throw new Error("Unable to create new product");
+        throw new Error("Unable to create new order");
     }
 };
 
+const removeOrder = async (order_id) => {
+    try{
+        await Orders.doc(order_id).delete();
+    }catch(err){
+        throw new Error("Unable to delete order");
+    }
+};
+
+const getOrderByBuyerId = async(buyer_id) => {
+    const order = await Orders.where('buyer_id', '==', listing_name).get();
+    if(order.exists){
+        return order.data();
+    }else{
+        throw new Error("No order with stated buyer ID");
+    }
+}
+
+//Orderitem_table
+const getOrderItems = async (req,res) => {
+    try{
+        const order_item = await Orderitems.get();
+        res.status(200).json(order_item.data());
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
+const getOrderItemByID = async (orderitem_id) => {
+    const order_item = await Orderitems.doc(orderitem_id).get();
+    if(order_item.exists){
+        return order_item.data();
+    }else{
+        throw new Error("Order Item does not exist");
+    }
+};
+
+const addOrderItem = async (orderitem_id, order_id, product_id, quantity) => {
+    const order_item = Orderitems.doc(orderitem_id);
+    try{
+        await order_item.set(order_id, product_id, quantity);
+    }catch(err){
+        throw new Error("Unable to create new order item");
+    }
+};
+
+const removeOrderItem = async (orderitem_id) => {
+    try{
+        await Orderitems.doc(orderitem_id).delete();
+    }catch(err){
+        throw new Error("Unable to delete order item");
+    }
+};
+
+const getOrderItemByOrderId = async(order_id) => {
+    const order_item = await Orderitems.where('order_id', '==', order_id).get();
+    if(order_item.exists){
+        return order_item.data();
+    }else{
+        throw new Error("No order item with stated Order item ID");
+    }
+}
+
+const removeOrderItemByOrderID = async (order_id) => {
+    try{
+        await Orderitems.where("order_id", "==", order_id).delete();
+    }catch(err){
+        throw new Error("Unable to delete order item with specified order_id")
+    }
+}
 
 module.exports = {
     getproducts,
@@ -121,4 +189,15 @@ module.exports = {
     getProductByBusinessID,
     removeProductByBusinessID,
     getProductByProductType,
+    getOrder,
+    getOrderByID,
+    addOrder,
+    removeOrder,
+    getOrderByBuyerId,
+    getOrderItems,
+    getOrderItemByID,
+    addOrderItem,
+    removeOrderItem,
+    getOrderItemByOrderId,
+    removeOrderItemByOrderID,
 }
