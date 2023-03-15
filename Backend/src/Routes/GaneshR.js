@@ -1,9 +1,9 @@
 const express = require('Express');
 const router = express.Router();
-const controller = require('../Routes/GaneshC');
+const controller = require('../Controllers/GaneshC');
 
 //Products
-router.get('/product', controller,getProducts);
+router.get('/product', controller.getProducts);
 router.get('/product/:product_id', async (req,res) => {
     const product_id = parseInt(req.params.product_id);
     try{

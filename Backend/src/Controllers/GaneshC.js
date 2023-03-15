@@ -1,5 +1,6 @@
-import { FieldValue } from "firebase-admin/firestore";
-import { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } from "../firebase.js";
+const { FieldValue } = require("firebase-admin/firestore");
+const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } = require("../firebase.js");
+
 
 //Product_table
 const getproducts = async (req,res) => {
