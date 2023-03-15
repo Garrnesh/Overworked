@@ -1,11 +1,11 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } from "../firebase.js";
 
-//Yoo okok do u think u can do the payment and shop tables?
-
+//payment and shop tables?
+//payment_id, buyer_id, card_number, name_on_card, exp_date, cvc
 
 //Payment Table
-const getpayments = async (req,res) => { //proc
+const getPayments = async (req,res) => { 
     try{
         const payment = await Payments.get();
         res.status(200).json(payment.data());
@@ -14,7 +14,7 @@ const getpayments = async (req,res) => { //proc
     }
 };
 
-const getPaymentByID = async (prodcut_id) => { //difference is that will payment be searched by the payment id?
+const getPaymentByID = async (payment_id) => { 
     const payment = await Payments.doc(payment_id).get();
     if(payment.exists){
         return payment.data();
@@ -23,8 +23,13 @@ const getPaymentByID = async (prodcut_id) => { //difference is that will payment
         throw new Error("Payment method does not exists ")
     }
     
-}
+};
 
+//function to get all the payments for a single buyer
+// necessary? or should we just use the buyer to call the payment ids under it?
+
+
+// prev
 const addPayment = async (payment_id, buyer_id, card_number, name_on_card, exp_date, cvc) => {
     const payment = Payments.doc(payment_id);
     try{
@@ -32,9 +37,28 @@ const addPayment = async (payment_id, buyer_id, card_number, name_on_card, exp_d
     }catch(err){
         throw new Error("Unable to set new payment method");
     }
+    // new
+    const addpayment = (req,res) => {
+        const {payment_id, buyer_id, card_number, name_on_card, exp_date, cvc} = req.body;
+        DB.query(queries.checkifPaymentExists, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (err, result) =>{
+            if (result.rows && result.rows.length){ //rows && rows.length = true? means the length of every variable compare ah?
+                return res.status(409).send('Payment method already exists'); 
+            }
+            DB.query(queries.addPayment, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (req,res) => {
+                if(err){
+                    return res.status(500).send(err.message);
+                }
+                res.status(201).send('Payment has been added to database');
+            });
+        });
+    };
+}
+
+
+
 };
 
-const removeProduct = async (payment_id) => {
+const removePayment = async (payment_id) => {
     try{
         await Payments.doc(payment_id).delete();
     }catch(err){
@@ -42,44 +66,85 @@ const removeProduct = async (payment_id) => {
     }
 };
 
+//Shop Table
+//shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation
 
-
-
-
-const getProductByListingID = async(listing_id)
-
-
-// const getProductByListingID = (req,res) => {
-//     const listing_id = parseInt(req.params.listing_id);
-//     DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
-//         if(err){
-//             return res.staus(404).send(err.message);
-//         }
-//         res.status(200).json(result.rows);
-//     });
-// };
-
-const removeProductByListingID = (req,res) => {
-    const listing_id = parseInt(req.params.listing_id);
-    DB.query(queries.getProductByListingID, [listing_id], (err,result) => {
-        if(!(result.rows && result.rows.length)){
-            res.status(404).send('Product not found');
-        }
-        DB.query(queries.removeProductByListingID, [listing_id], (err,response) => {
-            if(err){
-                return res.status(500).send(err.message);
-            }
-            res.status(200).send('Product removed from database');
-        });
-    });
+const getShops = async (req,res) => { 
+    try{
+        const shops = await Shops.get();
+        res.status(200).json(shop.data());
+    }catch(err){
+        res.status(500).send(err.message);
+    }
 };
 
-const getProductByProductType = (req,res) => {
-    const product_type = req.params.product_type;
-    DB.query(queries.getProductByProductType, [product_type], (err,result) => {
-        if(err){
-            return res.status(404).send('Product not found');
-        }
-        res.status(200).json(result.rows);
-    });
+const getShopByID = async (shop_id) => { 
+    const shop = await Shops.doc(shop_id).get();
+    if(shop.exists){
+        return shop.data();
+    }
+    else{
+        throw new Error("This shop does not exist! ")
+    }
+    
+};
+
+const getShopByName = async (shop_name) => { 
+    const shop = await Shops.doc(shop_id).get();
+    if(shop.exists){
+        return shop.data();
+    }
+    else{
+        throw new Error("This shop does not exist! ")
+    }
+    
+};
+
+const getShopByUEN = async (UEN_number) => { 
+    const shop = await Shops.doc(shop_id).get();
+    if(shop.exists){
+        return shop.data();
+    }
+    else{
+        throw new Error("This shop does not exist! ")
+    }
+    
+};
+
+
+const addShop = async (shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation) => {
+    //prev
+    const shop = Shops.doc(shop_id);
+    try{
+        await shop.set(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation));
+    }catch(err){
+        throw new Error("Unable to create new shop method");
+    }
+    // new, tbc
+    /*
+    const addpayment = (req,res) => {
+        const {payment_id, buyer_id, card_number, name_on_card, exp_date, cvc} = req.body;
+        DB.query(queries.checkifPaymentExists, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (err, result) =>{
+            if (result.rows && result.rows.length){ //rows && rows.length = true? means the length of every variable compare ah?
+                return res.status(409).send('Payment method already exists'); 
+            }
+            DB.query(queries.addPayment, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (req,res) => {
+                if(err){
+                    return res.status(500).send(err.message);
+                }
+                res.status(201).send('Payment has been added to database');
+            });
+        });
+    };
+}
+*/
+
+};
+
+const removeShop = async (shop_id) => {
+    try{
+        await Shops.doc(shop_id).delete();
+    }catch(err){
+        throw new Error("Unable to delete shop");
+    }
 };
