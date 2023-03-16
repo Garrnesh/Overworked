@@ -14,7 +14,7 @@ router.get('/product/:product_id', async (req,res) => {
     }
 });
 
-router.post('/product/', async(req,res) => {
+router.post('/product', async(req,res) => {
     const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
     if((controller.getProductByID(product_id)).exists){
         throw new Error("Product already exists");
@@ -104,45 +104,50 @@ router.get('/product/listing_id/:product_type', async(req,res) => {
 
 router.get('/order', controller.getOrder);
 router.get('/order/:order_id', async(req,res) => {
-    const order_id = parseInt(req.params.order_id);
+    const order_id = req.params.order_id;
+    //const order_id = parseInt(req.params.order_id);
     try{
         const order = await controller.getOrderByID(order_id);
         res.status(200).json(order);
     }catch(err){
-        res.status(404).send(err.message);
+        res.status(404).send("Order not found");
     }
 });
 
 router.post('/order', async(req,res) => {
     const { order_id, buyer_id, total_price, date, status } = req.body;
-    if((controller.getOrderByID(order_id)).exists){
-        throw new Error("Order already exists");
-    }else{
-        try{
-            await controller.addOrder(order_id, buyer_id, total_price, date, status);
-            res.status(201).send('Order has been added to database');
-        }catch(err){
-            res.status(500).send(err.message);
-        }
+    try{
+        await controller.checkOrderID(order_id);
+    }catch(err){
+        res.status(500).send("Order already exists");
+    }
+
+    try{
+        await controller.addOrder(order_id, buyer_id, total_price, date, status);
+        res.status(201).send('Order has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
     }
 });
 
 router.delete('/order/:order_id', async(req,res) => {
-    const order_id = parseInt(req.params.order_id);
-    if((controller.getOrderByID(order_id)).exists){
-        try{
-            await controller.removeOrder(order_id);
-            res.status(200).send("Order has been removed");
-        }catch(err){
-            res.status(500).send(err.message);
-        }
-    }else{
-        res.status(404).send("Order not found");
+    const order_id = req.params.order_id;    
+    try{
+        await controller.getOrderByID(order_id);
+    }catch(err){
+        res.status(500).send("No such order exists");
+    }
+
+    try{
+        await controller.removeOrder(order_id);
+        res.status(200).send("Order has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
     }
 });
 
 router.get('/order/buyer_id/:buyer_id', async(req,res) => {
-    const buyer_id = parseInt(req.params.buyer_id);
+    const buyer_id = req.params.buyer_id;
     try{
         const order = await controller.getOrderByBuyerId(buyer_id);
         res.status(200).json(order);
@@ -202,7 +207,7 @@ router.get('/orderitem/order_id/:order_id', async(req,res) => {
     }
 });
 
-router.remove('/orderitem/order_id/:order_id', async(req,res) => {
+router.delete('/orderitem/order_id/:order_id', async(req,res) => {
     const order_id = parseInt(req.params.order_id);
     if((controller.getOrderItemByOrderId(order_id)).exists){
         try{

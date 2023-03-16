@@ -3,7 +3,7 @@ const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitem
 
 
 //Product_table
-const getproducts = async (req,res) => {
+const getProducts = async (req,res) => {
     try{
         const product = await Products.get();
         res.status(200).json(product.data());
@@ -86,7 +86,7 @@ const getProductByProductType = async(product_type) => {
 const getOrder = async (req,res) => {
     try{
         const order = await Orders.get();
-        res.status(200).json(order.data());
+        res.status(200).json(order);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -95,16 +95,31 @@ const getOrder = async (req,res) => {
 const getOrderByID = async (order_id) => {
     const order = await Orders.doc(order_id).get();
     if(order.exists){
-        return order.data();
+        return order;
     }else{
         throw new Error("Order does not exist");
+    }
+};
+
+const checkOrderID = async (order_id) => {
+    try{
+        const order = await Orders.doc(order_id).get();
+        if(order.exists){
+            throw new Error("Order with order id already exists");
+        }
+    }catch(err){
+        throw new Error("Order with order id already exists");
     }
 };
 
 const addOrder = async (order_id, buyer_id, total_price, date, status) => {
     const order = Orders.doc(order_id);
     try{
-        await order.set(buyer_id, total_price, date, status);
+        await order.set({
+            buyer_id: buyer_id, 
+            total_price: total_price, 
+            date: date, 
+            status: status});
     }catch(err){
         throw new Error("Unable to create new order");
     }
@@ -119,9 +134,9 @@ const removeOrder = async (order_id) => {
 };
 
 const getOrderByBuyerId = async(buyer_id) => {
-    const order = await Orders.where('buyer_id', '==', listing_name).get();
-    if(order.exists){
-        return order.data();
+    const order = await Orders.where('buyer_id', '==', buyer_id).get();
+    if(order.size>0){
+        return order;
     }else{
         throw new Error("No order with stated buyer ID");
     }
@@ -181,7 +196,7 @@ const removeOrderItemByOrderID = async (order_id) => {
 }
 
 module.exports = {
-    getproducts,
+    getProducts,
     getProductByID,
     addProduct,
     removeProduct,
@@ -192,6 +207,7 @@ module.exports = {
     getProductByProductType,
     getOrder,
     getOrderByID,
+    checkOrderID,
     addOrder,
     removeOrder,
     getOrderByBuyerId,
