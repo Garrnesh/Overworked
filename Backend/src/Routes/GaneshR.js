@@ -152,7 +152,7 @@ router.get('/order/buyer_id/:buyer_id', async(req,res) => {
         const order = await controller.getOrderByBuyerId(buyer_id);
         res.status(200).json(order);
     }catch(err){
-        res.status(404).send(err.message); //Come back to check if error is correct
+        res.status(404).send(err.message);
     }
 });
 
