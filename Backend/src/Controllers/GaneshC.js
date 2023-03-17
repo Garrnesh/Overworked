@@ -6,7 +6,7 @@ const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitem
 const getProducts = async (req,res) => {
     try{
         const product = await Products.get();
-        res.status(200).json(product);
+        res.status(200).json(product.data());
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -163,7 +163,7 @@ const getOrderByBuyerId = async(buyer_id) => {
 const getOrderItems = async (req,res) => {
     try{
         const order_item = await Orderitems.get();
-        res.status(200).json(order_item);
+        res.status(200).json(order_item.data());
     }catch(err){
         res.status(500).send(err.message);
     }

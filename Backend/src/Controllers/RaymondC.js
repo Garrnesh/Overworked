@@ -8,7 +8,7 @@ const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitem
 const getPayments = async (req,res) => { 
     try{
         const payment = await Payments.get();
-        res.status(200).json(payment);
+        res.status(200).json(payment.data());
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -81,7 +81,7 @@ const getPaymentsByBuyerId = async(buyer_id) => {
 const getShops = async (req,res) => { 
     try{
         const shops = await Shops.get();
-        res.status(200).json(shops);
+        res.status(200).json(shops.data());
     }catch(err){
         res.status(500).send(err.message);
     }
