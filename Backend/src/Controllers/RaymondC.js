@@ -1,6 +1,6 @@
-import { FieldValue } from "firebase-admin/firestore";
-import { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } from "../firebase.js";
-
+const { FieldValue } = require("firebase-admin/firestore");
+const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } = require("../firebase.js");
+ 
 //payment and shop tables?
 //payment_id, buyer_id, card_number, name_on_card, exp_date, cvc
 
@@ -8,7 +8,7 @@ import { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderite
 const getPayments = async (req,res) => { 
     try{
         const payment = await Payments.get();
-        res.status(200).json(payment.data());
+        res.status(200).json(payment);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -17,7 +17,7 @@ const getPayments = async (req,res) => {
 const getPaymentByID = async (payment_id) => { 
     const payment = await Payments.doc(payment_id).get();
     if(payment.exists){
-        return payment.data();
+        return payment;
     }
     else{
         throw new Error("Payment method does not exists ")
@@ -25,37 +25,33 @@ const getPaymentByID = async (payment_id) => {
     
 };
 
-//function to get all the payments for a single buyer
-// necessary? or should we just use the buyer to call the payment ids under it?
+const checkPaymentID = async (payment_id) => {
+    try{
+        const payment = await Payments.doc(payment_id).get();
+        if(payment.exists){
+            throw new Error("Payment with payment id already exists");
+        }
+    }
+    catch(err){
+        throw new Error("Payment with payment id already exists")
+    }
+};
+
+//function to get all the payments for a single buyer?
 
 
-// prev
 const addPayment = async (payment_id, buyer_id, card_number, name_on_card, exp_date, cvc) => {
     const payment = Payments.doc(payment_id);
     try{
-        await payment.set(payment_id, buyer_id, card_number, name_on_card, exp_date, cvc));
+        await payment.set({
+            buyer_id: buyer_id,
+            card_number: card_number,
+            name_on_card: name_on_card,
+            exp_date: exp_date,
+            cvc: cvc});
     }catch(err){
-        throw new Error("Unable to set new payment method");
+        throw new Error("Unable to add new payment method");
     }
-    // new
-    const addpayment = (req,res) => {
-        const {payment_id, buyer_id, card_number, name_on_card, exp_date, cvc} = req.body;
-        DB.query(queries.checkifPaymentExists, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (err, result) =>{
-            if (result.rows && result.rows.length){ //rows && rows.length = true? means the length of every variable compare ah?
-                return res.status(409).send('Payment method already exists'); 
-            }
-            DB.query(queries.addPayment, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (req,res) => {
-                if(err){
-                    return res.status(500).send(err.message);
-                }
-                res.status(201).send('Payment has been added to database');
-            });
-        });
-    };
-}
-
-
-
 };
 
 const removePayment = async (payment_id) => {
@@ -66,13 +62,26 @@ const removePayment = async (payment_id) => {
     }
 };
 
+//function to get all the payments for a single buyer?
+const getPaymentsByBuyerId = async(buyer_id) => {
+    const payment = awaits Payments.where('buyer_id', '==', buyer_id).get();
+    if(payment.size >0){
+        return payment
+    }
+    else(
+        throw new Error("Buyer does not have any payment methods")
+    )
+}
+
 //Shop Table
 //shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation
 
+
+//returns all shops with no filter
 const getShops = async (req,res) => { 
     try{
         const shops = await Shops.get();
-        res.status(200).json(shop.data());
+        res.status(200).json(shop);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -81,10 +90,10 @@ const getShops = async (req,res) => {
 const getShopByID = async (shop_id) => { 
     const shop = await Shops.doc(shop_id).get();
     if(shop.exists){
-        return shop.data();
+        return shop;
     }
     else{
-        throw new Error("This shop does not exist! ")
+        throw new Error("This shop does not exist!")
     }
     
 };
@@ -92,7 +101,7 @@ const getShopByID = async (shop_id) => {
 const getShopByName = async (shop_name) => { 
     const shop = await Shops.doc(shop_id).get();
     if(shop.exists){
-        return shop.data();
+        return shop;
     }
     else{
         throw new Error("This shop does not exist! ")
@@ -103,7 +112,7 @@ const getShopByName = async (shop_name) => {
 const getShopByUEN = async (UEN_number) => { 
     const shop = await Shops.doc(shop_id).get();
     if(shop.exists){
-        return shop.data();
+        return shop;
     }
     else{
         throw new Error("This shop does not exist! ")
@@ -113,32 +122,18 @@ const getShopByUEN = async (UEN_number) => {
 
 
 const addShop = async (shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation) => {
-    //prev
     const shop = Shops.doc(shop_id);
     try{
-        await shop.set(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation));
+        await shop.set({
+            business_id: business_id,
+            shop_name: shop_name,
+            UEN_number: UEN_number,
+            Shop_description: Shop_description,
+            Shop_address: Shop_address,
+            Donation: Donation});
     }catch(err){
         throw new Error("Unable to create new shop method");
-    }
-    // new, tbc
-    /*
-    const addpayment = (req,res) => {
-        const {payment_id, buyer_id, card_number, name_on_card, exp_date, cvc} = req.body;
-        DB.query(queries.checkifPaymentExists, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (err, result) =>{
-            if (result.rows && result.rows.length){ //rows && rows.length = true? means the length of every variable compare ah?
-                return res.status(409).send('Payment method already exists'); 
-            }
-            DB.query(queries.addPayment, [payment_id, buyer_id, card_number, name_on_card, exp_date, cvc], (req,res) => {
-                if(err){
-                    return res.status(500).send(err.message);
-                }
-                res.status(201).send('Payment has been added to database');
-            });
-        });
-    };
-}
-*/
-
+    } 
 };
 
 const removeShop = async (shop_id) => {
@@ -148,3 +143,18 @@ const removeShop = async (shop_id) => {
         throw new Error("Unable to delete shop");
     }
 };
+
+module.exports = {
+getPayments,
+getPaymentByID,
+checkPaymentID,
+addPayment,
+removePayment,
+getPaymentsByBuyerId,
+getShops,
+getShopByID,
+getShopByName,
+getShopByUEN,
+addShop,
+removeShop
+}
