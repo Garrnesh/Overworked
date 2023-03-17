@@ -8,7 +8,7 @@ router.get('/product/:product_id', async (req,res) => {
     const product_id = req.params.product_id;
     try{
         const product = await controller.getProductByID(product_id);
-        res.status(200).json(product);
+        res.status(200).json(product.data());
     }catch(err){
         res.status(404).send("Product not found");
     }
@@ -50,7 +50,7 @@ router.get('/product/Listing/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         const product = await controller.getProductByListingName(listing_name);
-        res.status(200).json(product);
+        res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
     }
@@ -76,7 +76,7 @@ router.get('/product/Listing/:business_id', async(req,res) => {
     const business_id = req.params.business_id;
     try{
         const product = await controller.getProductByBusinessID(business_id);
-        res.status(200).json(product);
+        res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
     }
@@ -102,7 +102,7 @@ router.get('/product/listing_id/:product_type', async(req,res) => {
     const { product_type } = req.params.product_type;
     try{
         const product = await controller.getProductByProductType(product_type);
-        res.status(200).json(product);
+        res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
     }
@@ -157,7 +157,7 @@ router.get('/order/buyer_id/:buyer_id', async(req,res) => {
     const buyer_id = req.params.buyer_id;
     try{
         const order = await controller.getOrderByBuyerId(buyer_id);
-        res.status(200).json(order);
+        res.status(200).json(order.data());
     }catch(err){
         res.status(404).send(err.message);
     }
@@ -170,7 +170,7 @@ router.get('/orderitem/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
         const orderitem = await controller.getOrderItemByID(orderitem_id);
-        res.status(200).json(orderitem);
+        res.status(200).json(orderitem.data());
     }catch(err){
         res.status(404).send("Order item not found");
     }
@@ -212,7 +212,7 @@ router.get('/orderitem/order_id/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const orderitem = await controller.getOrderItemByOrderId(order_id);
-        res.status(200).json(orderitem);
+        res.status(200).json(orderitem.data());
     }catch(err){
         res.status(404).send(err.message);
     }
