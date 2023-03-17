@@ -64,13 +64,13 @@ const removePayment = async (payment_id) => {
 
 //function to get all the payments for a single buyer?
 const getPaymentsByBuyerId = async(buyer_id) => {
-    const payment = awaits Payments.where('buyer_id', '==', buyer_id).get();
+    const payment = await Payments.where('buyer_id', '==', buyer_id).get();
     if(payment.size >0){
         return payment
     }
-    else(
+    else{
         throw new Error("Buyer does not have any payment methods")
-    )
+    }
 }
 
 //Shop Table
@@ -81,7 +81,7 @@ const getPaymentsByBuyerId = async(buyer_id) => {
 const getShops = async (req,res) => { 
     try{
         const shops = await Shops.get();
-        res.status(200).json(shop);
+        res.status(200).json(shops);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -99,7 +99,7 @@ const getShopByID = async (shop_id) => {
 };
 
 const getShopByName = async (shop_name) => { 
-    const shop = await Shops.doc(shop_id).get();
+    const shop = await Shops.doc(shop_name).get();
     if(shop.exists){
         return shop;
     }
@@ -110,7 +110,7 @@ const getShopByName = async (shop_name) => {
 };
 
 const getShopByUEN = async (UEN_number) => { 
-    const shop = await Shops.doc(shop_id).get();
+    const shop = await Shops.doc(UEN_number).get();
     if(shop.exists){
         return shop;
     }
