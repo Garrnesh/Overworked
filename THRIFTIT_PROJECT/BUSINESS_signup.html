@@ -23,89 +23,109 @@
       <!-- grid row-->
       <div class="row justify-content-center">
         <div class="col-lg-6">
-            <!--input username-->
-            <label for="username" class="form-label"></label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-person-circle"></i>
-              </span>
-            <input type="username" class = "form-control" id = "username" placeholder = "Enter username">
-            </div>
-
-            <!-- add business description-->
-            <div class="form-floating mt-1">
-                <textarea name = "" id = "" class = "form-control" style = "height: 140px"></textarea>
-                <label for="businessdescription" class="form-label">Enter business description</label>
+          <form id = "signup_BUSINESS">
+            <div class="form-group">
+              <!--input username-->
+              <label for="username" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person-circle"></i>
+                </span>
+              <input type="username" class = "form-control" id = "username" placeholder = "Enter username" required>
               </div>
-            <!-- add address of business --> 
-            <label for="address" class="form-label"></label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-geo-alt"></i>
-              </span>
-            <input type="address" class = "form-control" id = "address" placeholder = "Enter business address">
-            </div> 
-            <!-- enter address postal code-->
-             <label for="postalcode" class="form-label"></label>
-             <div class="input-group">
-               <span class="input-group-text">
-                 <i>S</i>
-               </span>
-             <input type="postalcode" class = "form-control" id = "postalcode" placeholder = "Enter postal code">
-             </div> 
-             <!-- enter UEN Business number --> 
-             <label for="UEN" class="form-label"></label>
-             <div class="input-group">
-               <span class="input-group-text">
-                <i class="bi bi-hash"></i>
-               </span>
-             <input type="UEN" class = "form-control" id = "UEN" placeholder = "Enter UEN number">
-             </div>  
-            <!-- enter email address-->
-            <label for="emailaddress" class="form-label"></label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-envelope"></i>
-              </span>
-            <input type="emailaddress" class = "form-control" id = "emailaddress" placeholder = "Enter email address">
-            </div>
-            <!-- enter mobile number-->
-            <label for="mobilenumber" class="form-label"></label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-telephone"></i>
-              </span>
-            <input type="mobilenumber" class = "form-control" id = "mobilenumber" placeholder = "Enter mobile number">
-            </div>
-            <!-- enter password -->
-            <label for="password" class="form-label"></label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-lock"></i>
-              </span>
-            <input type="password" class = "form-control" id = "password" placeholder = "Enter password">
-            </div>
 
-            
-            <!-- confirm password -->
-            <label for="confirmpassword" class="form-label"></label>
-            <div class="mb-4 input-group">
-              <span class="input-group-text">
-                <i class="bi bi-check-circle"></i>
-              </span>
-            <input type="confirmpassword" class = "form-control" id = "confirmpassword" placeholder = "Re-enter password">
-            </div>
-            
+              <!-- add business description-->
+              <div class="form-floating mt-1">
+                  <textarea name = "" id = "" class = "form-control" style = "height: 140px" required></textarea>
+                  <label for="businessdescription" class="form-label">Enter business description</label>
+                </div>
+              <!-- add address of business --> 
+              <label for="address" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-geo-alt"></i>
+                </span>
+              <input type="address" class = "form-control" id = "address" placeholder = "Enter business address" required>
+              </div> 
+              <!-- enter address postal code-->
+              <label for="postalcode" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i>S</i>
+                </span>
+              <input type="postalcode" class = "form-control" id = "postalcode" placeholder = "Enter postal code" required>
+              </div> 
+              <!-- enter UEN Business number --> 
+              <label for="UEN" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-hash"></i>
+                </span>
+              <input type="UEN" class = "form-control" id = "UEN" placeholder = "Enter UEN number" required>
+              </div>  
+              <!-- enter email address-->
+              <label for="emailaddress" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+              <input type="emailaddress" class = "form-control" id = "emailaddress" placeholder = "Enter email address" required>
+              </div>
+              <!-- enter mobile number-->
+              <label for="mobilenumber" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-telephone"></i>
+                </span>
+              <input type="mobilenumber" class = "form-control" id = "mobilenumber" placeholder = "Enter mobile number" required>
+              </div>
+              <!-- enter password -->
+              <label for="password" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock"></i>
+                </span>
+              <input type="password" class = "form-control" id = "password" placeholder = "Enter password" required>
+              </div>
+
+              
+              <!-- confirm password -->
+              <label for="confirmpassword" class="form-label"></label>
+              <div class="mb-4 input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-check-circle"></i>
+                </span>
+              <input type="password" class = "form-control" id = "confirmpassword" placeholder = "Re-enter password" required>
+              </div>
+            </div>  
             <!-- sign up button-->
-            <div class="d-grid gap-2 col-6 mx-auto justify-content-center">
-              <a href="GENERAL_loginform.html">
-                <button type="button" class="btn btn-outline-success btn-lg btn-block" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;" value = "Signup">Signup</button>
-              </a>
-              </div>
-
-        
-
+            <!-- sign up button-->
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-outline-success btn-lg btn-block" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">Login</button>
+            </div>
+        </form>
+      </div>
+    </div>  
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
       </script>
+    </script>
+
+    <!-- ENSURE THAT TEXT ALL FILLED BEFORE SUBMITTING-->
+    <script>
+      const form = document.querySelector('#signup_BUSINESS');
+      
+      form.addEventListener('submit', (event) => {
+        event.preventDefault(); // prevent form from submitting
+        
+        if (form.checkValidity()) {
+          // if form is valid, redirect user to next page
+          window.location.href = 'BUSINESS_frontpage.html';
+        } else {
+          // if form is invalid, display error messages
+          form.reportValidity();
+        }
+      });
+    </script>
     </body>
     </html>
