@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <title>Edit Payment Methods</title>
+</head>
+<body>
+  <!-- display brand name in the middle-->
+
+    <nav class="d-flex navbar navbar-expand-md navbar-light pb-4 shadow" >
+        <div class="container-lg">
+          <!-- navbar brand / title -->
+          <a class="navbar-brand" href="BUYER_frontpage.html">
+            <span class="lead display-6 text-secondary fw-bold">
+              <img src= "logo/thrfit it crop.png" class = "img-responsive" height = "72">
+              ThriftIt
+            </span>
+          </a>
+          <!-- toggle button for mobile nav -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <!-- navbar links -->
+          <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+            <ul class="navbar-nav">
+              <li class="nav-item fw-bold">
+                <a class="nav-link" href="#thriftstores">Find Thrift Shops</a>
+              </li>
+              <li class="nav-item fw-bold">
+                <a class="nav-link" href="#donationpts">Find Donation Points</a>
+              </li>
+
+            </ul>
+          </div>
+          <!-- need to edit-->
+          <form class = "d-flex justify-content-center align-middle w-25" role = "search" actions = "/product_search">
+            <label for="search" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="search" class="form-control" id="search" placeholder="Search">
+                </div>
+          </form>
+
+          <a href = "BUYER_cart.html" class="btn">
+            <i class="bi bi-heart"></i>
+          </a>
+          <a href = "BUYER_cart.html" class="btn">
+            <i class="bi bi-bag-dash"></i>
+          </a>
+          <a href = "GENERAL_loginform.html" class="btn">
+            <i class="bi bi-person-circle"></i>
+          </a>
+        </div>
+    </nav>
+    <div class="container-md mb-3">
+        <h1 class="text-center m-5">Edit Payment Methods</h1>
+        <div class="border rounded mt-3">
+            <div class="d-flex justify-content-between">
+                <h4 class="mt-4 ms-3 me-3">
+                    Saved Payment Methods
+                </h4>
+                <a href="BUYER_addNewAddress.html" class="btn btn-outline-primary mt-4 ms-3 me-3 fw-bold">+ ADD NEW PAYMENT METHOD</a>
+            </div>
+            
+            <div class="m-3">
+                <h6>
+                    Default Payment Method
+                </h6>
+            </div>
+            
+            <div class="container mb-3">
+                <div class="card border">
+                    <div class="card-body text-start py-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Sam</h5>
+                                <p class="card-text m-0">Card Ending with **** 4865</p>
+                                <p class="card-text m-0">Expiry Date: 07/2034</p>
+                            </div>
+                            <div>
+                                <img src= "https://mms.businesswire.com/media/20210126006164/en/854905/5/Visa+Brand+Mark+-+Blue+-+900x291.jpg" class = "img-responsive me-3" height = "22">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="container text-center border-top border-danger py-3 text-black">
+                        Remove
+                    </a>
+                </div>
+            </div>
+            <div class="m-3 mt-4">
+                <h6>
+                    Other Payment Methods
+                </h6>
+            </div>
+            <div class="container mb-3">
+                <div class="card border">
+                    <div class="card-body text-start py-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">John</h5>
+                                <p class="card-text m-0">Card Ending with **** 1775</p>
+                                <p class="card-text m-0">Expiry Date: 10/2024</p>
+                            </div>
+                            <div>
+                                <img src= "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/800px-Mastercard_2019_logo.svg.png" class = "img-responsive me-3" height = "22">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="container text-center border-top border-danger py-3 text-black">
+                        Remove
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>

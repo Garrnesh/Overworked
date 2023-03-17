@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--import bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="css/style.css">
+        <title>Product Information</title>
+</head>
+<body>
+  <!-- display brand name in the middle-->
+    <div class="text-center my-5">
+      <img src= "logo/thrfit it crop.png" class = "img-responsive" height = "72">
+    </div>
+    <!--navigation bar-->
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md navbar-light pt-5 pb-4" style="background-color: #c4c5f0;">
+        <div class="container-lg">
+          <!-- toggle button for mobile nav -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <!-- navbar links -->
+          <div class="collapse navbar-collapse justify-content-front align-center" id="main-nav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link text-light py-0" href="BUYER_frontpage.html" style = "font-size : 24px">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-light py-0" href="#thriftstores" style = "font-size : 24px">Find Thrift Shops</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-light py-0" href="#donationpts" style = "font-size : 24px">Find Donation Points</a>
+              </li>
+            </ul>
+          </div>
+          <!-- search bar-->
+          <form class="d-flex align-items-center flex-nowrap py-0">
+            <button class="btn mr-1" type="submit">
+                <i class="bi bi-search" style = "font-size: 24px"></i>
+            </button>
+            <input class="form-control" type="search" placeholder="Search clothes" aria-label="Search">
+          </form>
+          <!-- add user love clothes-->
+          <button class="btn"><i class="bi bi-heart" style = "font-size: 24px"></i></i></button>
+          <!-- add user cart-->
+          <a href = "BUYER_usercart.html">
+            <button class="btn"><i class="bi bi-bag-dash" style = "font-size: 24px"></i></i></button>
+            </a>          
+          <!-- login user link to user page-->
+          <a href="GENERAL_loginform.html">
+          <button class="btn"><i class="bi bi-person-circle" style = "font-size: 24px"></i></i></button>
+          </a>
+        </div>
+      </nav>
+    <!-- dont touch ABOVE-->
+
+    <section id = "productinformation">
+        <div class="container-lg">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-5 text-center d-none d-md-block ml-4">
+                    <!-- add picture carousel-->
+                    <div id="adidas_sweatshirt" class="carousel slide mt-4 ">
+                        <div class="carousel-inner ml-4 mb-4">
+                        <div class="carousel-item active">
+                            <img src="clothes_db/sweatshirt/adidas-1.webp" class="mx-auto d-block"  style="width:400px;height:400px">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="clothes_db/sweatshirt/adidas-2.webp" class="mx-auto d-block"  style="width:400px;height:400px">
+                        </div>
+                        </div>
+                        <button class="carousel-control-prev carousel-dark" type="button" data-bs-target="#adidas_sweatshirt" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+                          <button class="carousel-control-next carousel-dark" type="button" data-bs-target="#adidas_sweatshirt" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
+                    </div>
+                    </div>
+                    <!-- add details of product-->
+                    <div class="col-md-5 text-center text-md-start">
+                        <h3>
+                            <div class="product_brand fw-light">Adidas</div>
+                          </h3>
+                        <h4>
+                          <div class="product_name">Adicolor Contempo Crew Sweatshirt</div>
+                        </h4>
+                        <h4>
+                            <div class="product_price">$100.00</div>
+                          </h4>
+                        <p class="product description">Black top. The most popular thrift item of all time</p>
+                        <!-- <a href = "#" class = "btn btn-dark text-light btn-block">Add to Cart</a> -->
+
+                        <div id="liveAlertPlaceholder"></div>
+                          <button type="button" class="btn btn-dark text-light" id="liveAlertBtn">Add to Cart</button>
+                      </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- tabs for more information-->
+    <section id = "moreinfo">
+        <div class="container-md">
+            <div class="row my-5 g-5 justify-content-around align-items-center">
+                <!--details of product -->
+                <div class="accordion" id = "information">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id= "heading-1">
+                        <button class = "accordion-button fw-bold" type = "button" data-bs-toggle = "collapse"
+                        data-bs-target = "#desc" aria-expanded = "true"
+                        aria-controls = "#desc">Product Description</button>
+                        </h2>
+                        <div id="desc" class = "accordion-collapse collapse" aria-labelledby = "heading-1" data-bs-parent="#more-info">
+                        <div class="accordion-body">
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing eli t. Sapiente fugiat nostrum saepe! Libero rerum animi error minima facilis dolorem asperiores architecto ratione? Alias ullam nesciunt quaerat facilis assumenda distinctio maiores?</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ab perspiciatis, reprehenderit vel fugiat aliquam animi rerum ex ipsum. Accusantium recusandae quidem amet perferendis at ullam ut consectetur tenetur optio.</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id= "heading-2">
+                        <button class = "accordion-button fw-bold" type = "button" data-bs-toggle = "collapse"
+                        data-bs-target = "#sizing" aria-expanded = "true"
+                        aria-controls = "#sizing">Product Sizing</button>
+                        </h2>
+                        <div id="sizing" class = "accordion-collapse collapse" aria-labelledby = "heading-2" data-bs-parent="#more-info">
+                        <div class="accordion-body">
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing eli t. Sapiente fugiat nostrum saepe! Libero rerum animi error minima facilis dolorem asperiores architecto ratione? Alias ullam nesciunt quaerat facilis assumenda distinctio maiores?</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ab perspiciatis, reprehenderit vel fugiat aliquam animi rerum ex ipsum. Accusantium recusandae quidem amet perferendis at ullam ut consectetur tenetur optio.</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id= "heading-3">
+                        <button class = "accordion-button fw-bold" type = "button" data-bs-toggle = "collapse"
+                        data-bs-target = "#Shipping" aria-expanded = "true"
+                        aria-controls = "#Shipping">Product Description</button>
+                        </h2>
+                        <div id="Shipping" class = "accordion-collapse collapse" aria-labelledby = "heading-3" data-bs-parent="#more-info">
+                        <div class="accordion-body">
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing eli t. Sapiente fugiat nostrum saepe! Libero rerum animi error minima facilis dolorem asperiores architecto ratione? Alias ullam nesciunt quaerat facilis assumenda distinctio maiores?</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ab perspiciatis, reprehenderit vel fugiat aliquam animi rerum ex ipsum. Accusantium recusandae quidem amet perferendis at ullam ut consectetur tenetur optio.</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- item name, price-->
+    <!-- item size available-->
+    <!-- add to cart from the size-->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
