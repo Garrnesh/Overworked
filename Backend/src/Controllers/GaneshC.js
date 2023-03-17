@@ -155,16 +155,30 @@ const getOrderItems = async (req,res) => {
 const getOrderItemByID = async (orderitem_id) => {
     const order_item = await Orderitems.doc(orderitem_id).get();
     if(order_item.exists){
-        return order_item.data();
+        return order_item;
     }else{
         throw new Error("Order Item does not exist");
     }
 };
 
+const checkOrderItemID = async (orderitem_id) => {
+    try{
+        const orderitem = await Orderitems.doc(orderitem_id).get();
+        if(orderitem.exists){
+            throw new Error("Order item with order ID already exists");
+        }
+    }catch(err){
+        throw new Error("Order item with order ID already exists")
+    }
+}
+
 const addOrderItem = async (orderitem_id, order_id, product_id, quantity) => {
     const order_item = Orderitems.doc(orderitem_id);
     try{
-        await order_item.set(order_id, product_id, quantity);
+        await order_item.set({
+            order_id: order_id, 
+            product_id: product_id, 
+            quantity: quantity});
     }catch(err){
         throw new Error("Unable to create new order item");
     }
@@ -180,8 +194,8 @@ const removeOrderItem = async (orderitem_id) => {
 
 const getOrderItemByOrderId = async(order_id) => {
     const order_item = await Orderitems.where('order_id', '==', order_id).get();
-    if(order_item.exists){
-        return order_item.data();
+    if(order_item.size>0){
+        return order_item;
     }else{
         throw new Error("No order item with stated Order item ID");
     }
@@ -213,6 +227,7 @@ module.exports = {
     getOrderByBuyerId,
     getOrderItems,
     getOrderItemByID,
+    checkOrderItemID,
     addOrderItem,
     removeOrderItem,
     getOrderItemByOrderId,
