@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--import bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!-- finish-->
+    <title>Login Page</title>
+
+    <!-- <link rel = "stylesheet" href = "css/style.css"> -->
+</head>
+<body>
+  <!-- display brand name in the middle-->
+    <div class="text-center my-5">
+      <img src= "logo/thrfit it crop.png" class = "img-responsive" height = "72">
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+          <form id = "loginForm">
+            <div class="form-group">
+            <!--input username-->
+              <label for="username" class="form-label"></label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-person-circle"></i>
+                  </span>
+                <input type="text" class = "form-control" id = "username" placeholder = "Enter username" required validationMessage ="Please enter your username">
+                </div>
+            </div>  
+        
+          <div class="form-group">
+          <!--input password-->
+            <label for="password" class="form-label"></label>
+            <div class="mb-2 input-group">
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+            <input type="password" class = "form-control" id = "password" placeholder = "Enter password" required validationMessage ="Please enter your password">
+            </div>
+          </div>
+
+          <!-- remember me and forgot password-->  
+          <div class="d-flex justify-content-between align-items-center">
+            <!-- Checkbox -->
+            <div class="form-check mb-4">
+              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+              <label class="form-check-label" for="form2Example3">
+                Remember me
+              </label>
+            </div>
+            <a href="#!" class="text-body">Forgot password?</a>
+          </div>
+          <!-- login button-->
+          <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-outline-success btn-lg btn-block" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">Login</button>
+          </div>
+
+          <!-- alternative login connection -->
+          <div class="text-lg-center">
+            <p class="small mt-2 pt-1 mb-0">or</p>
+          </div>
+
+          <!-- login with other acct types-->
+          <div class="text-center mb-3">
+            <button type="button" class="btn btn-floating mx-1">
+              <i class="bi bi-facebook"></i>
+            </button>
+
+            <button type="button" class="btn btn-floating mx-1">
+              <i class="bi bi-google"></i>
+            </button>
+
+            <button type="button" class="btn btn-floating mx-1">
+              <i class="bi bi-apple"></i></i>
+            </button>
+          </div>
+        </form>
+          <div class="text-lg-center mt-4 pt-2">
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="GENERAL_chooseidentity.html"
+                class="link-danger">Register</a></p>
+          </div>
+      </div>
+    </div>
+
+      
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+      </script>
+      <!-- ENSURE THAT TEXT ALL FILLED BEFORE SUBMITTING-->
+      <script>
+        const form = document.querySelector('#loginForm');
+        
+        form.addEventListener('submit', (event) => {
+          event.preventDefault(); // prevent form from submitting
+          
+          if (form.checkValidity()) {
+            // if form is valid, redirect user to next page
+            window.location.href = 'BUYER_frontpage.html';
+          } else {
+            // if form is invalid, display error messages
+            form.reportValidity();
+          }
+        });
+      </script>
+    </body>
+</html>
