@@ -38,13 +38,15 @@
             </ul>
           </div>
           <!-- search current listings bar-->
-          <form class="d-flex align-items-center flex-nowrap mr-2">
+          <!-- include javascript tag here so that can direct to the products page-->
+          <a href="BUYER_productsearch.html">
+            <form class="d-flex align-items-center flex-nowrap mr-2">
             <button class="btn" type="submit">
                 <i class="bi bi-search" style = "font-size: 24px"></i>
             </button>
-            <input class="form-control" type="search" placeholder="Search current listings" aria-label="Search">
+            <input class="searchbar" type="text" placeholder="Search current listings" aria-label="Search">
           </form>
-          <!-- BUSINESS SETTINGS-->
+        </a>
           <a href="loginform.html">
           <button class="btn"><i class="bi bi-person-circle" style = "font-size: 24px"></i></i></button>
           </a>
@@ -52,9 +54,98 @@
       </nav>
 
 
+      <!-- insert new orders-->
+      <section id = "shoppingcart" class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+      
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-normal mb-0 text-black">Current Orders</h3>
 
+                <!-- Sort Orders-->
+                <div class="dropdown mt-3">
+                  <button class = "btn dropdown-toggle" type="button" id = "book-dropdown" data-bs-toggle = "dropdown">Sort by:</button>
+                  <ul class="dropdown-menu" aria-labelledby="book-dropdown">
+                    <li><a href = "#" class = "dropdown-item">Recent</a></li>
+                    <li><a class = "dropdown-item" href = "#">Alphabetical</a></li>
+                    <li><a href = "#" class = "dropdown-item">Urgent</a></li>
+                  </ul>
+                  </div>
+              </div>
+            
+            <!--FIRST CARD-->
+              <div class="card rounded-3 mb-4">
+                <div class="card-body p-4">
+                  <div class="row d-flex justify-content-between align-items-center">
 
+                    <!-- add image of picture-->
+                    <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
+                      <img
+                        src="clothes_db/sweatshirt/polo-1.jpg"
+                        class="img-fluid rounded-3" alt="Adicolor">
+                    </div>
+                    <!-- name of the shirt, size and color-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <p class="lead fw-bold mb-1">Adicolor Contempo Crew Sweatshirt</p>
+                      <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Black</p>
+                      <p><span class="text-muted">Quantity: </span>1</p>
+                    </div>
+                    <!-- Print Sticker to paste on order-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <button class="btn" type="submit">
+                        <p class="lead fw-bold mb-1">Print Order Info</p>
+                        <i class="bi bi-printer-fill" style = "font-size: 24px"></i>
+                    </button>
+                    </div>
+                    <!-- button to process the order and for more information-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <button class="btn" type="submit">
+                        <p class="lead fw-bold mb-1">View Order Info</p>
+                        <i class="bi bi-arrow-right"style = "font-size: 24px"></i>
+                    </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- SECOND card--> 
+              <div class="card rounded-3 mb-4">
+                <div class="card-body p-4">
+                  <div class="row d-flex justify-content-between align-items-center">
 
+                    <!-- add image of picture-->
+                    <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
+                      <img
+                        src="clothes_db/sweatshirt/billie-eilish-hoodie-1.png"
+                        class="img-fluid rounded-3" alt="Adicolor">
+                    </div>
+                    <!-- name of the shirt, size and color-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <p class="lead fw-bold mb-1">Nike x Billie Ellish Collection</p>
+                      <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Black</p>
+                      <p><span class="text-muted">Quantity: </span>1</p>
+                    </div>
+                    <!-- Print Sticker to paste on order-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <button class="btn" type="submit">
+                        <p class="lead fw-bold mb-1">Print Order Info</p>
+                        <i class="bi bi-printer-fill" style = "font-size: 24px"></i>
+                    </button>
+                    </div>
+                    <!-- button to process the order and for more information-->
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <button class="btn" type="submit">
+                        <p class="lead fw-bold mb-1">View Order Info</p>
+                        <i class="bi bi-arrow-right"style = "font-size: 24px"></i>
+                    </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
       </script>
