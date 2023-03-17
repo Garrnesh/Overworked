@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Cart</title>
 </head>
 <body>
@@ -26,13 +27,13 @@
             <div class="collapse navbar-collapse justify-content-front align-center" id="main-nav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link text-light py-0" href="BUYER_frontpage.html" style = "font-size : 24px">Home</a>
+                  <a class="nav-link text-dark py-0" href="BUYER_frontpage.html" style = "font-size : 24px">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light py-0" href="#thriftstores" style = "font-size : 24px">Find Thrift Shops</a>
+                  <a class="nav-link text-dark py-0" href="BUYER_BrowseThriftStores.html" style = "font-size : 24px">Find Thrift Shops</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light py-0" href="#donationpts" style = "font-size : 24px">Find Donation Points</a>
+                  <a class="nav-link text-dark py-0" href="BUYER_BrowseDonationPoints.html" style = "font-size : 24px">Find Donation Points</a>
                 </li>
               </ul>
             </div>
@@ -46,7 +47,7 @@
             <!-- add user love clothes-->
             <button class="btn"><i class="bi bi-heart" style = "font-size: 24px"></i></i></button>
             <!-- add user cart-->
-            <a href = "BUYER_usercart.html">
+            <a href = "BUYER_cart.html">
               <button class="btn"><i class="bi bi-bag-dash" style = "font-size: 24px"></i></i></button>
               </a>            
             <!-- login user link to user page-->
@@ -55,23 +56,6 @@
             </a>
           </div>
         </nav>
-        <!-- do not touch above-->
-        <!-- <div class="container-lg">
-            <div class="pt-4 pb-4 text-center">
-              <h2>Cart</h2>
-            </div>
-        </div> -->
-
-        <!-- select all from cart?
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- Checkbox -->
-            <!-- <div class="form-check mb-4 mx-4">
-              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-              <label class="form-check-label fw-bold" for="form2Example3">
-                All
-              </label>
-            </div>
-          </div>  -->
 
           <section id = "shoppingcart" class="h-100" style="background-color: #eee;">
             <div class="container h-100 py-5">
@@ -80,16 +64,24 @@
           
                   <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
-                    <div>
+                    <!-- <div>
                       <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
                             class="fas fa-angle-down mt-1"></i></a></p>
-                    </div>
+                    </div> -->
                   </div>
+                <form>
                 <!--FIRST CARD-->
                   <div class="card rounded-3 mb-4">
                     <div class="card-body p-4">
                       <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-md-2 col-lg-2 col-xl-2">
+                        <!-- add checkbox to add to checkout-->
+                        <div class="form-check col-md-1 col-lg-1 col-xl-1">
+                          <label class="btn" for="addtocheckout">
+                            <input name = "cartoptions"  type="checkbox" id="addtocheckout1" />
+                          </label>
+                        </div>
+                        <!-- add image of picture-->
+                        <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
                           <img
                             src="clothes_db/sweatshirt/polo-1.jpg"
                             class="img-fluid rounded-3" alt="Adicolor">
@@ -120,19 +112,29 @@
                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                           <h5 class="mb-0">$499.00</h5>
                         </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                          <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                        <!-- button to delete the order-->
+                        <div class="col-md-1 col-lg-1 col-xl-1">
+                          <a href="#!" class="text-danger"><button class = "btn"><i class="bi bi-trash3"></i></button></a>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- second card-->
+                  <!-- SECOND card--> 
                   <div class="card rounded-3 mb-4">
                     <div class="card-body p-4">
                       <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-md-2 col-lg-2 col-xl-2">
+                        <!-- add checkbox to add to checkout-->
+                        <div class="form-check col-md-1 col-lg-1 col-xl-1">
+    
+                            <label class="btn" for="addtocheckout">
+                              <input name = "cartoptions"  type="checkbox" id="addtocheckout2" />
+                            </label>
+                          
+                        </div>
+                        <!-- add image of picture-->
+                        <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
                           <img
-                            src="clothes_db/sweatshirt/newbalance-1.webp"
+                            src="clothes_db/sweatshirt/polo-1.jpg"
                             class="img-fluid rounded-3" alt="Adicolor">
                         </div>
                         <!-- name of the shirt, size and color-->
@@ -161,101 +163,16 @@
                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                           <h5 class="mb-0">$499.00</h5>
                         </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                          <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                        <!-- button to delete the order-->
+                        <div class="col-md-1 col-lg-1 col-xl-1">
+                          <a href="#!" class="text-danger"><button class = "btn"><i class="bi bi-trash3"></i></button></a>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- third card-->
-                  <div class="card rounded-3 mb-4">
-                    <div class="card-body p-4">
-                      <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-md-2 col-lg-2 col-xl-2">
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-xl-3">
-                          <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                          <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <button class="btn btn-link px-2"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                            <i class="fas fa-minus"></i>
-                          </button>
-          
-                          <input id="form1" min="0" name="quantity" value="2" type="number"
-                            class="form-control form-control-sm" />
-          
-                          <button class="btn btn-link px-2"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                            <i class="fas fa-plus"></i>
-                          </button>
-                        </div>
-                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                          <h5 class="mb-0">$499.00</h5>
-                        </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                          <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-          
-                  <div class="card rounded-3 mb-4">
-                    <div class="card-body p-4">
-                      <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-md-2 col-lg-2 col-xl-2">
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-xl-3">
-                          <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                          <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <button class="btn btn-link px-2"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                            <i class="fas fa-minus"></i>
-                          </button>
-          
-                          <input id="form1" min="0" name="quantity" value="2" type="number"
-                            class="form-control form-control-sm" />
-          
-                          <button class="btn btn-link px-2"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                            <i class="fas fa-plus"></i>
-                          </button>
-                        </div>
-                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                          <h5 class="mb-0">$499.00</h5>
-                        </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                          <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-          
-                  <div class="card mb-4">
-                    <div class="card-body p-4 d-flex flex-row">
-                      <div class="form-outline flex-fill">
-                        <input type="text" id="form1" class="form-control form-control-lg" />
-                        <label class="form-label" for="form1">Discount code</label>
-                      </div>
-                      <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
-                    </div>
-                  </div>
-          
-                  <div class="card">
-                    <div class="card-body">
-                      <button type="button" class="btn btn-close-white btn-block btn-lg">Proceed to Pay</button>
-                    </div>
-                  </div>
-          
+              
+                <button type="checkout" class="btn btn-secondary btn-dark btn-block btn-lg col-12" disabled>Add to Checkout</button>
+              </form>
                 </div>
               </div>
             </div>
@@ -263,5 +180,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
       </script>
+
+  <script>
+    const radioButtons = document.querySelectorAll('input[name="cartoptions"]');
+    const submitButton = document.querySelector('button[type="checkout"]');
+    
+    radioButtons.forEach(button => {
+      button.addEventListener('change', () => {
+        if (document.querySelector('input[name="cartoptions"]:checked')) {
+          submitButton.disabled = false;
+        }
+      });
+    });
+  </script>
     </body>
     </html>
