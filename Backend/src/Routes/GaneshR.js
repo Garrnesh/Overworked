@@ -115,7 +115,7 @@ router.get('/order/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const order = await controller.getOrderByID(order_id);
-        res.status(200).json(order);
+        res.status(200).json(order.data());
     }catch(err){
         res.status(404).send("Order not found");
     }

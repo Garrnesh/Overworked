@@ -103,7 +103,7 @@ const getProductByProductType = async(product_type) => {
 const getOrder = async (req,res) => {
     try{
         const order = await Orders.get();
-        res.status(200).json(order);
+        res.status(200).json(order.data());
     }catch(err){
         res.status(500).send(err.message);
     }
