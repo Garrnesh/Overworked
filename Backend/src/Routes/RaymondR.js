@@ -7,7 +7,7 @@ router.get('/payment', controller.getPayments);
 router.get('/payment/:payment_id', async (req,res) => {
     const payment_id = req.params.payment_id;
     try{
-        const payment = await controller.getPaymentsByID(payment_id);
+        const payment = await controller.getPaymentByID(payment_id);
         res.status(200).json(payment);
     }catch(err){
         res.status(404).send("Payment not found");
