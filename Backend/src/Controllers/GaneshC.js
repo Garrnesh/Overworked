@@ -1,5 +1,5 @@
 const { FieldValue } = require("firebase-admin/firestore");
-const { Buyers, Business, Payments, Shops, Products, Listings, Orders, Orderitems } = require("../firebase.js");
+const { Buyers, Business, Payments, Shops, Products, Orders, Orderitems } = require("../firebase.js");
 
 
 //Product_table
