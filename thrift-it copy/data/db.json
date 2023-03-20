@@ -1,0 +1,18 @@
+{
+  "accounts": [
+    {
+      "userName": "Allen",
+      "emailId": "allen@example.com",
+      "mobilenumber": 74877465,
+      "password": "cat87",
+      "id": 1
+    },
+    {
+      "userName": "jon",
+      "emailId": "jon@example.cm",
+      "mobilenumber": "28375376",
+      "password": "help",
+      "id": 2
+    }
+  ]
+}

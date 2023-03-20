@@ -1,0 +1,22 @@
+{
+  "addresses": [
+    {
+      "Name": "Emma",
+      "phoneNumber": "38773467",
+      "pincode": "238879",
+      "txtaddress": "442 Orchard Rd, Orchard Hotel Singapore",
+      "locality": "Orchard",
+      "city": "Singapore",
+      "id": 1
+    },
+    {
+      "Name": "Jack",
+      "phoneNumber": "5458387",
+      "pincode": "374675",
+      "txtaddress": "dkxbqwdbinciqbid iw b",
+      "locality": "cnkskdcm",
+      "city": "wcnidncwkn",
+      "id": 2
+    }
+  ]
+}

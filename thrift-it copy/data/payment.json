@@ -1,0 +1,18 @@
+{
+  "payments": [
+    {
+      "cardNumber": "3267 3458 7572 3573",
+      "nameCard": "Kat Kardashian",
+      "expiryDate": "11/30",
+      "CVV": "347",
+      "id": 2
+    },
+    {
+      "cardNumber": "3764 4387 3938 3879",
+      "nameCard": "Ellen",
+      "expiryDate": "02/34",
+      "CVV": "234",
+      "id": 3
+    }
+  ]
+}
