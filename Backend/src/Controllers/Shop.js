@@ -42,6 +42,19 @@ const getShopByUEN = async (UEN_number) => {
     
 };
 
+const checkShopID = async (shop_id) => {
+    try{
+        const payment = await Shops.doc(shop_id).get();
+        if(shop.exists){
+            throw new Error("Shop with shop id already exists");
+        }
+    }
+    catch(err){
+        throw new Error("Shop with shop id already exists")
+    }
+};
+
+
 
 const addShop = async (shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation) => {
     const shop = Shops.doc(shop_id);
@@ -71,6 +84,7 @@ module.exports = {
     getShopByID,
     getShopByName,
     getShopByUEN,
+    checkShopID,
     addShop,
     removeShop,
 }
