@@ -18,6 +18,8 @@ const Shops = db.collection('Shops');
 const Products = db.collection('Products');
 const Orders = db.collection('Orders');
 const Orderitems = db.collection('OrderItems');
+const Carts = db.collection('Carts');
+const Cartitems = db.collection('Cartitems');
 
 module.exports = {
     authorisation,
@@ -29,4 +31,7 @@ module.exports = {
     Products,
     Orders,
     Orderitems,
+    Carts,
+    Cartitems,
+
 };

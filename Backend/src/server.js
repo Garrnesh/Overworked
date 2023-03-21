@@ -1,6 +1,6 @@
 const express = require("express");
 const router = require("./Routes/GaneshR");
-const UEN_router = require("./Routes/UEN");
+const UEN_router = require("./Controllers/UEN");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
