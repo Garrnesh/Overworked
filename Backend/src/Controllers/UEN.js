@@ -2,7 +2,7 @@ const express = require('Express');
 const UEN_router = express.Router();
 const axios = require('axios');
 
-UEN_router.get('/UEN/:UEN', async (req,res,) => {
+UEN_router.get('/UEN/:UEN', async (req,res) => {
 
     const UEN = req.params.UEN;
 
@@ -10,9 +10,7 @@ UEN_router.get('/UEN/:UEN', async (req,res,) => {
         resource_id: '5ab68aac-91f6-4f39-9b21-698610bdf3f7',
     };
 
-    const UEN_url = 'https://data.gov.sg/api/action/datastore_search' + '?resource_id=' + params.resource_id + '&q=' + UEN;
-
-    const verify_send = {}
+    const UEN_url = 'https://data.gov.sg/api/action/datastore_search' + '?resource_id=' + params.resource_id + '&q=' + UEN; 
 
     try {
         const verify = await axios.get(UEN_url);
