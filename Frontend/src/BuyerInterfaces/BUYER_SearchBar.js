@@ -1,6 +1,6 @@
 
 import SearchBarSection from "./BUYER_SearchBarSection";
-import useFetch from "./useFetch";
+import useFetch from "../useFetch";
 
 const SearchBar = () => {
     const {error, isPending, data: products} = useFetch('http://localhost:8000/products')
