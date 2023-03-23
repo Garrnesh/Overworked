@@ -8,8 +8,8 @@ const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
 
 //Products
-router.get('/product', productC.getProducts);
-router.get('/product/:product_id', async (req,res) => {
+router.get('/products', productC.getProducts);
+router.get('/products/:product_id', async (req,res) => {
     const product_id = req.params.product_id;
     try{
         const product = await productC.getProductByID(product_id);
@@ -19,7 +19,7 @@ router.get('/product/:product_id', async (req,res) => {
     }
 });
 
-router.post('/product', async(req,res) => {
+router.post('/products', async(req,res) => {
     const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
     try{
         await productC.checkProductID(product_id);
@@ -35,7 +35,7 @@ router.post('/product', async(req,res) => {
     }
 });
 
-router.delete('/product/:product_id', async(req,res) => {
+router.delete('/products/:product_id', async(req,res) => {
     const product_id = req.params.product_id;
     try{
         await productC.getProductByID(product_id);
@@ -51,7 +51,7 @@ router.delete('/product/:product_id', async(req,res) => {
     }
 }); 
 
-router.get('/product/Listing/:listing_name', async(req,res) => {
+router.get('/products/Listing/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         const product = await productC.getProductByListingName(listing_name);
@@ -61,7 +61,7 @@ router.get('/product/Listing/:listing_name', async(req,res) => {
     }
 });
 
-router.delete('/product/Listing/:listing_name', async(req,res) => {
+router.delete('/products/Listing/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         await productC.getProductByListingName(listing_name);
@@ -77,7 +77,7 @@ router.delete('/product/Listing/:listing_name', async(req,res) => {
     }
 });
 
-router.get('/product/Listing/:business_id', async(req,res) => {
+router.get('/products/Listing/:business_id', async(req,res) => {
     const business_id = req.params.business_id;
     try{
         const product = await productC.getProductByBusinessID(business_id);
@@ -87,7 +87,7 @@ router.get('/product/Listing/:business_id', async(req,res) => {
     }
 });
 
-router.delete('/product/Listing/:business_id', async(req,res) => {
+router.delete('/products/Listing/:business_id', async(req,res) => {
     const business_id = req.params.business_id;
     try{
         await productC.getProductByBusinessID(business_id);
@@ -103,7 +103,7 @@ router.delete('/product/Listing/:business_id', async(req,res) => {
     }
 });
 
-router.get('/product/listing_id/:product_type', async(req,res) => {
+router.get('/products/listing_id/:product_type', async(req,res) => {
     const { product_type } = req.params.product_type;
     try{
         const product = await productC.getProductByProductType(product_type);
@@ -162,7 +162,7 @@ router.get('/order/buyer_id/:buyer_id', async(req,res) => {
     const buyer_id = req.params.buyer_id;
     try{
         const order = await orderC.getOrderByBuyerId(buyer_id);
-        res.status(200).json(order.data());
+        res.status(200).json(order);
     }catch(err){
         res.status(404).send(err.message);
     }
