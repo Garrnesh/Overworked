@@ -39,7 +39,7 @@ const ProductList = ({ products }) => {
               {/* display products */}
               {/* the first thriftshop is from the usestate thriftshop */}
               {product.map((product) => {
-                const{id, Product_name, Product_price, Product_image, Product_brand} = product;
+                const{id, product_name, product_price, product_image, product_brand} = product;
                 return(
                 <>
                 
@@ -50,9 +50,9 @@ const ProductList = ({ products }) => {
                           <div className = "card-body">
                             {/* <img src = {Product_image} className = "card-img-top"></img> */}
                             <img className="img-fluid rounded-3" style={{ height: "200px", objectFit: 'contain'}}src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTWfawhSeoaZLBlJp7M25-VdNmxy8j8FsVhH1fQar3y4reEvkNfRDalNiCUgmTPO7TxGjXeTQl7MPKiNYhlVah-yS4RN058RrZqdfXZcpPXdZ89vNJOrbxx&usqp=CAE" alt={"Carlie Anglemire"} />
-                            <h6 className = "card-title">{Product_brand}</h6>
-                            <h5 className = "card-title">{Product_name}</h5>
-                            <h5 className = "card-title">${Product_price}</h5>
+                            <h6 className = "card-title">{product_brand}</h6>
+                            <h5 className = "card-title">{product_name}</h5>
+                            <h5 className = "card-title">${product_price}</h5>
                           </div>
                         </div>
                       </Link>

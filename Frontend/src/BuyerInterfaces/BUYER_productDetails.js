@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, error, isPending } = useFetch('http://localhost:8000/products/' + id);
+  console.log(product);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -61,15 +62,15 @@ const ProductDetails = () => {
             {/* <!-- add details of product--> */}
             <div className="col-md-5 text-center text-md-start">
               <h3>
-                <div className="product_brand fw-light">{product.Product_brand }</div>
+                <div className="product_brand fw-light">{product.product_brand }</div>
               </h3>
               <h4>
-                <div className="product_name">{product.Product_name }</div>
+                <div className="product_name">{product.product_name }</div>
               </h4>
               <h4>
-                <div className="product_price">${product.Product_price}</div>
+                <div className="product_price">${product.product_price}</div>
               </h4>
-              <p className="product description">{product.Product_description}</p>
+              <p className="product description">{product.product_description}</p>
 
               {/* // <!-- add button for sizes--> */}
 
