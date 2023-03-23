@@ -20,7 +20,7 @@ const SignUp = () => {
         e.preventDefault();
         const account = { userName, emailId, mobilenumber, password};
         console.log(account);
-        fetch('http://localhost:8000/accounts/', {
+        fetch('http://localhost:8000/api/' + userName + '/', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(account)
@@ -64,7 +64,7 @@ const SignUp = () => {
                         <span className="input-group-text">
                             <Telephone/>
                         </span>
-                        <input type="mobilenumber" className = "form-control" id = "mobilenumber" placeholder = "Enter mobile number" required value={mobilenumber} onChange = {(e) => setMobilenumber(e.target.value)}/>
+                        <input type="number" className = "form-control" id = "mobilenumber" placeholder = "Enter mobile number" required value={mobilenumber} onChange = {(e) => setMobilenumber(e.target.value)}/>
                     </div>
             
                     <label htmlFor = "password" className="form-label"></label>
