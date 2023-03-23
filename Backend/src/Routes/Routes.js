@@ -1,14 +1,18 @@
 const express = require('Express');
 const router = express.Router();
-const controller = require('../Controllers/GaneshC');
-
+const cartC = require('../Controllers/Cart_controller');
+const locationC = require('../Controllers/Location_controller');
+const orderC = require('../Controllers/Order_controller');
+const paymentC = require('../Controllers/Payment_controller');
+const productC = require('../Controllers/Product_controller');
+const shopC = require('../Controllers/Shop_controller');
 
 //Products
-router.get('/product', controller.getProducts);
+router.get('/product', productC.getProducts);
 router.get('/product/:product_id', async (req,res) => {
     const product_id = req.params.product_id;
     try{
-        const product = await controller.getProductByID(product_id);
+        const product = await productC.getProductByID(product_id);
         res.status(200).json(product.data());
     }catch(err){
         res.status(404).send("Product not found");
@@ -18,13 +22,13 @@ router.get('/product/:product_id', async (req,res) => {
 router.post('/product', async(req,res) => {
     const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
     try{
-        await controller.checkProductID(product_id);
+        await productC.checkProductID(product_id);
     }catch(err){
         res.status(500).send("Product already exists");
     }
 
     try{
-        await controller.addProduct(product_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
+        await productC.addProduct(product_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
         res.status(201).send("Product has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -34,13 +38,13 @@ router.post('/product', async(req,res) => {
 router.delete('/product/:product_id', async(req,res) => {
     const product_id = req.params.product_id;
     try{
-        await controller.getProductByID(product_id);
+        await productC.getProductByID(product_id);
     }catch(err){
         res.status(500).send("No such product exists");
     }
 
     try{
-        await controller.removeProduct(product_id);
+        await productC.removeProduct(product_id);
         res.status(200).send("Product has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -50,7 +54,7 @@ router.delete('/product/:product_id', async(req,res) => {
 router.get('/product/Listing/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
-        const product = await controller.getProductByListingName(listing_name);
+        const product = await productC.getProductByListingName(listing_name);
         res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
@@ -60,13 +64,13 @@ router.get('/product/Listing/:listing_name', async(req,res) => {
 router.delete('/product/Listing/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
-        await controller.getProductByListingName(listing_name);
+        await productC.getProductByListingName(listing_name);
     }catch(err){
         res.status(500).send("No such product exists with given listing name");
     }
 
     try{
-        await controller.removeProductByListingName(listing_name);
+        await productC.removeProductByListingName(listing_name);
         res.status(200).send("Product has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -76,7 +80,7 @@ router.delete('/product/Listing/:listing_name', async(req,res) => {
 router.get('/product/Listing/:business_id', async(req,res) => {
     const business_id = req.params.business_id;
     try{
-        const product = await controller.getProductByBusinessID(business_id);
+        const product = await productC.getProductByBusinessID(business_id);
         res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
@@ -86,13 +90,13 @@ router.get('/product/Listing/:business_id', async(req,res) => {
 router.delete('/product/Listing/:business_id', async(req,res) => {
     const business_id = req.params.business_id;
     try{
-        await controller.getProductByBusinessID(business_id);
+        await productC.getProductByBusinessID(business_id);
     }catch(err){
         res.status(500).send("No such product exists with given business ID");
     }
 
     try{
-        await controller.removeProductByBusinessID(business_id);
+        await productC.removeProductByBusinessID(business_id);
         res.status(200).send("Product has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -102,20 +106,20 @@ router.delete('/product/Listing/:business_id', async(req,res) => {
 router.get('/product/listing_id/:product_type', async(req,res) => {
     const { product_type } = req.params.product_type;
     try{
-        const product = await controller.getProductByProductType(product_type);
+        const product = await productC.getProductByProductType(product_type);
         res.status(200).json(product.data());
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-//Orders
 
-router.get('/order', controller.getOrder);
+
+router.get('/order', orderC.getOrder);
 router.get('/order/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
-        const order = await controller.getOrderByID(order_id);
+        const order = await orderC.getOrderByID(order_id);
         res.status(200).json(order.data());
     }catch(err){
         res.status(404).send("Order not found");
@@ -125,13 +129,13 @@ router.get('/order/:order_id', async(req,res) => {
 router.post('/order', async(req,res) => {
     const { order_id, buyer_id, total_price, date, status } = req.body;
     try{
-        await controller.checkOrderID(order_id);
+        await orderC.checkOrderID(order_id);
     }catch(err){
         res.status(500).send("Order already exists");
     }
 
     try{
-        await controller.addOrder(order_id, buyer_id, total_price, date, status);
+        await orderC.addOrder(order_id, buyer_id, total_price, date, status);
         res.status(201).send('Order has been added to database');
     }catch(err){
         res.status(500).send(err.message);
@@ -141,13 +145,13 @@ router.post('/order', async(req,res) => {
 router.delete('/order/:order_id', async(req,res) => {
     const order_id = req.params.order_id;    
     try{
-        await controller.getOrderByID(order_id);
+        await orderC.getOrderByID(order_id);
     }catch(err){
         res.status(500).send("No such order exists");
     }
 
     try{
-        await controller.removeOrder(order_id);
+        await orderC.removeOrder(order_id);
         res.status(200).send("Order has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -157,20 +161,18 @@ router.delete('/order/:order_id', async(req,res) => {
 router.get('/order/buyer_id/:buyer_id', async(req,res) => {
     const buyer_id = req.params.buyer_id;
     try{
-        const order = await controller.getOrderByBuyerId(buyer_id);
+        const order = await orderC.getOrderByBuyerId(buyer_id);
         res.status(200).json(order.data());
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-//Order items
-
-router.get('/orderitem', controller.getOrderItems);
+router.get('/orderitem', orderC.getOrderItems);
 router.get('/orderitem/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
-        const orderitem = await controller.getOrderItemByID(orderitem_id);
+        const orderitem = await orderC.getOrderItemByID(orderitem_id);
         res.status(200).json(orderitem.data());
     }catch(err){
         res.status(404).send("Order item not found");
@@ -180,13 +182,13 @@ router.get('/orderitem/:orderitem_id', async(req,res) => {
 router.post('/orderitem', async(req,res) => {
     const { orderitem_id, order_id, product_id, quantity } = req.body;
     try{
-        await controller.checkOrderItemID(orderitem_id);
+        await orderC.checkOrderItemID(orderitem_id);
     }catch(err){
         res.status(500).send("Order item already exists");
     }
 
     try{
-        await controller.addOrderItem(orderitem_id, order_id, product_id, quantity);
+        await orderC.addOrderItem(orderitem_id, order_id, product_id, quantity);
         res.status(201).send("Order item has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -196,13 +198,13 @@ router.post('/orderitem', async(req,res) => {
 router.delete('/orderitem/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
-        await controller.getOrderItemByID(orderitem_id);
+        await orderC.getOrderItemByID(orderitem_id);
     }catch(err){
         res.status(500).send("No such order item exists");
     }
     
     try{
-        await controller.removeOrderItem(orderitem_id);
+        await orderC.removeOrderItem(orderitem_id);
         res.status(200).send("Order item has been removed")
     }catch(err){
         res.status(500).send(err.message);
@@ -212,7 +214,7 @@ router.delete('/orderitem/:orderitem_id', async(req,res) => {
 router.get('/orderitem/order_id/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
-        const orderitem = await controller.getOrderItemByOrderId(order_id);
+        const orderitem = await orderC.getOrderItemByOrderId(order_id);
         res.status(200).json(orderitem.data());
     }catch(err){
         res.status(404).send(err.message);
@@ -222,28 +224,24 @@ router.get('/orderitem/order_id/:order_id', async(req,res) => {
 router.delete('/orderitem/order_id/:order_id', async(req,res) => {
     const order_id = parseInt(req.params.order_id);
     try{
-        await controller.getOrderItemByOrderId(order_id);
+        await orderC.getOrderItemByOrderId(order_id);
     }catch(err){
         res.status(500).send("No such order item exists");
     }
 
     try{
-        await controller.removeOrderItemByOrderID(order_id);
+        await orderC.removeOrderItemByOrderID(order_id);
         res.status(200).send("Order item has been removed")
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-module.exports = router;
-
-
-//Products
-router.get('/payment', controller.getPayments);
+router.get('/payment', paymentC.getPayments);
 router.get('/payment/:payment_id', async (req,res) => {
     const payment_id = req.params.payment_id;
     try{
-        const payment = await controller.getPaymentByID(payment_id);
+        const payment = await paymentC.getPaymentByID(payment_id);
         res.status(200).json(payment);
     }catch(err){
         res.status(404).send("Payment not found");
@@ -253,13 +251,13 @@ router.get('/payment/:payment_id', async (req,res) => {
 router.post('/payment', async(req,res) => {
     const { payment_id, buyer_id, card_number, name_on_card, exp_date, cvc } = req.body;
     try{
-        await controller.checkPaymentID(payment_id);
+        await paymentC.checkPaymentID(payment_id);
     }catch(err){
         res.status(500).send("Payment already exists");
     }
 
     try{
-        await controller.Payment(payment_id, buyer_id, card_number, name_on_card, exp_date, cvc);
+        await paymentC.Payment(payment_id, buyer_id, card_number, name_on_card, exp_date, cvc);
         res.status(201).send("Payment has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -269,26 +267,24 @@ router.post('/payment', async(req,res) => {
 router.delete('/payment/:payment_id', async(req,res) => {
     const payment_id = req.params.payment_id;
     try{
-        await controller.getPaymentByID(payment_id);
+        await paymentC.getPaymentByID(payment_id);
     }catch(err){
         res.status(500).send("No such payment exists");
     }
 
     try{
-        await controller.removePayment(payment_id);
+        await paymentC.removePayment(payment_id);
         res.status(200).send("Payment has been removed");
     }catch(err){
         res.status(500).send(err.message);
     }
 }); 
 
-
-//Orders
-router.get('/shop', controller.getShops);
+router.get('/shop', shopC.getShops);
 router.get('/shop/:shop_id', async(req,res) => {
     const shop_id = req.params.shop_id;
     try{
-        const shop = await controller.getShopByID(shop_id);
+        const shop = await shopC.getShopByID(shop_id);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send("Shop not found");
@@ -299,13 +295,13 @@ router.post('/shop', async(req,res) => {
     const { shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation
     } = req.body;
     try{
-        await controller.checkShopID(shop_id);
+        await shopC.checkShopID(shop_id);
     }catch(err){
         res.status(500).send("Shop already exists");
     }
 
     try{
-        await controller.addShop(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation);
+        await shopC.addShop(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation);
         res.status(201).send('Shop has been added to database');
     }catch(err){
         res.status(500).send(err.message);
@@ -315,13 +311,13 @@ router.post('/shop', async(req,res) => {
 router.delete('/shop/:shop_id', async(req,res) => {
     const shop_id = req.params.shop_id;    
     try{
-        await controller.getShopByID(shop_id);
+        await shopC.getShopByID(shop_id);
     }catch(err){
         res.status(500).send("No such shop exists");
     }
 
     try{
-        await controller.removeShop(shop_id);
+        await shopC.removeShop(shop_id);
         res.status(200).send("Shop has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -331,7 +327,7 @@ router.delete('/shop/:shop_id', async(req,res) => {
 router.get('/shop/:shop_name/', async(req,res) => {
     const shop_name = req.params.shop_name;
     try{
-        const order = await controller.getShopByName(shop_name);
+        const order = await shopC.getShopByName(shop_name);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
@@ -341,133 +337,133 @@ router.get('/shop/:shop_name/', async(req,res) => {
 router.get('/shop/:UEN_number/', async(req,res) => {
     const UEN_number = req.params.UEN_number;
     try{
-        const order = await controller.getShopByUEN(UEN_number);
+        const order = await shopC.getShopByUEN(UEN_number);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-
-
-
 module.exports = router;
 
-//Nghia's route
-const express = require('express');
-const app = express();
-import { getBuyer, addBuyer, updateBuyer, deleteBuyer } from "./BuyerDBInterface.js";
 
-const port = 3000;
+// module.exports = router;
 
-/**
- * Get a buyer by username
- */
-app.get('/buyers/:username', async (req, res) =>{
-    const username = req.params.username;
-    try {
-        const buyer = await getBuyer(null, username, null);
-        res.status(200).json(buyer);
-    }
-    catch (err) {
-        res.status(404).send(err.message);
-    }
-});
+// //Nghia's route
+// const express = require('express');
+// const app = express();
+// import { getBuyer, addBuyer, updateBuyer, deleteBuyer } from "./BuyerDBInterface.js";
 
-/**
- * Add a new buyer
-*/
-app.post('/buyers', async (req, res) => {
-    const { username, password, display_name, email, phone, address } = req.body;
-    try {
-        await addBuyer(username, password, display_name, email, phone, address);
-        res.status(200).send("/buyers/" + username);
-    }
-    catch (err) {
-        if (err.message == "Invalid username") {
-            res.status(400).send(err.message);
-        }
-        else if (err.message == "Invalid email") {
-            res.status(400).send(err.message);
-        }
-        else if (err.message == "Buyer already exists") {
-            res.status(409).send(err.message);
-        }
-        else {
-            res.status(500).send(err.message);
-        }
-    }
-});
+// const port = 3000;
 
-/**
- * Update a buyer, given buyer_id, if a field is null, use old value
-*/
-app.put('/buyers/:buyer_id', async (req, res) => {
+// /**
+//  * Get a buyer by username
+//  */
+// app.get('/buyers/:username', async (req, res) =>{
+//     const username = req.params.username;
+//     try {
+//         const buyer = await getBuyer(null, username, null);
+//         res.status(200).json(buyer);
+//     }
+//     catch (err) {
+//         res.status(404).send(err.message);
+//     }
+// });
 
-    // Get buyer_id from request
-    const buyer_id = req.params.buyer_id;
+// /**
+//  * Add a new buyer
+// */
+// app.post('/buyers', async (req, res) => {
+//     const { username, password, display_name, email, phone, address } = req.body;
+//     try {
+//         await addBuyer(username, password, display_name, email, phone, address);
+//         res.status(200).send("/buyers/" + username);
+//     }
+//     catch (err) {
+//         if (err.message == "Invalid username") {
+//             res.status(400).send(err.message);
+//         }
+//         else if (err.message == "Invalid email") {
+//             res.status(400).send(err.message);
+//         }
+//         else if (err.message == "Buyer already exists") {
+//             res.status(409).send(err.message);
+//         }
+//         else {
+//             res.status(500).send(err.message);
+//         }
+//     }
+// });
 
-    // Get updated buyer info from request
-    const { username, password, display_name, email, phone, address } = req.body;
+// /**
+//  * Update a buyer, given buyer_id, if a field is null, use old value
+// */
+// app.put('/buyers/:buyer_id', async (req, res) => {
 
-    try {
+//     // Get buyer_id from request
+//     const buyer_id = req.params.buyer_id;
 
-        // Get old buyer info; if a field in request is null, use old value
-        const buyer_old = await getBuyer(buyer_id, null, null);
-        if (username == null) {
-            username = buyer_old.username;
-        }
-        if (password == null) {
-            password = buyer_old.password;
-        }
-        if (display_name == null) {
-            display_name = buyer_old.display_name;
-        }
-        if (email == null) {
-            email = buyer_old.email;
-        }
-        if (phone == null) {
-            phone = buyer_old.phone;
-        }
-        if (address == null) {
-            address = buyer_old.address;
-        }
+//     // Get updated buyer info from request
+//     const { username, password, display_name, email, phone, address } = req.body;
 
-        // Update buyer
-        await updateBuyer(buyer_id, username, password, display_name, email, phone, address);
-        res.status(200).send("Buyer updated");
-    }
-    catch (err) {
-        if (err.message == "Invalid username") {
-            res.status(400).send(err.message);
-        }
-        else if (err.message == "Invalid email") {
-            res.status(400).send(err.message);
-        }
-        else if (err.message == "Buyer does not exist") {
-            res.status(404).send(err.message);
-        }
-        else {
-            res.status(500).send(err.message);
-        }
-    }
-});
+//     try {
 
-/**
- * Delete a buyer
-*/
-app.delete('/buyers/:buyer_id', async (req, res) => {
-    const buyer_id = req.params.buyer_id;
-    try {
-        await deleteBuyer(buyer_id);
-        res.status(200).send("Buyer deleted");
-    }
-    catch (err) {
-        if (err.message == "Buyer does not exist") {
-            res.status(404).send(err.message);
-        }
-        else {
-            res.status(500).send(err.message);
-        }
-    }
-});
+//         // Get old buyer info; if a field in request is null, use old value
+//         const buyer_old = await getBuyer(buyer_id, null, null);
+//         if (username == null) {
+//             username = buyer_old.username;
+//         }
+//         if (password == null) {
+//             password = buyer_old.password;
+//         }
+//         if (display_name == null) {
+//             display_name = buyer_old.display_name;
+//         }
+//         if (email == null) {
+//             email = buyer_old.email;
+//         }
+//         if (phone == null) {
+//             phone = buyer_old.phone;
+//         }
+//         if (address == null) {
+//             address = buyer_old.address;
+//         }
+
+//         // Update buyer
+//         await updateBuyer(buyer_id, username, password, display_name, email, phone, address);
+//         res.status(200).send("Buyer updated");
+//     }
+//     catch (err) {
+//         if (err.message == "Invalid username") {
+//             res.status(400).send(err.message);
+//         }
+//         else if (err.message == "Invalid email") {
+//             res.status(400).send(err.message);
+//         }
+//         else if (err.message == "Buyer does not exist") {
+//             res.status(404).send(err.message);
+//         }
+//         else {
+//             res.status(500).send(err.message);
+//         }
+//     }
+// });
+
+// /**
+//  * Delete a buyer
+// */
+// app.delete('/buyers/:buyer_id', async (req, res) => {
+//     const buyer_id = req.params.buyer_id;
+//     try {
+//         await deleteBuyer(buyer_id);
+//         res.status(200).send("Buyer deleted");
+//     }
+//     catch (err) {
+//         if (err.message == "Buyer does not exist") {
+//             res.status(404).send(err.message);
+//         }
+//         else {
+//             res.status(500).send(err.message);
+//         }
+//     }
+// });

@@ -4,7 +4,8 @@ const { Orders, Orderitems } = require("../firebase.js");
 const getOrder = async (req,res) => {
     try{
         const order = await Orders.get();
-        res.status(200).json(order.data());
+        order = order.docs.map((doc) => doc.data());
+        res.status(200).json(order);
     }catch(err){
         res.status(500).send(err.message);
     }
