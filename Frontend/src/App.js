@@ -7,7 +7,7 @@ import Home from './BuyerInterfaces/BUYER_Home';
 import ProductDetails from './BuyerInterfaces/BUYER_productDetails';
 
 //Browse Donation Point
-import SearchBar from "./BuyerInterfaces/BUYER_SearchBarSection";
+import SearchBar from "./BuyerInterfaces/BUYER_SearchBar";
 //Browse Thrift Shops
 import BrowseThriftShops  from './BuyerInterfaces/BUYER_BrowseThriftShops';
 
