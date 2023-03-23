@@ -1,5 +1,5 @@
-import ThriftShopList from "./thriftshopList";
-import useFetch from "./useFetch";
+import ThriftShopList from "./BUYER_thriftshopList";
+import useFetch from "../useFetch";
 
 const BrowseThriftShops = () => {
     const {error, isPending, data: thriftshops} = useFetch('http://localhost:8000/thriftshops')

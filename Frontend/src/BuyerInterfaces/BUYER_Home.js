@@ -1,5 +1,5 @@
-import ProductList from "./productList";
-import useFetch from "./useFetch";
+import ProductList from "./BUYER_productList";
+import useFetch from "../useFetch";
 
 const Home = () => {
     const {error, isPending, data: products} = useFetch('http://localhost:8000/products')

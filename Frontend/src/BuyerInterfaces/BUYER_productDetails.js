@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "./useFetch";
+import useFetch from "../useFetch";
 import Carousel from 'react-bootstrap/Carousel';
 import Form from 'react-bootstrap/Form';
 

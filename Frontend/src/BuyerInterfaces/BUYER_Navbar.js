@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import logo from './logo.png';
+import logo from '../logo.png';
 import { BsFillCartFill } from "react-icons/bs";
 import { BsPersonCircle } from "react-icons/bs";
 import SearchBarSection from './BUYER_SearchBarSection';

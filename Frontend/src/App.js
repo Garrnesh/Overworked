@@ -1,20 +1,19 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 //navigation bar
-import Navibar from './BUYER_Navbar';
+import Navibar from './BuyerInterfaces/BUYER_Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // Home Page that displays random clothes 
-import Home from './BUYER_Home';
-import ProductDetails from './BUYER_productDetails';
+import Home from './BuyerInterfaces/BUYER_Home';
+import ProductDetails from './BuyerInterfaces/BUYER_productDetails';
 
 //Browse Donation Point
-import BrowseDonationPoints from './BUYER_BrowseDonationPoints';
-import DPDetails from './dpDetails';
-import SearchBar from "./BUYER_SearchBar";
+import SearchBar from "./BuyerInterfaces/BUYER_SearchBarSection";
 //Browse Thrift Shops
-import BrowseThriftShops from './BUYER_BrowseThriftShops';
-import TSDetails from './thriftShopDetails';
+import BrowseThriftShops  from './BuyerInterfaces/BUYER_BrowseThriftShops';
 
-import SearchBarSection from "./BUYER_SearchBarSection";
+import TSDetails from './BuyerInterfaces/BUYER_thriftshopDetails';
+import SearchBarSection from './BuyerInterfaces/BUYER_SearchBarSection';
+
 function App() {
   return (
     <Router>
