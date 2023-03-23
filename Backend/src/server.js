@@ -1,13 +1,13 @@
 const express = require("express");
-const router = require("./Routes/GaneshR");
-const UEN_router = require("./Controllers/UEN");
+const router = require("./Routes/Routes");
+const UEN_router = require("./Controllers/UEN_controller");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use('/api', router);
-app.use('/api', UEN_router);
+app.use(router);
+app.use(UEN_router);
 
 
 // app.use('/', (req,res,next) => {

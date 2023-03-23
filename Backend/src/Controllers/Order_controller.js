@@ -3,8 +3,9 @@ const { Orders, Orderitems } = require("../firebase.js");
 
 const getOrder = async (req,res) => {
     try{
-        const order = await Orders.get();
-        res.status(200).json(order.data());
+        const order_coll = await Orders.get();
+        const order = order_coll.docs.map((doc) => doc.data());
+        res.status(200).json(order);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -52,8 +53,9 @@ const removeOrder = async (order_id) => {
 };
 
 const getOrderByBuyerId = async(buyer_id) => {
-    const order = await Orders.where('buyer_id', '==', buyer_id).get();
-    if(order.size>0){
+    const order_coll = await Orders.where('buyer_id', '==', buyer_id).get();
+    const order = order_coll.docs.map((doc) => doc.data());
+    if(order.length>0){
         return order;
     }else{
         throw new Error("No order with stated buyer ID");

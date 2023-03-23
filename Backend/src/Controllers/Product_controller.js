@@ -3,8 +3,9 @@ const { Products } = require("../firebase.js");
 
 const getProducts = async (req,res) => {
     try{
-        const product = await Products.get();
-        res.status(200).json(product.data());
+        const product_coll = await Products.get();
+        const product = product_coll.docs.map((doc) => doc.data());
+        res.status(200).json(product);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -30,7 +31,7 @@ const checkProductID = async (product_id) => {
     }
 };
 
-const addProduct = async (product_id, product_image, product_description, product_brand, product_size, business_id, listing_name) => {
+const addProduct = async (product_id, product_image, product_description, product_brand, product_size) => {
     const product = Products.doc(product_id);
     try{
         await product.set({
@@ -38,9 +39,9 @@ const addProduct = async (product_id, product_image, product_description, produc
             product_description: product_description, 
             product_brand: product_brand, 
             product_size: product_size});
-        await product.collection('Listing').doc.set({
-            business_id: business_id, 
-            listing_name: listing_name});
+        // await product.collection('Listing').doc.set({
+        //     business_id: business_id, 
+        //     listing_name: listing_name});
     }catch(err){
         throw new Error("Unable to create new product");
     }
