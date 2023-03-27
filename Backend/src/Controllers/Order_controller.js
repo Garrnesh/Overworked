@@ -31,11 +31,11 @@ const checkOrderID = async (order_id) => {
     }
 };
 
-const addOrder = async (order_id, buyer_id, total_price, date, status) => {
+const addOrder = async (order_id, buyer_username, total_price, date, status) => {
     const order = Orders.doc(order_id);
     try{
         await order.set({
-            buyer_id: buyer_id, 
+            buyer_username: buyer_username, 
             total_price: total_price, 
             date: date, 
             status: status});
@@ -52,8 +52,8 @@ const removeOrder = async (order_id) => {
     }
 };
 
-const getOrderByBuyerId = async(buyer_id) => {
-    const order_coll = await Orders.where('buyer_id', '==', buyer_id).get();
+const getOrderByBuyerUsername = async(buyer_username) => {
+    const order_coll = await Orders.where('buyer_username', '==', buyer_username).get();
     const order = order_coll.docs.map((doc) => doc.data());
     if(order.length>0){
         return order;
@@ -135,7 +135,7 @@ module.exports = {
     checkOrderID,
     addOrder,
     removeOrder,
-    getOrderByBuyerId,
+    getOrderByBuyerUsername,
     getOrderItems,
     getOrderItemByID,
     checkOrderItemID,

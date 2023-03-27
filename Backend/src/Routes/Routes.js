@@ -20,7 +20,7 @@ router.get('/products/:product_id', async (req,res) => {
 });
 
 router.post('/products', async(req,res) => {
-    const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
+    const { product_id, business_username, listing_name, product_image, product_description, product_brand, product_size} = req.body;
     try{
         await productC.checkProductID(product_id);
     }catch(err){
@@ -28,7 +28,7 @@ router.post('/products', async(req,res) => {
     }
 
     try{
-        await productC.addProduct(product_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
+        await productC.addProduct(product_id, business_username, listing_name, product_image, product_description, product_brand, product_size);
         res.status(201).send("Product has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -51,17 +51,17 @@ router.delete('/products/:product_id', async(req,res) => {
     }
 }); 
 
-router.get('/products/Listing/:listing_name', async(req,res) => {
+router.get('/products/listing_name/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         const product = await productC.getProductByListingName(listing_name);
-        res.status(200).json(product.data());
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/products/Listing/:listing_name', async(req,res) => {
+router.delete('/products/listing_name/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         await productC.getProductByListingName(listing_name);
@@ -77,26 +77,26 @@ router.delete('/products/Listing/:listing_name', async(req,res) => {
     }
 });
 
-router.get('/products/Listing/:business_id', async(req,res) => {
-    const business_id = req.params.business_id;
+router.get('/products/business_username/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
     try{
-        const product = await productC.getProductByBusinessID(business_id);
-        res.status(200).json(product.data());
+        const product = await productC.getProductByBusinessUsername(business_username);
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/products/Listing/:business_id', async(req,res) => {
-    const business_id = req.params.business_id;
+router.delete('/products/business_username/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
     try{
-        await productC.getProductByBusinessID(business_id);
+        await productC.getProductByBusinessUsername(business_username);
     }catch(err){
         res.status(500).send("No such product exists with given business ID");
     }
 
     try{
-        await productC.removeProductByBusinessID(business_id);
+        await productC.removeProductByBusinessUsername(business_username);
         res.status(200).send("Product has been removed");
     }catch(err){
         res.status(500).send(err.message);
@@ -107,7 +107,7 @@ router.get('/products/listing_id/:product_type', async(req,res) => {
     const { product_type } = req.params.product_type;
     try{
         const product = await productC.getProductByProductType(product_type);
-        res.status(200).json(product.data());
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
@@ -115,8 +115,8 @@ router.get('/products/listing_id/:product_type', async(req,res) => {
 
 
 
-router.get('/order', orderC.getOrder);
-router.get('/order/:order_id', async(req,res) => {
+router.get('/orders', orderC.getOrder);
+router.get('/orders/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const order = await orderC.getOrderByID(order_id);
@@ -126,8 +126,8 @@ router.get('/order/:order_id', async(req,res) => {
     }
 });
 
-router.post('/order', async(req,res) => {
-    const { order_id, buyer_id, total_price, date, status } = req.body;
+router.post('/orders', async(req,res) => {
+    const { order_id, buyer_username, total_price, date, status } = req.body;
     try{
         await orderC.checkOrderID(order_id);
     }catch(err){
@@ -135,14 +135,14 @@ router.post('/order', async(req,res) => {
     }
 
     try{
-        await orderC.addOrder(order_id, buyer_id, total_price, date, status);
+        await orderC.addOrder(order_id, buyer_username, total_price, date, status);
         res.status(201).send('Order has been added to database');
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/order/:order_id', async(req,res) => {
+router.delete('/orders/:order_id', async(req,res) => {
     const order_id = req.params.order_id;    
     try{
         await orderC.getOrderByID(order_id);
@@ -158,18 +158,18 @@ router.delete('/order/:order_id', async(req,res) => {
     }
 });
 
-router.get('/order/buyer_id/:buyer_id', async(req,res) => {
-    const buyer_id = req.params.buyer_id;
+router.get('/orders/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
     try{
-        const order = await orderC.getOrderByBuyerId(buyer_id);
+        const order = await orderC.getOrderByBuyerUsername(buyer_username);
         res.status(200).json(order);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.get('/orderitem', orderC.getOrderItems);
-router.get('/orderitem/:orderitem_id', async(req,res) => {
+router.get('/orderitems', orderC.getOrderItems);
+router.get('/orderitems/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
         const orderitem = await orderC.getOrderItemByID(orderitem_id);
@@ -179,7 +179,7 @@ router.get('/orderitem/:orderitem_id', async(req,res) => {
     }
 });
 
-router.post('/orderitem', async(req,res) => {
+router.post('/orderitems', async(req,res) => {
     const { orderitem_id, order_id, product_id, quantity } = req.body;
     try{
         await orderC.checkOrderItemID(orderitem_id);
@@ -195,7 +195,7 @@ router.post('/orderitem', async(req,res) => {
     }
 });
 
-router.delete('/orderitem/:orderitem_id', async(req,res) => {
+router.delete('/orderitems/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
         await orderC.getOrderItemByID(orderitem_id);
@@ -211,18 +211,18 @@ router.delete('/orderitem/:orderitem_id', async(req,res) => {
     }
 });
 
-router.get('/orderitem/order_id/:order_id', async(req,res) => {
+router.get('/orderitems/order_id/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const orderitem = await orderC.getOrderItemByOrderId(order_id);
-        res.status(200).json(orderitem.data());
+        res.status(200).json(orderitem);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/orderitem/order_id/:order_id', async(req,res) => {
-    const order_id = parseInt(req.params.order_id);
+router.delete('/orderitems/order_id/:order_id', async(req,res) => {
+    const order_id = req.params.order_id;
     try{
         await orderC.getOrderItemByOrderId(order_id);
     }catch(err){
@@ -237,19 +237,19 @@ router.delete('/orderitem/order_id/:order_id', async(req,res) => {
     }
 });
 
-router.get('/payment', paymentC.getPayments);
-router.get('/payment/:payment_id', async (req,res) => {
+router.get('/payments', paymentC.getPayments);
+router.get('/payments/:payment_id', async (req,res) => {
     const payment_id = req.params.payment_id;
     try{
         const payment = await paymentC.getPaymentByID(payment_id);
-        res.status(200).json(payment);
+        res.status(200).json(payment.data());
     }catch(err){
         res.status(404).send("Payment not found");
     }
 });
 
-router.post('/payment', async(req,res) => {
-    const { payment_id, buyer_id, card_number, name_on_card, exp_date, cvc } = req.body;
+router.post('/payments', async(req,res) => {
+    const { payment_id, buyer_username, card_number, name_on_card, exp_date, cvc } = req.body;
     try{
         await paymentC.checkPaymentID(payment_id);
     }catch(err){
@@ -257,14 +257,14 @@ router.post('/payment', async(req,res) => {
     }
 
     try{
-        await paymentC.Payment(payment_id, buyer_id, card_number, name_on_card, exp_date, cvc);
+        await paymentC.Payment(payment_id, buyer_username, card_number, name_on_card, exp_date, cvc);
         res.status(201).send("Payment has been added to database");
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/payment/:payment_id', async(req,res) => {
+router.delete('/payments/:payment_id', async(req,res) => {
     const payment_id = req.params.payment_id;
     try{
         await paymentC.getPaymentByID(payment_id);
@@ -278,66 +278,77 @@ router.delete('/payment/:payment_id', async(req,res) => {
     }catch(err){
         res.status(500).send(err.message);
     }
+});
+
+router.get('/payments/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
+    try{
+        const payment = await paymentC.getPaymentsByBuyerUsername(buyer_username);
+        res.status(200).json(payment);
+    }catch(err){
+        res.status(404).send(err.message);
+    }
 }); 
 
-router.get('/shop', shopC.getShops);
-router.get('/shop/:shop_id', async(req,res) => {
-    const shop_id = req.params.shop_id;
+
+router.get('/shops', shopC.getShops);
+router.get('/shop/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
     try{
-        const shop = await shopC.getShopByID(shop_id);
-        res.status(200).json(shop);
-    }catch(err){
+        const shop = await shopC.getShopByBusinessUsername(business_username);
+        res.status(200).json(shop.data());
+    }catch(err){ 
         res.status(404).send("Shop not found");
     }
 });
 
-router.post('/shop', async(req,res) => {
-    const { shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation
+router.post('/shops', async(req,res) => {
+    const { business_username, shop_name, UEN_number, Shop_description, Shop_address, Donation
     } = req.body;
     try{
-        await shopC.checkShopID(shop_id);
+        await shopC.checkShopID(business_username);
     }catch(err){
         res.status(500).send("Shop already exists");
     }
 
     try{
-        await shopC.addShop(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation);
+        await shopC.addShop( business_username, shop_name, UEN_number, Shop_description, Shop_address, Donation);
         res.status(201).send('Shop has been added to database');
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/shop/:shop_id', async(req,res) => {
-    const shop_id = req.params.shop_id;    
+router.delete('/shops/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;    
     try{
-        await shopC.getShopByID(shop_id);
+        await shopC.getShopByBusinessUsername(business_username);
     }catch(err){
         res.status(500).send("No such shop exists");
     }
 
     try{
-        await shopC.removeShop(shop_id);
+        await shopC.removeShop(business_username);
         res.status(200).send("Shop has been removed");
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.get('/shop/:shop_name/', async(req,res) => {
+router.get('/shops/shop_name/:shop_name', async(req,res) => {
     const shop_name = req.params.shop_name;
     try{
-        const order = await shopC.getShopByName(shop_name);
+        const shop = await shopC.getShopByName(shop_name);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.get('/shop/:UEN_number/', async(req,res) => {
-    const UEN_number = req.params.UEN_number;
+router.get('/shops/:UEN_number', async(req,res) => {
+    const UEN = req.params.UEN_number;
     try{
-        const order = await shopC.getShopByUEN(UEN_number);
+        const shop = await shopC.getShopByUEN(UEN);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
