@@ -21,7 +21,7 @@ const getLocationByBusinessUsername = async (business_username) => {
     }else{
         throw new Error("Location does not exist");
     }
-}
+};
 
 const checkLocation = async (business_username) => {
     try{
@@ -32,19 +32,21 @@ const checkLocation = async (business_username) => {
     }catch(err){
         throw new Error("Order with order id already exists");
     }
-}
+};
 
 const addLocation = async (business_username, postal_code) => {
     const location = Locations.doc(business_username)
     try{
-        const location_data = await axios.get('https://developers.onemap.sg/commonapi/' + postal_code + '?searchVal=revenue&returnGeom=Y&getAddrDetails=Y');
-        const latitude = location_data["results"]["LATITUDE"];
-        const longitude = location_data["results"]["LONGITUDE"];
+        const location_data_obtain = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${postal_code}&returnGeom=Y&getAddrDetails=Y`);
+        const location_data_json = location_data_obtain.data;
+        const location_data = location_data_json["results"][0];
+        const latitude = location_data["LATITUDE"];
+        const longitude = location_data["LONGITUDE"];
         await location.set({
             latitude: latitude,
             longitude: longitude});
     }catch(err){
-        throw new Error("Ubale to add location")
+        throw new Error("Unable to add location")
     }
 };
 
@@ -58,13 +60,13 @@ const removeLocation = async (business_username) => {
 
 const identifyLocation = async (postal_code) => {
     try{
-        const location_data = await axios.get('https://developers.onemap.sg/commonapi/' + postal_code + '?searchVal=revenue&returnGeom=Y&getAddrDetails=Y');
-        const latitude = location_data["results"]["LATITUDE"];
-        const longitude = location_data["results"]["LONGITUDE"];
+        const location_data_obtain = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${postal_code}&returnGeom=Y&getAddrDetails=Y`);
+        const location_data_json = location_data_obtain.data;
+        const location_data = location_data_json["results"][0];
+        const latitude = location_data["LATITUDE"];
+        const longitude = location_data["LONGITUDE"];
         const location = {latitude, longitude};
-        if (location.exists){
-            return location;
-        }
+        return location;
     }catch(err){
         throw new Error("Location cannot be identified")
     }
@@ -80,6 +82,7 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
         
         if (route_type != "pt"){
             const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}`);
+            return route_unfiltered;
         }else{
             const timeValue = FieldValue.serverTimestamp();
             const dateTimeValue = timeValue.toDate(); 
@@ -100,6 +103,7 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
             const formattedDate = dateTimeValue.toLocaleDateString("en-US", formatDate);
             const formattedTime = dateTimeValue.toLocaleTimeString("en-US", formatTime);
             const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
+            return route_unfiltered_pt;
         }
     }catch(err){
         throw new Error("Route cannot be found");

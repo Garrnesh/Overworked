@@ -7,7 +7,7 @@ const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
 
-//Products
+//Products routes
 router.get('/products', productC.getProducts);
 router.get('/products/:product_id', async (req,res) => {
     const product_id = req.params.product_id;
@@ -114,7 +114,7 @@ router.get('/products/listing_id/:product_type', async(req,res) => {
 });
 
 
-
+//Orders routes
 router.get('/orders', orderC.getOrder);
 router.get('/orders/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
@@ -237,6 +237,8 @@ router.delete('/orderitems/order_id/:order_id', async(req,res) => {
     }
 });
 
+
+//Payment routes
 router.get('/payments', paymentC.getPayments);
 router.get('/payments/:payment_id', async (req,res) => {
     const payment_id = req.params.payment_id;
@@ -291,6 +293,7 @@ router.get('/payments/buyer_username/:buyer_username', async(req,res) => {
 }); 
 
 
+//Shop routes
 router.get('/shops', shopC.getShops);
 router.get('/shop/:business_username', async(req,res) => {
     const business_username = req.params.business_username;
@@ -355,10 +358,66 @@ router.get('/shops/:UEN_number', async(req,res) => {
     }
 });
 
+//Location routes
+router.get('/locations', locationC.getLocation);
+
+router.get('/locations/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
+    try{
+        const location = await locationC.getLocationByBusinessUsername(business_username);
+        res.status(200).json(location.data());
+    }catch(err){ 
+        res.status(404).send("Location not found");
+    }
+});
+
+router.post('/locations', async(req,res) => {
+    const { business_username, postal_code } = req.body;
+    try{
+        await locationC.checkLocation(business_username);
+    }catch(err){
+        res.status(500).send("Location already exists");
+    }
+
+    try{
+        await locationC.addLocation( business_username, postal_code);
+        res.status(201).send('Location has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/locations/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;    
+    try{
+        await locationC.getLocationByBusinessUsername(business_username);
+    }catch(err){
+        res.status(500).send("No such location exists");
+    }
+
+    try{
+        await locationC.removeLocation(business_username);
+        res.status(200).send("Location has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/locations/postal_code/:postal_code', async(req,res) => {
+    const postal_code  = JSON.stringify(req.params.postal_code);
+    try{
+        const location = await locationC.identifyLocation(postal_code);
+        console.log(location);
+        res.status(200).json(location);
+    }catch(err){ 
+        res.status(404).send("Location not found");
+    }
+});
+
 module.exports = router;
 
 
-// module.exports = router;
+
 
 // //Nghia's route
 // const express = require('express');
