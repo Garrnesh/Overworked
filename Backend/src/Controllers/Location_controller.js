@@ -7,7 +7,7 @@ const { FieldValue } = require("firebase-admin/firestore");
 const getLocation = async (req,res) => {
     try{
         const location_coll = await Locations.get();
-        const location = location_coll.docs.map((doc) => doc.data());
+        const location = location_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(location);
     }catch(err){
         res.status(500).send(err.message);
@@ -35,7 +35,7 @@ const checkLocation = async (business_username) => {
 };
 
 const addLocation = async (business_username, postal_code) => {
-    const location = Locations.doc(business_username)
+    const location = Locations.doc(business_username);
     try{
         const location_data_obtain = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${postal_code}&returnGeom=Y&getAddrDetails=Y`);
         const location_data_json = location_data_obtain.data;
@@ -74,15 +74,14 @@ const identifyLocation = async (postal_code) => {
 
 const getRoute = async (latitude_person, longitude_person, latitude_business, longitude_business, route_type) => {
     try{
-        // const latitude_person = latitude_person;
-        // const longitude_person = longitude_person;
-        // const latitude_business = latitude_business;
-        // const longitude_business = longitude_business;
         const routeType = route_type;
-        
+        const token = auth.getToken();
+        console.log(token);
         if (route_type != "pt"){
-            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}`);
-            return route_unfiltered;
+            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`);
+            const route_unfiltered_json = route_unfiltered.data;
+            console.log(route_unfiltered_json);
+            return route_unfiltered_json;
         }else{
             const timeValue = FieldValue.serverTimestamp();
             const dateTimeValue = timeValue.toDate(); 
@@ -119,33 +118,4 @@ module.exports = {
     identifyLocation,
     getRoute,
 }
-
-
-
-
-// Location_router.get('/location', async(req,res) => {
-//     try{
-//         const location = await Locations.get();
-//         res.status(200).json(location);
-//     }catch(err){
-//         res.status(404).json("Location not found");
-//     }
-// })
-
-// Location_router.post('/location', async(req,res) => {
-//     const { shop_id, postal_code } = req.body;
-//     try{
-//         const location_data = await axios.get('https://developers.onemap.sg/commonapi/' + postal_code + '?searchVal=revenue&returnGeom=Y&getAddrDetails=Y');
-//         const lat = location_data["results"]["LATITUDE"];
-//         const long = location_data["results"]["LONGITUDE"];
-//         const location = Locations.doc(shop_id);
-//         await location.set({
-//             lat: lat,
-//             long: long,
-//         });
-//     }catch(err){
-//         res.status(500).send(err.message);
-//     }
-// });
-
 

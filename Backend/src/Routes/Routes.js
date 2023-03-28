@@ -414,6 +414,26 @@ router.get('/locations/postal_code/:postal_code', async(req,res) => {
     }
 });
 
+router.post('/locations/routes', async(req,res) => {
+    const { latitude_person, longitude_person, business_username, route_type } = req.body;
+    try{
+        await locationC.getLocationByBusinessUsername(business_username);
+    }catch(err){
+        res.status(404).send("Business not found")
+    }
+
+    try{
+        const business_data = await locationC.getLocationByBusinessUsername(business_username);
+        const business = business_data.data();
+        const latitude_business = business["latitude"];
+        const longitude_business = business["longitude"];
+        const route = await locationC.getRoute(latitude_person, longitude_person, latitude_business, longitude_business, route_type);
+        res.status(200).json(route);
+    }catch(err){
+        res.status(500).send("Route cannot be provided")
+    }
+})
+
 module.exports = router;
 
 
