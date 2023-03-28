@@ -79,7 +79,7 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
         const routeType = route_type;
         
         if (route_type != "pt"){
-            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person,longitude_person}&end=${latitude_business,longitude_business}&routeType=${routeType}&token=${auth}`);
+            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}`);
         }else{
             const timeValue = FieldValue.serverTimestamp();
             const dateTimeValue = timeValue.toDate(); 
@@ -99,7 +99,7 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
             };
             const formattedDate = dateTimeValue.toLocaleDateString("en-US", formatDate);
             const formattedTime = dateTimeValue.toLocaleTimeString("en-US", formatTime);
-            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person,longitude_person}&end=${latitude_business,longitude_business}&routeType=${routeType}&token=${auth}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
+            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
         }
     }catch(err){
         throw new Error("Route cannot be found");
