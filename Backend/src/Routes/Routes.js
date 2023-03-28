@@ -409,7 +409,7 @@ router.get('/locations/postal_code/:postal_code', async(req,res) => {
         const location = await locationC.identifyLocation(postal_code);
         console.log(location);
         res.status(200).json(location);
-    }catch(err){ 
+    }catch(err){
         res.status(404).send("Location not found");
     }
 });
