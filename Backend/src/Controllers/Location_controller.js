@@ -79,15 +79,30 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
         const routeType = route_type;
         
         if (route_type != "pt"){
-            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person, longitude_person}&end=${latitude_business, longitude_business}&routeType=${routeType}&token=${auth}`);
+            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person,longitude_person}&end=${latitude_business,longitude_business}&routeType=${routeType}&token=${auth}`);
         }else{
             const timeValue = FieldValue.serverTimestamp();
-            const dateValue = timeValue.toDate();
-            const dateTimeValue = dateValue.toLocaleString("en-US", { timeZone: "Asia/Singapore" });
-            const route_unfiltered_pt = await axios.get(``)
+            const dateTimeValue = timeValue.toDate(); 
+            const formatDate = { 
+                timeZone: "Asia/Singapore", 
+                year: "numeric", 
+                month: "2-digit", 
+                day: "2-digit" 
+            };
+            const formatTime = { 
+                timeZone: "Asia/Singapore", 
+                hour12: false, 
+                hourCycle: "h23", 
+                hour: "2-digit", 
+                minute: "2-digit", 
+                second: "2-digit" 
+            };
+            const formattedDate = dateTimeValue.toLocaleDateString("en-US", formatDate);
+            const formattedTime = dateTimeValue.toLocaleTimeString("en-US", formatTime);
+            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person,longitude_person}&end=${latitude_business,longitude_business}&routeType=${routeType}&token=${auth}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
         }
     }catch(err){
-        throw new Error("Route cannot be found")
+        throw new Error("Route cannot be found");
     }
 }
 
