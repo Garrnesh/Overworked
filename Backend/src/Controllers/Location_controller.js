@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { Locations } = require("../firebase.js");
-const auth = require("../location_server.js");
+const getToken = require("../location_server.js");
 const { FieldValue } = require("firebase-admin/firestore");
 
 //getLocation
@@ -75,8 +75,8 @@ const identifyLocation = async (postal_code) => {
 const getRoute = async (latitude_person, longitude_person, latitude_business, longitude_business, route_type) => {
     try{
         const routeType = route_type;
-        const token = auth.getToken();
-        console.log(token);
+        // const token = await getToken();
+        // const token = 
         if (route_type != "pt"){
             const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`);
             const route_unfiltered_json = route_unfiltered.data;
@@ -84,7 +84,12 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
             return route_unfiltered_json;
         }else{
             const timeValue = FieldValue.serverTimestamp();
-            const dateTimeValue = timeValue.toDate(); 
+            let dateTimeValue = new Date();
+            // try{
+            //     dateTimeValue = timeValue.toDate(); 
+            // }catch(err){
+            //     console.log(err)
+            // }    
             const formatDate = { 
                 timeZone: "Asia/Singapore", 
                 year: "numeric", 
@@ -94,15 +99,16 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
             const formatTime = { 
                 timeZone: "Asia/Singapore", 
                 hour12: false, 
-                hourCycle: "h23", 
+                hourCycle: "h23",
                 hour: "2-digit", 
                 minute: "2-digit", 
                 second: "2-digit" 
             };
             const formattedDate = dateTimeValue.toLocaleDateString("en-US", formatDate);
             const formattedTime = dateTimeValue.toLocaleTimeString("en-US", formatTime);
-            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${auth}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
-            return route_unfiltered_pt;
+            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
+            const route_unfiltered_json = route_unfiltered_pt.data;
+            return route_unfiltered_json;
         }
     }catch(err){
         throw new Error("Route cannot be found");
