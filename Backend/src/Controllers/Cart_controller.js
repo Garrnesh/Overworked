@@ -53,7 +53,7 @@ const removeCart = async (cart_id) => {
 
 const getCartByBuyerUsername = async(buyer_username) => {
     const cart = await Carts.where('buyer_Id', '==', buyer_username).get();
-    if(cart.size>0){
+    if(cart.length>0){
         return cart;
     }else{
         throw new Error("No cart with stated buyer ID");
@@ -121,7 +121,7 @@ const removeCartItem = async (cartitem_id) => {
 
 const getCartItemByCartId = async(cart_id) => {
     const cartitem = await Cartitems.where('cart_id', '==', cart_id).get();
-    if(cartitem.size>0){
+    if(cartitem.length>0){
         return cartitem;
     }else{
         throw new Error("No order item with stated Cart item ID");

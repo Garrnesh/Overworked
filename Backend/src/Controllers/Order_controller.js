@@ -114,7 +114,7 @@ const removeOrderItem = async (orderitem_id) => {
 
 const getOrderItemByOrderId = async(order_id) => {
     const order_item = await Orderitems.where('order_id', '==', order_id).get();
-    if(order_item.size>0){
+    if(order_item.length>0){
         return order_item;
     }else{
         throw new Error("No order item with stated Order item ID");
