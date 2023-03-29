@@ -358,6 +358,149 @@ router.get('/shops/:UEN_number', async(req,res) => {
     }
 });
 
+
+//Cart routes
+router.get('carts', cartC.getCart);
+
+router.get('/carts/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;
+    try{
+        const cart = await cartC.getCartByID(cart_id);
+        res.status(200).json(cart.cart());
+    }catch(err){ 
+        res.status(404).send("Cart not found");
+    }
+})
+
+router.post('/carts', async(req,res) => {
+    const { cart_id, buyer_username } = req.body;
+    try{
+        await cartC.checkCartID(cart_id);
+    }catch(err){
+        res.status(500).send("Location already exists");
+    }
+
+    try{
+        await cartC.addCart(cart_id, buyer_username);
+        res.status(201).send('Cart has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/carts/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;    
+    try{
+        await cartC.getCartByID(cart_id);
+    }catch(err){
+        res.status(500).send("No such cart exists");
+    }
+
+    try{
+        await cartC.removeCart(cart_id);
+        res.status(200).send("Cart has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/carts/buyer_username/:buyer_username', async(req,res) => {
+    const business_username = req.params.business_username;
+    try{
+        const cart = await cartC.getCartByBuyerUsername(business_username);
+        res.status(200).json(cart.data());
+    }catch(err){ 
+        res.status(404).send("Cart not found");
+    }
+})
+
+router.delete('/carts/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;    
+    try{
+        await cartC.getCartByBuyerUsername(buyer_username);
+    }catch(err){
+        res.status(500).send("No such cart exists");
+    }
+
+    try{
+        await cartC.removeCartByBuyerUsername(buyer_username);
+        res.status(200).send("Cart has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('cartitems', cartC.getCartItems);
+
+router.get('/cartitems/:cartitem_id', async(req,res) => {
+    const cartitem_id = req.params.cartitem_id;
+    try{
+        const cartitem = await cartC.getCartItemByID(cartitem_id);
+        res.status(200).json(cartitem.data());
+    }catch(err){ 
+        res.status(404).send("Cart item not found");
+    }
+})
+
+router.post('/cartitems', async(req,res) => {
+    const { cartitem_id, cart_id, product_id, quantity } = req.body;
+    try{
+        await cartC.checkCartItemID(cartitem_id);
+    }catch(err){
+        res.status(500).send("Cart item already exists");
+    }
+
+    try{
+        await cartC.addCartItem(cartitem_id, cart_id, product_id, quantity);
+        res.status(201).send('Cart item has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/cartitems/:cartitem_id', async(req,res) => {
+    const cartitem_id = req.params.cartitem_id;    
+    try{
+        await cartC.getCartItemByID(cartitem_id);
+    }catch(err){
+        res.status(500).send("No such cart item exists");
+    }
+
+    try{
+        await cartC.removeCartItem(cartitem_id);
+        res.status(200).send("Cart item has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/cartitems/cart_id/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;
+    try{
+        const cart = await cartC.getCartItemByCartId(cart_id);
+        res.status(200).json(cart.data());
+    }catch(err){ 
+        res.status(404).send("Cart item not found");
+    }
+})
+
+router.delete('/cartitems/cart_id/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;    
+    try{
+        await cartC.getCartItemByCartId(cart_id);
+    }catch(err){
+        res.status(500).send("No such cart item exists");
+    }
+
+    try{
+        await cartC.removeCartItemByCartID(cart_id);
+        res.status(200).send("Cart item has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+
 //Location routes
 router.get('/locations', locationC.getLocation);
 

@@ -26,6 +26,3 @@ async function getToken() {
 }
 
 module.exports = getToken;
-
-
-

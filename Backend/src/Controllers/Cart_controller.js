@@ -32,12 +32,12 @@ const checkCartID = async (cart_id) => {
     }
 };
 
-const addCart = async (cart_id, buyer_id, status) => {
+const addCart = async (cart_id, buyer_username) => {
     const cart = Carts.doc(cart_id);
     try{
         await cart.set({
-            buyer_id: buyer_id,
-            status: status});
+            buyer_username: buyer_username,
+        });
     }catch(err){
         throw new Error("Unable to create new cart");
     }
@@ -45,14 +45,14 @@ const addCart = async (cart_id, buyer_id, status) => {
 
 const removeCart = async (cart_id) => {
     try{
-        await Orders.doc(order_id).delete();
+        await Carts.doc(cart_id).delete();
     }catch(err){
         throw new Error("Unable to delete order");
     }
 };
 
-const getCartByBuyerID = async(buyer_id) => {
-    const cart = await Carts.where('buyer_Id', '==', buyer_id).get();
+const getCartByBuyerUsername = async(buyer_username) => {
+    const cart = await Carts.where('buyer_Id', '==', buyer_username).get();
     if(cart.size>0){
         return cart;
     }else{
@@ -60,9 +60,9 @@ const getCartByBuyerID = async(buyer_id) => {
     }
 }
 
-const removeCartByBuyerID = async(buyer_id) => {
+const removeCartByBuyerUsername = async(buyer_username) => {
     try{
-        await Orders.where("buyer_id", "==", buyer_id).delete();
+        await Orders.where("buyer_username", "==", buyer_username).delete();
     }catch(err){
         throw new Error("Unable to delete cart");
     }
@@ -142,8 +142,8 @@ module.exports = {
     checkCartID,
     addCart,
     removeCart,
-    getCartByBuyerID,
-    removeCartByBuyerID,
+    getCartByBuyerUsername,
+    removeCartByBuyerUsername,
     getCartItems,
     getCartItemByID,
     checkCartItemID,
