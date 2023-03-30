@@ -306,7 +306,7 @@ router.get('/shop/:business_username', async(req,res) => {
 });
 
 router.post('/shops', async(req,res) => {
-    const { business_username, shop_name, UEN_number, Shop_description, Shop_address, Donation
+    const { business_username, shop_name, UEN_number, shop_description, Shop_address, donation
     } = req.body;
     try{
         await shopC.checkShopID(business_username);
@@ -315,7 +315,7 @@ router.post('/shops', async(req,res) => {
     }
 
     try{
-        await shopC.addShop( business_username, shop_name, UEN_number, Shop_description, Shop_address, Donation);
+        await shopC.addShop( business_username, shop_name, UEN_number, shop_description, Shop_address, donation);
         res.status(201).send('Shop has been added to database');
     }catch(err){
         res.status(500).send(err.message);

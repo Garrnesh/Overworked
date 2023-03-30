@@ -4,7 +4,7 @@ const { Shops } = require("../firebase.js");
 const getShops = async (req,res) => { 
     try{
         const shop_coll = await Shops.get();
-        const shop = shop_coll.docs.map((doc) => doc.data());
+        const shop = shop_coll.docs.map((doc) => doc.data()); //Come back and edit this
         res.status(200).json(shop);
     }catch(err){
         res.status(500).send(err.message);
@@ -33,15 +33,15 @@ const checkShopID = async (busines_username) => {
     }
 };
 
-const addShop = async (business_username, shop_name, UEN_number, Shop_description, Shop_address, Donation) => {
+const addShop = async (business_username, shop_name, UEN_number, shop_description, Shop_address, donation) => {
     const shop = Shops.doc(business_username);
     try{
         await shop.set({
             shop_name: shop_name,
             UEN_number: UEN_number,
-            Shop_description: Shop_description,
+            shop_description: shop_description,
             Shop_address: Shop_address,
-            Donation: Donation});
+            donation: donation});
     }catch(err){
         throw new Error("Unable to create new shop method");
     } 
