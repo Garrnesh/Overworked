@@ -4,7 +4,8 @@ const { Shops } = require("../firebase.js");
 const getShops = async (req,res) => { 
     try{
         const shop_coll = await Shops.get();
-        const shop = shop_coll.docs.map((doc) => doc.data()); //Come back and edit this
+        const shop = shop_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        // const shop = shop_coll.docs.map((doc) => doc.data());
         res.status(200).json(shop);
     }catch(err){
         res.status(500).send(err.message);
@@ -57,7 +58,7 @@ const removeShop = async (busines_username) => {
 
 const getShopByName = async (shop_name) => { 
     const shop_coll = await Shops.where('shop_name', '==', shop_name).get();
-    const shop = shop_coll.map((doc) => doc.sata());
+    const shop = shop_coll.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(shop.length>0){
         return shop;
     }
@@ -67,7 +68,8 @@ const getShopByName = async (shop_name) => {
 };
 
 const getShopByUEN = async (UEN_number) => { 
-    const shop = await Shops.where('UEN_number', '==', UEN_number).get();
+    const shop_coll = await Shops.where('UEN_number', '==', UEN_number).get();
+    const shop = shop_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(shop.length>0){
         return shop;
     }
