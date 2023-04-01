@@ -104,10 +104,10 @@ router.delete('/products/business_username/:business_username', async(req,res) =
     }
 });
 
-router.get('/products/listing_id/:product_type', async(req,res) => {
-    const { product_type } = req.params.product_type;
+router.get('/products/category/:category', async(req,res) => {
+    const { category } = req.params.category;
     try{
-        const product = await productC.getProductByProductType(product_type);
+        const product = await productC.getProductByProductType(category);
         res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);

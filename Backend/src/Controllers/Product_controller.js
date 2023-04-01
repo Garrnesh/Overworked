@@ -31,7 +31,7 @@ const checkProductID = async (product_id) => {
     }
 };
 
-const addProduct = async (product_id, business_username, listing_name, product_image, product_description, product_brand, product_size) => {
+const addProduct = async (product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity) => { //Come update adding the quantity
     const product = Products.doc(product_id);
     try{
         await product.set({
