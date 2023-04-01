@@ -111,6 +111,17 @@ const addCartItem = async (cartitem_id, cart_id, product_id, quantity) => {
     }
 };
 
+const updateCartItem = async (cartitem_id, quantity) => {
+    const cartitem = Cartitems.doc(cartitem_id);
+    try {
+        await cartitem.update({
+            quantity: quantity
+        });
+    } catch (err) {
+        throw new Error("Unable to update Cart item");
+    }
+};
+
 const removeCartItem = async (cartitem_id) => {
     try{
         await Cartitems.doc(cartitem_id).delete();
@@ -148,6 +159,7 @@ module.exports = {
     getCartItemByID,
     checkCartItemID,
     addCartItem,
+    updateCartItem,
     removeCartItem,
     getCartItemByCartId,
     removeCartItemByCartID,
