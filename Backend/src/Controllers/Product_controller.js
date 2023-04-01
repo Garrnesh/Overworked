@@ -4,7 +4,7 @@ const { Products } = require("../firebase.js");
 const getProducts = async (req,res) => {
     try{
         const product_coll = await Products.get();
-        const product = product_coll.docs.map((doc) => doc.data());
+        const product = product_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(product);
     }catch(err){
         res.status(500).send(err.message);
@@ -35,12 +35,16 @@ const addProduct = async (product_id, product_image, product_description, produc
     const product = Products.doc(product_id);
     try{
         await product.set({
+            product_image: product_image,
+            product_description: product_description,
+            product_brand: product_brand,
+            listing_name: listing_name, 
+            product_price: product_price,
+            product_size: product_size,
             business_username: business_username,
-            listing_name: listing_name,
-            product_image: product_image, 
-            product_description: product_description, 
-            product_brand: product_brand, 
-            product_size: product_size});
+            category: category,
+            tags: tags,
+            product_quantity: product_quantity,});
     }catch(err){
         throw new Error("Unable to create new product");
     }
@@ -56,7 +60,7 @@ const removeProduct = async (product_id) => {
 
 const getProductByListingName = async(listing_name) => {
     const product_coll = await Products.where('listing_name', '==', listing_name).get();
-    const product = product_coll.docs.map((doc) => doc.data());
+    const product = product_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(product.length>0){
         return product;
     }else{
@@ -74,7 +78,7 @@ const removeProductByListingName = async(listing_name) => {
 
 const getProductByBusinessUsername = async(business_username) => {
     const product_coll = await Products.where('business_username', '==', business_username).get();
-    const product = product_coll.docs.map((doc) => doc.data());
+    const product = product_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(product.length>0){
         return product;
     }else{
@@ -90,9 +94,9 @@ const removeProductByBusinessUsername = async(business_username) => {
     }
 }
 
-const getProductByProductType = async(product_type) => {
-    const product_coll = await Products.where('product_type', '==', product_type).get();
-    const product = product_coll.docs.map((doc) => doc.data());
+const getProductByProductType = async(category) => {
+    const product_coll = await Products.where('category', '==', category).get();
+    const product = product_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(product.length>0){
         return product;
     }else{
