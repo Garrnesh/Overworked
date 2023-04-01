@@ -6,6 +6,7 @@ const orderC = require('../Controllers/Order_controller');
 const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
+const buyerC = require('../Controllers/BuyerProfile_controller');
 
 //Products
 router.get('/products', productC.getProducts);
@@ -341,6 +342,54 @@ router.get('/shop/:UEN_number/', async(req,res) => {
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
+    }
+});
+
+router.get('/buyer/isusernameunique/:username', async(req,res) => {
+    const username = req.params.username;
+    try{
+        if (await buyerC.isUserNameUnique(username)) {
+            res.status(200).send("Username is unique");
+        }
+        else {
+            res.status(409).send("Username is not unique");
+        }
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/buyer', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await buyerC.getBuyerProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.post('/buyer', async(req,res) => {
+    const idToken = req.headers.idtoken;
+    const { userName, phoneNumber } = req.body;
+    try {
+        const response = await buyerC.setBuyerProfile(idToken, userName, phoneNumber);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/buyer', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await buyerC.deleteBuyerProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
     }
 });
 

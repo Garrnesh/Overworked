@@ -7,7 +7,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-const authorisation = admin.auth();
+const auth = admin.auth();
 const db = admin.firestore();
 // const db = getFirestore();
 
@@ -22,7 +22,7 @@ const Carts = db.collection('Carts');
 const Cartitems = db.collection('Cartitems');
 
 module.exports = {
-    authorisation,
+    auth,
     db,
     Buyers,
     Business,

@@ -71,6 +71,7 @@ import AuthStateObserver from './Global/AuthStateObserver';
 import Redirector from './Global/Redirector';
 
 import LoginForm from './Components/LoginForm';
+import SignUp from './Components/SignUp';
 import App from './App';
 import ProtectedRoute from './Components/ProtectedRoute';
 // import Home from './Buyer/pages/Products/BrowseProducts';
@@ -100,7 +101,11 @@ root.render(
 
         <Route path='*' element={<Redirector />} />
 
+        <Route path='/' element={<Redirector />} />
+
         <Route path='/login' element={<LoginForm />} />
+
+        <Route path='/signup' element={<SignUp />} />
 
         <Route path="/" element={<App />}>
           <Route path='/home' element={

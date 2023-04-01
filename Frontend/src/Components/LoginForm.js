@@ -91,9 +91,9 @@ const LoginForm = () => {
         </div>
         <input type="submit" value="Log In" className="login_button" />
       </form>
-      {/* <div className="link_container">
-      <Link to="/signup" className="btn btn-outline-primary mb-2 col-7">New to ThriftIt? Sign up here</Link>
-      </div> */}
+      <div className="link_container">
+        <Link to="/signup" className="btn btn-outline-primary mb-2 col-7">New to ThriftIt? Sign up here</Link>
+      </div>
       {/* <div className="icons">
         <GoogleIcon className="icon" />
         <FacebookIcon className="icon" />

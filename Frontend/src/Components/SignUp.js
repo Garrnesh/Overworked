@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 import { auth } from "../Config/Firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 // import thriftCrop from './thriftCrop.png';
 // import logo from './thriftitlogo.png';
@@ -19,24 +19,52 @@ const SignUp = () => {
     const [mobilenumber, setMobilenumber] = useState('');
     const [password, setPassword] = useState('');
     const [confirmpassword, setCPassword] = useState('');
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const account = { userName, emailId, mobilenumber, password};
         console.log(account);
-        createUserWithEmailAndPassword(auth, emailId, password)
+
+        // Check if username already exists
+        axios.get("http://localhost:8000/buyer/isusernameunique/" + userName)
+            .then((response) => {
+                if (response.status === 200) {
+                    return;
+                }
+                else {
+                    throw new Error("Username already exists");
+                }
+            })
+            .then(() => {
+                return createUserWithEmailAndPassword(auth, emailId, password);
+            })
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+
+                // Make http request to backend to store username and phone number
+                return user.getIdToken(false)
+            })
+            .then((idToken) => {
+                return axios.post(
+                    "http://localhost:8000/buyer",
+                    {   "userName": userName,
+                        "phoneNumber": mobilenumber },
+                    { headers: { 
+                        "Content-Type": "application/json",
+                        "idtoken": idToken } } 
+            )})
+            .then((response) => {
                 navigate("/home");
             })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+            .catch((error) => {
+                console.log(error);
+                setMessage("Error: " + error);
             });
     }
+
   return (
     <div className="signup">
         <div className="text-center my-5">
@@ -94,12 +122,15 @@ const SignUp = () => {
                         <input type="password" className = "form-control" id = "confirmpassword" placeholder = "Re-enter password" required value={confirmpassword} onChange = {(e) => setCPassword(e.target.value)}/>
                     </div>
 
-                    { password==confirmpassword && <button className="d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-success btn-lg btn-block" value = "Signup">
+                    { password===confirmpassword && <button className="d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-success btn-lg btn-block" value = "Signup">
                         Signup
                     </button>}
                     
                 </div>
             </form>
+            {message && (
+                 <div className="error"> {message} </div>
+            )}
         </div>
     </div>
   );
