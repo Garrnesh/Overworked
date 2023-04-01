@@ -104,6 +104,17 @@ const getProductByProductType = async(category) => {
     }
 }
 
+const updateProductQuantity = async (product_id, quantity) => {
+    const product = Products.doc(product_id);
+    try {
+        await product.update({
+            quantity: quantity
+        });
+    } catch (err) {
+        throw new Error("Unable to update Cart item");
+    }
+};
+
 module.exports = {
     getProducts,
     getProductByID,

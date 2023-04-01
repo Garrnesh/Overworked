@@ -21,7 +21,7 @@ router.get('/products/:product_id', async (req,res) => {
 });
 
 router.post('/products', async(req,res) => {
-    const { product_id, business_username, listing_name, product_image, product_description, product_brand, product_size} = req.body;
+    const { product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity} = req.body;
     try{
         await productC.checkProductID(product_id);
     }catch(err){
@@ -29,7 +29,7 @@ router.post('/products', async(req,res) => {
     }
 
     try{
-        await productC.addProduct(product_id, business_username, listing_name, product_image, product_description, product_brand, product_size);
+        await productC.addProduct(product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity);
         res.status(201).send("Product has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -111,6 +111,22 @@ router.get('/products/category/:category', async(req,res) => {
         res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
+    }
+});
+
+router.put('/products/:product_id', async(req,res) => {
+    const { product_id, quantity } = req.body;
+    try{
+        await productC.getProductByID(product_id);
+    }catch(err){
+        res.status(500).send("Product does not exists");
+    }
+
+    try{
+        await productC.updateProductQuantity(product_id, quantity);
+        res.status(201).send('Product has been updated');
+    }catch(err){
+        res.status(500).send(err.message);
     }
 });
 
