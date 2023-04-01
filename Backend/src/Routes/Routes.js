@@ -513,6 +513,22 @@ router.post('/cartitems', async(req,res) => {
     }
 });
 
+router.put('/cartitems/:cartitem_id', async(req,res) => {
+    const { cartitem_id, quantity } = req.body;
+    try{
+        await cartC.getCartItemByID(cartitem_id);
+    }catch(err){
+        res.status(500).send("Cart item does not exists");
+    }
+
+    try{
+        await cartC.updateCartItem(cartitem_id, quantity);
+        res.status(201).send('Cart itemhas been updated');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
 router.delete('/cartitems/:cartitem_id', async(req,res) => {
     const cartitem_id = req.params.cartitem_id;    
     try{
