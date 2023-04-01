@@ -6,6 +6,7 @@ const orderC = require('../Controllers/Order_controller');
 const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
+const addressC = require('../Controllers/Address_controller');
 
 //Products routes
 router.get('/products', productC.getProducts);
@@ -259,7 +260,7 @@ router.post('/payments', async(req,res) => {
     }
 
     try{
-        await paymentC.Payment(payment_id, buyer_username, card_number, name_on_card, exp_date, cvc);
+        await paymentC.addPayment(payment_id, buyer_username, card_number, name_on_card, exp_date, cvc);
         res.status(201).send("Payment has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -287,6 +288,60 @@ router.get('/payments/buyer_username/:buyer_username', async(req,res) => {
     try{
         const payment = await paymentC.getPaymentsByBuyerUsername(buyer_username);
         res.status(200).json(payment);
+    }catch(err){
+        res.status(404).send(err.message);
+    }
+}); 
+
+//Address routes
+router.get('/address', addressC.getAddress);
+router.get('/address/:address_id', async (req,res) => {
+    const address_id = req.params.address_id;
+    try{
+        const address = await addressC.getAddressByID(address_id);
+        res.status(200).json(address.data());
+    }catch(err){
+        res.status(404).send("Address not found");
+    }
+});
+
+router.post('/address', async(req,res) => {
+    const { address_id, buyer_username, address_str, postal_code } = req.body;
+    try{
+        await addressC.checkAddressID(address_id);
+    }catch(err){
+        res.status(500).send("Address already exists");
+    }
+
+    try{
+        await addressC.addAddress(address_id, buyer_username, address_str, postal_code);
+        res.status(201).send("Address has been added to database");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/address/:address_id', async(req,res) => {
+    const address_id = req.params.address_id;
+    try{
+        await addressC.getAddressByID(address_id);
+    }catch(err){
+        res.status(500).send("No such address exists");
+    }
+
+    try{
+        await addressC.removeAddress(address_id);
+        res.status(200).send("Address has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/address/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
+    try{
+        const address = await addressC.getAddressByBuyerUsername(buyer_username);
+        res.status(200).json(address);
     }catch(err){
         res.status(404).send(err.message);
     }
