@@ -6,6 +6,7 @@ const orderC = require('../Controllers/Order_controller');
 const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
+const buyerC = require('../Controllers/BuyerProfile_controller');
 const addressC = require('../Controllers/Address_controller');
 
 //Products routes
@@ -429,7 +430,6 @@ router.get('/shops/:UEN_number', async(req,res) => {
     }
 });
 
-
 //Cart routes
 router.get('carts', cartC.getCart);
 
@@ -588,7 +588,66 @@ router.delete('/cartitems/cart_id/:cart_id', async(req,res) => {
 });
 
 
-//Location routes
+
+// -----------------------------------
+// Buyer routes start
+// -----------------------------------
+
+router.get('/buyer/isusernameunique/:username', async(req,res) => {
+    const username = req.params.username;
+    try{
+        if (await buyerC.isUserNameUnique(username)) {
+            res.status(200).send("Username is unique");
+        }
+        else {
+            res.status(409).send("Username is not unique");
+        }
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/buyer', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await buyerC.getBuyerProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.post('/buyer', async(req,res) => {
+    const idToken = req.headers.idtoken;
+    const { userName, phoneNumber } = req.body;
+    try {
+        const response = await buyerC.setBuyerProfile(idToken, userName, phoneNumber);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/buyer', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await buyerC.deleteBuyerProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// ----------------------------------
+// Buyer routes end
+// ----------------------------------
+
+// ----------------------------------
+// Location routes start
+// ----------------------------------
 router.get('/locations', locationC.getLocation);
 
 router.get('/locations/:business_username', async(req,res) => {
@@ -664,6 +723,9 @@ router.post('/locations/routes', async(req,res) => {
     }
 })
 
+// ----------------------------------
+// Location routes end
+// ----------------------------------
 module.exports = router;
 
 

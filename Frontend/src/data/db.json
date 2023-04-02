@@ -1,0 +1,286 @@
+{
+  "accounts": [
+    {
+      "id": 1,
+      "username": "user1",
+      "emailId": "allen@example.com",
+      "password": "password1",
+      "mobilenumber": 74877465,
+      "identity": "buyer"
+    },
+    {
+      "id": 2,
+      "username": "user2",
+      "emailId": "allen@example.com",
+      "password": "password2",
+      "mobilenumber": 74877465,
+      "identity": "buyer"
+    },
+    {
+      "id": 1,
+      "username": "user3",
+      "emailId": "allen@example.com",
+      "password": "password3",
+      "mobilenumber": 74877465,
+      "identity": "buyer"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "Listing_id": 2,
+      "product_image": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/cfdf1736-86e3-495e-9bc1-c1f131263b33/sportswear-beanie-vvLQvd.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Adidas Sweatshirt",
+      "product_price": "100",
+      "product_size": "M",
+      "sold_at": "LoopGarms",
+      "category": "sweatshirt",
+      "tags": "hoodie solid plain gray grey short hood"
+    },
+    {
+      "id": 2,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/286bcad3-1e01-432b-8919-9ef9355590cd/jordan-23-engineered-utility-beanie-WT576r.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Billie Ellish Sweatshirt",
+      "product_price": "100",
+      "product_size": "M",
+      "sold_at": "LoopGarms",
+      "category": "pants",
+      "tags": "necklace solid plain gray grey short hood"
+    },
+    {
+      "id": 3,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/97b55844-622e-41da-ac98-5475a4a776c2/sportswear-terry-shorts-z8bRTk.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Justin Bieber",
+      "product_price": "100",
+      "product_size": "M",
+      "pold_at": "LoopGarms",
+      "category": "accessories",
+      "tags": "hoodie solid plain gray grey short hood"
+    },
+    {
+      "id": 4,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/6efecc50-8b81-40e8-aea2-ec7eb144ba2a/pro-dri-fit-tight-fit-sleeveless-top-KdVF23.png",
+      "product_description": "Add a little fluff to your favourites—without adding too much warmth—with the help of terry fabric. Bridging bold style and a casual feeling, these loose, high-waisted shorts elevate your comfort with exaggerated details like elongated ribbing and drawcords for a look that stands out.",
+      "product_brand": "Off-white",
+      "product_name": "Hailey Bieber",
+      "product_price": "100",
+      "product_size": "M",
+      "sold_at": "LoopGarms",
+      "category": "pants",
+      "tags": "hoodie solid plain gray grey short hood"
+    },
+    {
+      "id": 5,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/6efecc50-8b81-40e8-aea2-ec7eb144ba2a/pro-dri-fit-tight-fit-sleeveless-top-KdVF23.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Kendall Jenner",
+      "product_price": "100",
+      "product_size": "M",
+      "sold_at": "LoopGarms",
+      "category": "blouse",
+      "tags": "hoodie solid plain gray grey short hood"
+    },
+    {
+      "id": 6,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/aa20abaf-d1dd-4d63-975b-aefacd712fe7/solo-swoosh-fleece-crew-rl6Zs6.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Kylie Jenner",
+      "product_price": "100",
+      "product_size": "M",
+      "Sold_at": "LoopGarms",
+      "category": "sweatshirt",
+      "tags": "hoodie solid plain gray grey short hood"
+    },
+    {
+      "id": 7,
+      "Listing_id": 3,
+      "product_image": "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/aa20abaf-d1dd-4d63-975b-aefacd712fe7/solo-swoosh-fleece-crew-rl6Zs6.png",
+      "product_description": "When the weather cools down, reach for the soft warmth of our classic beanie to help turn up the heat. A 3D Swoosh logo graces the cuff for dimensional detail and a clean finish.",
+      "product_brand": "Off-white",
+      "product_name": "Mean Girls",
+      "product_price": "100",
+      "product_size": "M",
+      "sold_at": "LoopGarms",
+      "category": "sweatshirt",
+      "tags": "hoodie solid plain gray grey short hood"
+    }
+  ],
+  "thriftshops": [
+    {
+      "id": 1,
+      "shop_id": 1,
+      "shop_name": "LoopGarms",
+      "uen_number": "bca",
+      "shop_description": "Off-white",
+      "shop_address": "Adidas Sweatshirt",
+      "donation": "false"
+    },
+    {
+      "id": 2,
+      "business_id": 2,
+      "shop_name": "ThreadLightly",
+      "uen_number": "bca",
+      "shop_description": "After a short stint as a physical store at Queensway Shopping Centre, Threadlightly has now gone fully digital. While you won't be able to touch and feel your threads before you try them anymore, the rest of the shopping experience remains largely the same. Shop from three distinct lines of clothing from the webstore: Rehome offers secondhand, donated items; Reclaim carries handpicked vintage wear; while Rework features goods tie-dyed and handmade by the founder Rin and her mother. Threadlightly also makes it a point to be inclusive, stocking clothing in a large range of sizes (XXS to XXL) and at affordable price points. Check out the online store now to make a purchase (or a donation of your own). ",
+      "shop_address": "1 Queensway, 02-22 Queensway Shopping Center, 149053",
+      "donation": "true"
+    },
+    {
+      "id": 3,
+      "business_id": 3,
+      "shop_name": "The Fashion Pulpit",
+      "uen_number": "bca",
+      "shop_description": "Opened in July 2018, The Fashion Pulpit is a physical store where you can swap preloved clothes and accessories, and even buy them. Their collection is vast – you can find both high street and designer pieces in the mix and prices are kept affordable. But if you sign up to be a 'swapper' there's also many benefits to reap like racking up those swap points for an incredible item and joining in on fun events.",
+      "shop_address": "6A SHENTON WAY, OUE DOWNTOWN GALLERY, #02-08 The Fashion Pulpit, 068815",
+      "donation": "true"
+    },
+    {
+      "id": 4,
+      "business_id": 4,
+      "shop_name": "SSVP Shop",
+      "uen_number": "bca",
+      "shop_description": "This cute little shop in the east is a charity shop set up by the Society of St. Vincent de Paul (SSVP). Run by a group of volunteers, it collects a large range of preloved items from various Catholic churches around the island, which are put up for sale at the hard-to-miss blue SSVP House. Shop for apparel, accessories, household items and novelties at affordable prices, or make an appointment with the shop to contribute your own pre-loved items – all that you donate or spend will go towards helping the poor in Singapore. ",
+      "shop_address": "501 Geylang Rd, Singapore 389459",
+      "donation": "true"
+    },
+    {
+      "id": 5,
+      "business_id": 5,
+      "shop_name": "Nonmainstream",
+      "uen_number": "bca",
+      "shop_description": "Nonmainstream is another cool shop you can find in the Kampong Gelam precinct. It's trendy to be thrifty these days and at this hip vintage store you can snap up bright Nike windbreakers, retro sporty sweatshirts, oversized polo shirts, graphic tees and more for affordable prices. The only catch is, the shop is only open on Fridays and weekends so keep tabs on its next opening day on the Instagram account. ",
+      "shop_address": "462A Crawford Ln, #02-73, Singapore 191462",
+      "donation": "false"
+    }
+  ],
+  "donationpoints": [
+    {
+      "id": 1,
+      "dp_id": 1,
+      "dp_name": "SalvationArmy",
+      "dp_address": "Adidas Sweatshirt"
+    },
+    {
+      "id": 2,
+      "dp_id": 2,
+      "dp_name": "SalvationArmy",
+      "dp_address": "Adidas Sweatshirt"
+    },
+    {
+      "id": 3,
+      "dp_id": 3,
+      "dp_name": "SalvationArmy",
+      "dp_address": "Adidas Sweatshirt"
+    },
+    {
+      "id": 4,
+      "dp_id": 4,
+      "dp_name": "SalvationArmy",
+      "dp_address": "Adidas Sweatshirt"
+    },
+    {
+      "id": 5,
+      "dp_id": 5,
+      "dp_name": "SalvationArmy",
+      "dp_address": "Adidas Sweatshirt"
+    }
+  ],
+  "addresses": [
+    {
+      "Name": "Jack",
+      "phoneNumber": "5458387",
+      "pincode": "374675",
+      "txtaddress": "dkxbqwdbinciqbid iw b",
+      "locality": "cnkskdcm",
+      "city": "wcnidncwkn",
+      "id": 2
+    }
+  ],
+  "payments": [
+    {
+      "cardNumber": "3267 3458 7572 3573",
+      "nameCard": "Kat Kardashian",
+      "expiryDate": "11/30",
+      "CVV": "347",
+      "id": 2
+    },
+    {
+      "cardNumber": "3764 4387 3938 3879",
+      "nameCard": "Ellen",
+      "expiryDate": "02/34",
+      "CVV": "234",
+      "id": 3
+    },
+    {
+      "cardNumber": "1234 5678 7890",
+      "nameCard": "helo",
+      "expiryDate": "11/23",
+      "CVV": "123",
+      "id": 4
+    }
+  ],
+  "cart": [
+    {
+      "cartproduct_id": 2,
+      "cartproduct_name": "Adidas Sweatshirt",
+      "cartproduct_soldat": "LoopGarms",
+      "cartproduct_quantity": 1,
+      "cartproduct_size": "S",
+      "cartproduct_price": "100",
+      "cartproduct_image": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/cfdf1736-86e3-495e-9bc1-c1f131263b33/sportswear-beanie-vvLQvd.png",
+      "id": 1
+    },
+    {
+      "cartproduct_id": 3,
+      "cartproduct_name": "Billie Ellish Sweatshirt",
+      "cartproduct_soldat": "LoopGarms",
+      "cartproduct_quantity": 1,
+      "cartproduct_size": "M",
+      "cartproduct_price": "100",
+      "cartproduct_image": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/286bcad3-1e01-432b-8919-9ef9355590cd/jordan-23-engineered-utility-beanie-WT576r.png",
+      "id": 2
+    }
+  ],
+  "orders": [
+    [
+      [
+        [
+          [],
+          {
+            "orderitem_name": "Adidas Sweatshirt",
+            "orderitem_soldat": "LoopGarms",
+            "orderitem_quantity": 1,
+            "orderitem_size": "S",
+            "orderitem_price": "100"
+          }
+        ],
+        {
+          "orderitem_name": "Adidas Sweatshirt",
+          "orderitem_soldat": "LoopGarms",
+          "orderitem_quantity": 1,
+          "orderitem_size": "S",
+          "orderitem_price": "100"
+        }
+      ],
+      {
+        "orderitem_name": "Adidas Sweatshirt",
+        "orderitem_soldat": "LoopGarms",
+        "orderitem_quantity": 1,
+        "orderitem_size": "S",
+        "orderitem_price": "100"
+      }
+    ]
+  ]
+}

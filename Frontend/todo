@@ -1,0 +1,15 @@
+Completed:
+- Login
+- Signup
+- Log in state is now stored in localStorage and is checked on page load of App.js, Redirector.js, and ProtectedRoute.js
+- User can no longer access pages after logging out
+- Invalid URL is now redirected to login page or home page
+
+TODO:
+
+1/ Check the authenticated state in App.js  (DONE)
+2/ Check the links for login page (FAILED)  (FIXED)
+3/ DO the logout                            (DONE)
+4/ DO the settings
+5/ The only vulnerability is if user is signed out in the middle of using the app, they can still perform actions that do not refresh the page (re-render components)
+    One way to fix is to check if actions to server is authenticated, if not, redirect to login page (To be implemented if time permits)
