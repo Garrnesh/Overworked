@@ -1,34 +1,128 @@
-const express = require('Express');
-const Location_router = express.Router();
 const axios = require('axios');
-
 const { Locations } = require("../firebase.js");
-const auth = require("../location_server.js");
+const getToken = require("../location_server.js");
+const { FieldValue } = require("firebase-admin/firestore");
 
-Location_router.get('/location', async(req,res) => {
+//getLocation
+const getLocation = async (req,res) => {
     try{
-        const location = await Locations.get();
+        const location_coll = await Locations.get();
+        const location = location_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(location);
-    }catch(err){
-        res.status(404).json("Location not found");
-    }
-})
-
-Location_router.post('/location', async(req,res) => {
-    const { shop_id, postal_code } = req.body;
-    try{
-        const location_data = await axios.get('https://developers.onemap.sg/commonapi/' + postal_code + '?searchVal=revenue&returnGeom=Y&getAddrDetails=Y');
-        const lat = location_data["results"]["LATITUDE"];
-        const long = location_data["results"]["LONGITUDE"];
-        const location = Locations.doc(shop_id);
-        await location.set({
-            lat: lat,
-            long: long,
-        });
     }catch(err){
         res.status(500).send(err.message);
     }
-});
+}
 
-//Add getting distance and route
+const getLocationByBusinessUsername = async (business_username) => {
+    const location = await Locations.doc(business_username).get();
+    if(location.exists){
+        return location;
+    }else{
+        throw new Error("Location does not exist");
+    }
+};
+
+const checkLocation = async (business_username) => {
+    try{
+        const location = await Locations.doc(business_username).get();
+        if(location.exists){
+            throw new Error("Order with order id already exists");
+        }
+    }catch(err){
+        throw new Error("Order with order id already exists");
+    }
+};
+
+const addLocation = async (business_username, postal_code) => {
+    const location = Locations.doc(business_username);
+    try{
+        const location_data_obtain = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${postal_code}&returnGeom=Y&getAddrDetails=Y`);
+        const location_data_json = location_data_obtain.data;
+        const location_data = location_data_json["results"][0];
+        const latitude = location_data["LATITUDE"];
+        const longitude = location_data["LONGITUDE"];
+        await location.set({
+            latitude: latitude,
+            longitude: longitude,
+            postal_code: postal_code});
+    }catch(err){
+        throw new Error("Unable to add location")
+    }
+};
+
+const removeLocation = async (business_username) => {
+    try{
+        await Locations.doc(business_username).delete();
+    }catch(err){
+        throw new Error("Unable to delete location");
+    }
+}
+
+const identifyLocation = async (postal_code) => {
+    try{
+        const location_data_obtain = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${postal_code}&returnGeom=Y&getAddrDetails=Y`);
+        const location_data_json = location_data_obtain.data;
+        const location_data = location_data_json["results"][0];
+        const latitude = location_data["LATITUDE"];
+        const longitude = location_data["LONGITUDE"];
+        const location = {latitude, longitude};
+        return location;
+    }catch(err){
+        throw new Error("Location cannot be identified")
+    }
+}
+
+const getRoute = async (latitude_person, longitude_person, latitude_business, longitude_business, route_type) => {
+    try{
+        const routeType = route_type;
+        // const token = await getToken();
+        const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwMDc1LCJ1c2VyX2lkIjoxMDA3NSwiZW1haWwiOiJ0aHJpZnRpdGF1dGhAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjgwMzMxMzgzLCJleHAiOjE2ODA3NjMzODMsIm5iZiI6MTY4MDMzMTM4MywianRpIjoiZjE0OTdmYjgwYjE4ZDYzY2ExZjkyMWZlZTE5M2Q2ZTgifQ.ZKxXQpiTRX-zIPCZq50aRXVoryyLGnOtj5YUCNvRfx8'
+        if (route_type != "pt"){
+            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`);
+            const route_unfiltered_json = route_unfiltered.data;
+            console.log(route_unfiltered_json);
+            return route_unfiltered_json;
+        }else{
+            const timeValue = FieldValue.serverTimestamp();
+            let dateTimeValue = new Date();
+            // try{
+            //     dateTimeValue = timeValue.toDate(); 
+            // }catch(err){
+            //     console.log(err)
+            // }    
+            const formatDate = { 
+                timeZone: "Asia/Singapore", 
+                year: "numeric", 
+                month: "2-digit", 
+                day: "2-digit" 
+            };
+            const formatTime = { 
+                timeZone: "Asia/Singapore", 
+                hour12: false, 
+                hourCycle: "h23",
+                hour: "2-digit", 
+                minute: "2-digit", 
+                second: "2-digit" 
+            };
+            const formattedDate = dateTimeValue.toLocaleDateString("en-US", formatDate);
+            const formattedTime = dateTimeValue.toLocaleTimeString("en-US", formatTime);
+            const route_unfiltered_pt = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT`);
+            const route_unfiltered_json = route_unfiltered_pt.data;
+            return route_unfiltered_json;
+        }
+    }catch(err){
+        throw new Error("Route cannot be found");
+    }
+}
+
+module.exports = {
+    getLocation,
+    getLocationByBusinessUsername,
+    checkLocation,
+    addLocation,
+    removeLocation,
+    identifyLocation,
+    getRoute,
+}
 

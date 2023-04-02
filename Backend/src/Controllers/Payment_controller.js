@@ -3,8 +3,9 @@ const { Payments } = require("../firebase.js");
 
 const getPayments = async (req,res) => { 
     try{
-        const payment = await Payments.get();
-        res.status(200).json(payment.data());
+        const payment_coll = await Payments.get();
+        const payment = payment_coll.docs.map((doc) => doc.data());
+        res.status(200).json(payment);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -16,7 +17,7 @@ const getPaymentByID = async (payment_id) => {
         return payment;
     }
     else{
-        throw new Error("Payment method does not exists ")
+        throw new Error("Payment method does not exists")
     }
     
 };
@@ -33,14 +34,11 @@ const checkPaymentID = async (payment_id) => {
     }
 };
 
-//function to get all the payments for a single buyer?
-
-
-const addPayment = async (payment_id, buyer_id, card_number, name_on_card, exp_date, cvc) => {
+const addPayment = async (payment_id, buyer_username, card_number, name_on_card, exp_date, cvc) => {
     const payment = Payments.doc(payment_id);
     try{
         await payment.set({
-            buyer_id: buyer_id,
+            buyer_username: buyer_username,
             card_number: card_number,
             name_on_card: name_on_card,
             exp_date: exp_date,
@@ -58,11 +56,11 @@ const removePayment = async (payment_id) => {
     }
 };
 
-//function to get all the payments for a single buyer?
-const getPaymentsByBuyerId = async(buyer_id) => {
-    const payment = await Payments.where('buyer_id', '==', buyer_id).get();
-    if(payment.size >0){
-        return payment
+const getPaymentsByBuyerUsername = async(buyer_username) => {
+    const payment_coll = await Payments.where('buyer_username', '==', buyer_username).get();
+    const payment = payment_coll.docs.map((doc) => doc.data());
+    if(payment.length >0){
+        return payment;
     }
     else{
         throw new Error("Buyer does not have any payment methods")
@@ -75,6 +73,6 @@ module.exports = {
     checkPaymentID,
     addPayment,
     removePayment,
-    getPaymentsByBuyerId,
+    getPaymentsByBuyerUsername,
 }
 

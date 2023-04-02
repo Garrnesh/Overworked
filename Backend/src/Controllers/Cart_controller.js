@@ -32,12 +32,12 @@ const checkCartID = async (cart_id) => {
     }
 };
 
-const addCart = async (cart_id, buyer_id, status) => {
+const addCart = async (cart_id, buyer_username) => {
     const cart = Carts.doc(cart_id);
     try{
         await cart.set({
-            buyer_id: buyer_id,
-            status: status});
+            buyer_username: buyer_username,
+        });
     }catch(err){
         throw new Error("Unable to create new cart");
     }
@@ -45,24 +45,24 @@ const addCart = async (cart_id, buyer_id, status) => {
 
 const removeCart = async (cart_id) => {
     try{
-        await Orders.doc(order_id).delete();
+        await Carts.doc(cart_id).delete();
     }catch(err){
         throw new Error("Unable to delete order");
     }
 };
 
-const getCartByBuyerID = async(buyer_id) => {
-    const cart = await Carts.where('buyer_Id', '==', buyer_id).get();
-    if(cart.size>0){
+const getCartByBuyerUsername = async(buyer_username) => {
+    const cart = await Carts.where('buyer_Id', '==', buyer_username).get();
+    if(cart.length>0){
         return cart;
     }else{
         throw new Error("No cart with stated buyer ID");
     }
 }
 
-const removeCartByBuyerID = async(buyer_id) => {
+const removeCartByBuyerUsername = async(buyer_username) => {
     try{
-        await Orders.where("buyer_id", "==", buyer_id).delete();
+        await Orders.where("buyer_username", "==", buyer_username).delete();
     }catch(err){
         throw new Error("Unable to delete cart");
     }
@@ -71,8 +71,9 @@ const removeCartByBuyerID = async(buyer_id) => {
 //Cartitem table
 const getCartItems = async (req,res) => {
     try{
-        const cartitem = await Cartitems.get();
-        res.status(200).json(cartitem.data());
+        const cart_coll = await Cartitems.get();
+        const cartitem = cart_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        res.status(200).json(cartitem);
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -111,6 +112,17 @@ const addCartItem = async (cartitem_id, cart_id, product_id, quantity) => {
     }
 };
 
+const updateCartItem = async (cartitem_id, quantity) => {
+    const cartitem = Cartitems.doc(cartitem_id);
+    try {
+        await cartitem.update({
+            quantity: quantity
+        });
+    } catch (err) {
+        throw new Error("Unable to update Cart item");
+    }
+};
+
 const removeCartItem = async (cartitem_id) => {
     try{
         await Cartitems.doc(cartitem_id).delete();
@@ -121,7 +133,7 @@ const removeCartItem = async (cartitem_id) => {
 
 const getCartItemByCartId = async(cart_id) => {
     const cartitem = await Cartitems.where('cart_id', '==', cart_id).get();
-    if(cartitem.size>0){
+    if(cartitem.length>0){
         return cartitem;
     }else{
         throw new Error("No order item with stated Cart item ID");
@@ -142,12 +154,13 @@ module.exports = {
     checkCartID,
     addCart,
     removeCart,
-    getCartByBuyerID,
-    removeCartByBuyerID,
+    getCartByBuyerUsername,
+    removeCartByBuyerUsername,
     getCartItems,
     getCartItemByID,
     checkCartItemID,
     addCartItem,
+    updateCartItem,
     removeCartItem,
     getCartItemByCartId,
     removeCartItemByCartID,

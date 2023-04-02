@@ -3,48 +3,27 @@ const { Shops } = require("../firebase.js");
 
 const getShops = async (req,res) => { 
     try{
-        const shops = await Shops.get();
-        res.status(200).json(shops.data());
+        const shop_coll = await Shops.get();
+        const shop = shop_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        // const shop = shop_coll.docs.map((doc) => doc.data());
+        res.status(200).json(shop);
     }catch(err){
         res.status(500).send(err.message);
     }
 };
 
-const getShopByID = async (shop_id) => { 
-    const shop = await Shops.doc(shop_id).get();
+const getShopByBusinessUsername = async (business_username) => { 
+    const shop = await Shops.doc(business_username).get();
     if(shop.exists){
         return shop;
-    }
-    else{
+    }else{
         throw new Error("This shop does not exist!")
     }
 };
 
-const getShopByName = async (shop_name) => { 
-    const shop = await Shops.doc(shop_name).get();
-    if(shop.exists){
-        return shop;
-    }
-    else{
-        throw new Error("This shop does not exist! ")
-    }
-    
-};
-
-const getShopByUEN = async (UEN_number) => { 
-    const shop = await Shops.doc(UEN_number).get();
-    if(shop.exists){
-        return shop;
-    }
-    else{
-        throw new Error("This shop does not exist! ")
-    }
-    
-};
-
-const checkShopID = async (shop_id) => {
+const checkShopID = async (busines_username) => {
     try{
-        const payment = await Shops.doc(shop_id).get();
+        const shop = await Shops.doc(busines_username).get();
         if(shop.exists){
             throw new Error("Shop with shop id already exists");
         }
@@ -54,34 +33,54 @@ const checkShopID = async (shop_id) => {
     }
 };
 
-
-
-const addShop = async (shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation) => {
-    const shop = Shops.doc(shop_id);
+const addShop = async (business_username, shop_name, UEN_number, shop_description, Shop_address, donation) => {
+    const shop = Shops.doc(business_username);
     try{
         await shop.set({
-            business_id: business_id,
             shop_name: shop_name,
             UEN_number: UEN_number,
-            Shop_description: Shop_description,
+            shop_description: shop_description,
             Shop_address: Shop_address,
-            Donation: Donation});
+            donation: donation});
     }catch(err){
         throw new Error("Unable to create new shop method");
     } 
 };
 
-const removeShop = async (shop_id) => {
+const removeShop = async (busines_username) => {
     try{
-        await Shops.doc(shop_id).delete();
+        await Shops.doc(busines_username).delete();
     }catch(err){
         throw new Error("Unable to delete shop");
     }
 };
 
+const getShopByName = async (shop_name) => { 
+    const shop_coll = await Shops.where('shop_name', '==', shop_name).get();
+    const shop = shop_coll.map((doc) => ({ id: doc.id, ...doc.data() }));
+    if(shop.length>0){
+        return shop;
+    }
+    else{
+        throw new Error("This shop does not exist! ")
+    }
+};
+
+const getShopByUEN = async (UEN_number) => { 
+    const shop_coll = await Shops.where('UEN_number', '==', UEN_number).get();
+    const shop = shop_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    if(shop.length>0){
+        return shop;
+    }
+    else{
+        throw new Error("This shop does not exist! ")
+    }
+    
+};
+
 module.exports = {
     getShops,
-    getShopByID,
+    getShopByBusinessUsername,
     getShopByName,
     getShopByUEN,
     checkShopID,

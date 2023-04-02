@@ -7,8 +7,9 @@ const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
 const buyerC = require('../Controllers/BuyerProfile_controller');
+const addressC = require('../Controllers/Address_controller');
 
-//Products
+//Products routes
 router.get('/products', productC.getProducts);
 router.get('/products/:product_id', async (req,res) => {
     const product_id = req.params.product_id;
@@ -21,7 +22,7 @@ router.get('/products/:product_id', async (req,res) => {
 });
 
 router.post('/products', async(req,res) => {
-    const { product_id, product_image, product_description, product_brand, product_size, business_id, listing_name } = req.body;
+    const { product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity} = req.body;
     try{
         await productC.checkProductID(product_id);
     }catch(err){
@@ -29,7 +30,7 @@ router.post('/products', async(req,res) => {
     }
 
     try{
-        await productC.addProduct(product_id, product_image, product_description, product_brand, product_size, business_id, listing_name);
+        await productC.addProduct(product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity);
         res.status(201).send("Product has been added to database");
     }catch(err){
         res.status(500).send(err.message);
@@ -52,17 +53,17 @@ router.delete('/products/:product_id', async(req,res) => {
     }
 }); 
 
-router.get('/products/Listing/:listing_name', async(req,res) => {
+router.get('/products/listing_name/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         const product = await productC.getProductByListingName(listing_name);
-        res.status(200).json(product.data());
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/products/Listing/:listing_name', async(req,res) => {
+router.delete('/products/listing_name/:listing_name', async(req,res) => {
     const listing_name = req.params.listing_name;
     try{
         await productC.getProductByListingName(listing_name);
@@ -78,46 +79,62 @@ router.delete('/products/Listing/:listing_name', async(req,res) => {
     }
 });
 
-router.get('/products/Listing/:business_id', async(req,res) => {
-    const business_id = req.params.business_id;
+router.get('/products/business_username/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
     try{
-        const product = await productC.getProductByBusinessID(business_id);
-        res.status(200).json(product.data());
+        const product = await productC.getProductByBusinessUsername(business_username);
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/products/Listing/:business_id', async(req,res) => {
-    const business_id = req.params.business_id;
+router.delete('/products/business_username/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
     try{
-        await productC.getProductByBusinessID(business_id);
+        await productC.getProductByBusinessUsername(business_username);
     }catch(err){
         res.status(500).send("No such product exists with given business ID");
     }
 
     try{
-        await productC.removeProductByBusinessID(business_id);
+        await productC.removeProductByBusinessUsername(business_username);
         res.status(200).send("Product has been removed");
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.get('/products/listing_id/:product_type', async(req,res) => {
-    const { product_type } = req.params.product_type;
+router.get('/products/category/:category', async(req,res) => {
+    const { category } = req.params;
     try{
-        const product = await productC.getProductByProductType(product_type);
-        res.status(200).json(product.data());
+        const product = await productC.getProductByProductType(category);
+        res.status(200).json(product);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
+router.put('/products/:product_id', async(req,res) => {
+    const { product_id, quantity } = req.body;
+    try{
+        await productC.getProductByID(product_id);
+    }catch(err){
+        res.status(500).send("Product does not exists");
+    }
+
+    try{
+        await productC.updateProductQuantity(product_id, quantity);
+        res.status(201).send('Product has been updated');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
 
 
-router.get('/order', orderC.getOrder);
-router.get('/order/:order_id', async(req,res) => {
+//Orders routes
+router.get('/orders', orderC.getOrder);
+router.get('/orders/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const order = await orderC.getOrderByID(order_id);
@@ -127,8 +144,8 @@ router.get('/order/:order_id', async(req,res) => {
     }
 });
 
-router.post('/order', async(req,res) => {
-    const { order_id, buyer_id, total_price, date, status } = req.body;
+router.post('/orders', async(req,res) => {
+    const { order_id, buyer_username, total_price, date, status } = req.body;
     try{
         await orderC.checkOrderID(order_id);
     }catch(err){
@@ -136,14 +153,14 @@ router.post('/order', async(req,res) => {
     }
 
     try{
-        await orderC.addOrder(order_id, buyer_id, total_price, date, status);
+        await orderC.addOrder(order_id, buyer_username, total_price, date, status);
         res.status(201).send('Order has been added to database');
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/order/:order_id', async(req,res) => {
+router.delete('/orders/:order_id', async(req,res) => {
     const order_id = req.params.order_id;    
     try{
         await orderC.getOrderByID(order_id);
@@ -159,18 +176,18 @@ router.delete('/order/:order_id', async(req,res) => {
     }
 });
 
-router.get('/order/buyer_id/:buyer_id', async(req,res) => {
-    const buyer_id = req.params.buyer_id;
+router.get('/orders/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
     try{
-        const order = await orderC.getOrderByBuyerId(buyer_id);
+        const order = await orderC.getOrderByBuyerUsername(buyer_username);
         res.status(200).json(order);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.get('/orderitem', orderC.getOrderItems);
-router.get('/orderitem/:orderitem_id', async(req,res) => {
+router.get('/orderitems', orderC.getOrderItems);
+router.get('/orderitems/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
         const orderitem = await orderC.getOrderItemByID(orderitem_id);
@@ -180,7 +197,7 @@ router.get('/orderitem/:orderitem_id', async(req,res) => {
     }
 });
 
-router.post('/orderitem', async(req,res) => {
+router.post('/orderitems', async(req,res) => {
     const { orderitem_id, order_id, product_id, quantity } = req.body;
     try{
         await orderC.checkOrderItemID(orderitem_id);
@@ -196,7 +213,7 @@ router.post('/orderitem', async(req,res) => {
     }
 });
 
-router.delete('/orderitem/:orderitem_id', async(req,res) => {
+router.delete('/orderitems/:orderitem_id', async(req,res) => {
     const orderitem_id = req.params.orderitem_id;
     try{
         await orderC.getOrderItemByID(orderitem_id);
@@ -212,18 +229,18 @@ router.delete('/orderitem/:orderitem_id', async(req,res) => {
     }
 });
 
-router.get('/orderitem/order_id/:order_id', async(req,res) => {
+router.get('/orderitems/order_id/:order_id', async(req,res) => {
     const order_id = req.params.order_id;
     try{
         const orderitem = await orderC.getOrderItemByOrderId(order_id);
-        res.status(200).json(orderitem.data());
+        res.status(200).json(orderitem);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.delete('/orderitem/order_id/:order_id', async(req,res) => {
-    const order_id = parseInt(req.params.order_id);
+router.delete('/orderitems/order_id/:order_id', async(req,res) => {
+    const order_id = req.params.order_id;
     try{
         await orderC.getOrderItemByOrderId(order_id);
     }catch(err){
@@ -238,19 +255,21 @@ router.delete('/orderitem/order_id/:order_id', async(req,res) => {
     }
 });
 
-router.get('/payment', paymentC.getPayments);
-router.get('/payment/:payment_id', async (req,res) => {
+
+//Payment routes
+router.get('/payments', paymentC.getPayments);
+router.get('/payments/:payment_id', async (req,res) => {
     const payment_id = req.params.payment_id;
     try{
         const payment = await paymentC.getPaymentByID(payment_id);
-        res.status(200).json(payment);
+        res.status(200).json(payment.data());
     }catch(err){
         res.status(404).send("Payment not found");
     }
 });
 
-router.post('/payment', async(req,res) => {
-    const { payment_id, buyer_id, card_number, name_on_card, exp_date, cvc } = req.body;
+router.post('/payments', async(req,res) => {
+    const { payment_id, buyer_username, card_number, name_on_card, exp_date, cvc } = req.body;
     try{
         await paymentC.checkPaymentID(payment_id);
     }catch(err){
@@ -258,14 +277,14 @@ router.post('/payment', async(req,res) => {
     }
 
     try{
-        await paymentC.Payment(payment_id, buyer_id, card_number, name_on_card, exp_date, cvc);
+        await paymentC.addPayment(payment_id, buyer_username, card_number, name_on_card, exp_date, cvc);
         res.status(201).send("Payment has been added to database");
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/payment/:payment_id', async(req,res) => {
+router.delete('/payments/:payment_id', async(req,res) => {
     const payment_id = req.params.payment_id;
     try{
         await paymentC.getPaymentByID(payment_id);
@@ -279,71 +298,300 @@ router.delete('/payment/:payment_id', async(req,res) => {
     }catch(err){
         res.status(500).send(err.message);
     }
+});
+
+router.get('/payments/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
+    try{
+        const payment = await paymentC.getPaymentsByBuyerUsername(buyer_username);
+        res.status(200).json(payment);
+    }catch(err){
+        res.status(404).send(err.message);
+    }
 }); 
 
-router.get('/shop', shopC.getShops);
-router.get('/shop/:shop_id', async(req,res) => {
-    const shop_id = req.params.shop_id;
+//Address routes
+router.get('/address', addressC.getAddress);
+router.get('/address/:address_id', async (req,res) => {
+    const address_id = req.params.address_id;
     try{
-        const shop = await shopC.getShopByID(shop_id);
-        res.status(200).json(shop);
+        const address = await addressC.getAddressByID(address_id);
+        res.status(200).json(address.data());
     }catch(err){
+        res.status(404).send("Address not found");
+    }
+});
+
+router.post('/address', async(req,res) => {
+    const { address_id, buyer_username, address_str, postal_code } = req.body;
+    try{
+        await addressC.checkAddressID(address_id);
+    }catch(err){
+        res.status(500).send("Address already exists");
+    }
+
+    try{
+        await addressC.addAddress(address_id, buyer_username, address_str, postal_code);
+        res.status(201).send("Address has been added to database");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/address/:address_id', async(req,res) => {
+    const address_id = req.params.address_id;
+    try{
+        await addressC.getAddressByID(address_id);
+    }catch(err){
+        res.status(500).send("No such address exists");
+    }
+
+    try{
+        await addressC.removeAddress(address_id);
+        res.status(200).send("Address has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/address/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;
+    try{
+        const address = await addressC.getAddressByBuyerUsername(buyer_username);
+        res.status(200).json(address);
+    }catch(err){
+        res.status(404).send(err.message);
+    }
+}); 
+
+
+//Shop routes
+router.get('/shops', shopC.getShops);
+router.get('/shops/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
+    try{
+        const shop = await shopC.getShopByBusinessUsername(business_username);
+        res.status(200).json(shop.data());
+    }catch(err){ 
         res.status(404).send("Shop not found");
     }
 });
 
-router.post('/shop', async(req,res) => {
-    const { shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation
+router.post('/shops', async(req,res) => {
+    const { business_username, shop_name, UEN_number, shop_description, Shop_address, donation
     } = req.body;
     try{
-        await shopC.checkShopID(shop_id);
+        await shopC.checkShopID(business_username);
     }catch(err){
         res.status(500).send("Shop already exists");
     }
 
     try{
-        await shopC.addShop(shop_id, business_id, shop_name, UEN_number, Shop_description, Shop_address, Donation);
+        await shopC.addShop( business_username, shop_name, UEN_number, shop_description, Shop_address, donation);
         res.status(201).send('Shop has been added to database');
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.delete('/shop/:shop_id', async(req,res) => {
-    const shop_id = req.params.shop_id;    
+router.delete('/shops/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;    
     try{
-        await shopC.getShopByID(shop_id);
+        await shopC.getShopByBusinessUsername(business_username);
     }catch(err){
         res.status(500).send("No such shop exists");
     }
 
     try{
-        await shopC.removeShop(shop_id);
+        await shopC.removeShop(business_username);
         res.status(200).send("Shop has been removed");
     }catch(err){
         res.status(500).send(err.message);
     }
 });
 
-router.get('/shop/:shop_name/', async(req,res) => {
+router.get('/shops/shop_name/:shop_name', async(req,res) => {
     const shop_name = req.params.shop_name;
     try{
-        const order = await shopC.getShopByName(shop_name);
+        const shop = await shopC.getShopByName(shop_name);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
 
-router.get('/shop/:UEN_number/', async(req,res) => {
-    const UEN_number = req.params.UEN_number;
+router.get('/shops/:UEN_number', async(req,res) => {
+    const UEN = req.params.UEN_number;
     try{
-        const order = await shopC.getShopByUEN(UEN_number);
+        const shop = await shopC.getShopByUEN(UEN);
         res.status(200).json(shop);
     }catch(err){
         res.status(404).send(err.message);
     }
 });
+
+//Cart routes
+router.get('carts', cartC.getCart);
+
+router.get('/carts/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;
+    try{
+        const cart = await cartC.getCartByID(cart_id);
+        res.status(200).json(cart.cart());
+    }catch(err){ 
+        res.status(404).send("Cart not found");
+    }
+})
+
+router.post('/carts', async(req,res) => {
+    const { cart_id, buyer_username } = req.body;
+    try{
+        await cartC.checkCartID(cart_id);
+    }catch(err){
+        res.status(500).send("Location already exists");
+    }
+
+    try{
+        await cartC.addCart(cart_id, buyer_username);
+        res.status(201).send('Cart has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/carts/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;    
+    try{
+        await cartC.getCartByID(cart_id);
+    }catch(err){
+        res.status(500).send("No such cart exists");
+    }
+
+    try{
+        await cartC.removeCart(cart_id);
+        res.status(200).send("Cart has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/carts/buyer_username/:buyer_username', async(req,res) => {
+    const business_username = req.params.business_username;
+    try{
+        const cart = await cartC.getCartByBuyerUsername(business_username);
+        res.status(200).json(cart.data());
+    }catch(err){ 
+        res.status(404).send("Cart not found");
+    }
+})
+
+router.delete('/carts/buyer_username/:buyer_username', async(req,res) => {
+    const buyer_username = req.params.buyer_username;    
+    try{
+        await cartC.getCartByBuyerUsername(buyer_username);
+    }catch(err){
+        res.status(500).send("No such cart exists");
+    }
+
+    try{
+        await cartC.removeCartByBuyerUsername(buyer_username);
+        res.status(200).send("Cart has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/cartitems', cartC.getCartItems);
+
+router.get('/cartitems/:cartitem_id', async(req,res) => {
+    const cartitem_id = req.params.cartitem_id;
+    try{
+        const cartitem = await cartC.getCartItemByID(cartitem_id);
+        res.status(200).json(cartitem.data());
+    }catch(err){ 
+        res.status(404).send("Cart item not found");
+    }
+})
+
+router.post('/cartitems', async(req,res) => {
+    const { cartitem_id, cart_id, product_id, quantity } = req.body;
+    try{
+        await cartC.checkCartItemID(cartitem_id);
+    }catch(err){
+        res.status(500).send("Cart item already exists");
+    }
+
+    try{
+        await cartC.addCartItem(cartitem_id, cart_id, product_id, quantity);
+        res.status(201).send('Cart item has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.put('/cartitems/:cartitem_id', async(req,res) => {
+    const { cartitem_id, quantity } = req.body;
+    try{
+        await cartC.getCartItemByID(cartitem_id);
+    }catch(err){
+        res.status(500).send("Cart item does not exists");
+    }
+
+    try{
+        await cartC.updateCartItem(cartitem_id, quantity);
+        res.status(201).send('Cart itemhas been updated');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/cartitems/:cartitem_id', async(req,res) => {
+    const cartitem_id = req.params.cartitem_id;    
+    try{
+        await cartC.getCartItemByID(cartitem_id);
+    }catch(err){
+        res.status(500).send("No such cart item exists");
+    }
+
+    try{
+        await cartC.removeCartItem(cartitem_id);
+        res.status(200).send("Cart item has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/cartitems/cart_id/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;
+    try{
+        const cart = await cartC.getCartItemByCartId(cart_id);
+        res.status(200).json(cart.data());
+    }catch(err){ 
+        res.status(404).send("Cart item not found");
+    }
+})
+
+router.delete('/cartitems/cart_id/:cart_id', async(req,res) => {
+    const cart_id = req.params.cart_id;    
+    try{
+        await cartC.getCartItemByCartId(cart_id);
+    }catch(err){
+        res.status(500).send("No such cart item exists");
+    }
+
+    try{
+        await cartC.removeCartItemByCartID(cart_id);
+        res.status(200).send("Cart item has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+
+
+// -----------------------------------
+// Buyer routes start
+// -----------------------------------
 
 router.get('/buyer/isusernameunique/:username', async(req,res) => {
     const username = req.params.username;
@@ -393,10 +641,95 @@ router.delete('/buyer', async(req,res) => {
     }
 });
 
+// ----------------------------------
+// Buyer routes end
+// ----------------------------------
+
+// ----------------------------------
+// Location routes start
+// ----------------------------------
+router.get('/locations', locationC.getLocation);
+
+router.get('/locations/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;
+    try{
+        const location = await locationC.getLocationByBusinessUsername(business_username);
+        res.status(200).json(location.data());
+    }catch(err){ 
+        res.status(404).send("Location not found");
+    }
+});
+
+router.post('/locations', async(req,res) => {
+    const { business_username, postal_code } = req.body;
+    try{
+        await locationC.checkLocation(business_username);
+    }catch(err){
+        res.status(500).send("Location already exists");
+    }
+
+    try{
+        await locationC.addLocation( business_username, postal_code);
+        res.status(201).send('Location has been added to database');
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/locations/:business_username', async(req,res) => {
+    const business_username = req.params.business_username;    
+    try{
+        await locationC.getLocationByBusinessUsername(business_username);
+    }catch(err){
+        res.status(500).send("No such location exists");
+    }
+
+    try{
+        await locationC.removeLocation(business_username);
+        res.status(200).send("Location has been removed");
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/locations/postal_code/:postal_code', async(req,res) => {
+    const postal_code  = JSON.stringify(req.params.postal_code);
+    try{
+        const location = await locationC.identifyLocation(postal_code);
+        console.log(location);
+        res.status(200).json(location);
+    }catch(err){
+        res.status(404).send("Location not found");
+    }
+});
+
+router.post('/locations/routes', async(req,res) => {
+    const { latitude_person, longitude_person, business_username, route_type } = req.body;
+    try{
+        await locationC.getLocationByBusinessUsername(business_username);
+    }catch(err){
+        res.status(404).send("Business not found")
+    }
+
+    try{
+        const business_data = await locationC.getLocationByBusinessUsername(business_username);
+        const business = business_data.data();
+        const latitude_business = business["latitude"];
+        const longitude_business = business["longitude"];
+        const route = await locationC.getRoute(latitude_person, longitude_person, latitude_business, longitude_business, route_type);
+        res.status(200).json(route);
+    }catch(err){
+        res.status(500).send("Route cannot be provided")
+    }
+})
+
+// ----------------------------------
+// Location routes end
+// ----------------------------------
 module.exports = router;
 
 
-// module.exports = router;
+
 
 // //Nghia's route
 // const express = require('express');
@@ -516,3 +849,68 @@ module.exports = router;
 //         }
 //     }
 // });
+
+
+// const [filteredProducts, setFilteredProducts] = useState([]);
+
+// const FilterResult = async (categoryname) => {
+//   const category = categoryname.toUpperCase();
+//   console.log('test1');
+//   try {
+//     const response = await fetch("http://localhost:8000/products/category/" + category, {
+//       method: 'GET',
+//     });
+//     const response_Data = await response.json(); 
+//     console.log(response_Data);
+//     setFilteredProducts(response_Data);
+//     setIsfilteredEffect(isFilterEffect => !isFilterEffect);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   console.log(filteredProducts);
+// };
+
+// import React, { useState } from "react";
+// const [mapSrc, setMapSrc] = useState("");
+// const returnMap = async(business_username) => {
+//     try{
+//         const response = await fetch("http://localhost:8000/locations/" + business_username, {
+//             method: 'GET',
+//         });
+//         const response_json = await response.json()
+//         const latitude = response_json["latitude"]
+//         const longitude = response_json["longitude"]
+//         const postal_code = response_json["postal_code"]
+//         const url = `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal${postal_code}&zoom=17&height=512&width=512&points=[${latitude}, ${longitude},"255,255,178","A"]`
+//         return url
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+
+
+
+
+// fetch(`https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal${postal_code}&zoom=17&height=512&width=512&points=[${latitude}, ${longitude},"255,255,178","A"]`)
+
+
+
+// async function fetchMap() {
+//     try {
+//     const response = await fetch("http://localhost:8000/locations/" + id, {
+//         method: 'GET',
+//     });
+//     const response_json = await response.json(); // await is needed here
+//     const latitude = response_json["latitude"];
+//     const longitude = response_json["longitude"];
+//     const postal_code = response_json["postal_code"];
+//     console.log(latitude, longitude, postal_code);
+//     const url = `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal=${postal_code}&zoom=17&height=512&width=512&points=[${latitude},${longitude},"255,255,178","A"]`;
+//     // const mapResponse = await fetch(https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal=636960&zoom=17&height=512&width=512&points=[1.35381999263169,%20103.688242893188,%22255,255,178%22,%22A%22]);
+//     return url
+//     }catch(err) {
+//         console.log(err);
+//     }
+// }
+
+  
