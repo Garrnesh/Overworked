@@ -34,7 +34,7 @@ const AddNewListing = () => {
         e.preventDefault();
         const listing = { listing_name, product_brand, product_description, category, product_price, product_size, product_quantity, product_image};
         console.log(listing);
-        fetch('http://localhost:8003/listings', {
+        fetch('http://localhost:8000/listings', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(listing)

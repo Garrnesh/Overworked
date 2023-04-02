@@ -11,6 +11,11 @@ import { GeoAlt } from "react-bootstrap-icons";
 import { Mailbox } from "react-bootstrap-icons";
 import { Hash } from "react-bootstrap-icons";
 
+import { auth } from "./Config/Firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
+import axios from "axios";
+
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
@@ -27,23 +32,62 @@ const BizSignUp = () => {
     const [postalCode, setpostalCode] = useState('');
     const [UenNumber, setUenNumber] = useState('');
     const [bizDescription, setbizDescription] = useState('');
+    const [donation, setDonation] = useState(false);
+
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const business = { userName, bizDescription, bizAddress, postalCode, UenNumber, emailId, mobilenumber, password};
+        const business = { 
+            userName: String(userName), 
+            shopDesc: String(bizDescription), 
+            shopAddr: String(bizAddress),
+            postalCode: String(postalCode), 
+            uen: String(UenNumber), 
+            phoneNumber: String(mobilenumber),
+            donation: String(donation)
+        };
         console.log(business);
-        fetch('http://localhost:8005/businesses', {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(business)
-        }).then(() => {
-            navigate('/login'); //will have to edit this later
-        })
+
+        createUserWithEmailAndPassword(auth, emailId, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                return user.getIdToken(true);
+            })
+            .then((idtoken) => {
+                /*fetch('http://localhost:8000/business', {
+                    method: 'POST',
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "idtoken": idtoken },
+                    body: JSON.stringify(business)
+                });*/
+                console.log(idtoken);
+                return axios.post(
+                    'http://localhost:8000/business', 
+                    JSON.stringify(business), 
+                    { headers: { 
+                        "Content-Type": "application/json",
+                        "idtoken": idtoken }
+                    }
+                );
+            })
+            .then ((response) => {
+                setError(null);
+                navigate("/viewlisting");
+            })
+            .catch((error) => {
+                setError(error.response.data);
+
+                console.log(error);
+            });
     }
   return (
     <div className="BizSignUp">
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <div className="text-center my-5">
             <img src= {thriftCrop} className = "img-responsive" height = "72"/>
         </div>
@@ -110,7 +154,24 @@ const BizSignUp = () => {
                         </span>
                         <input type="mobilenumber" className = "form-control" id = "mobilenumber" placeholder = "Enter mobile number" required value={mobilenumber} onChange = {(e) => setMobilenumber(e.target.value)}/>
                     </div>
-            
+
+                    <label htmlFor="category" className="form-label mt-3">Are you a Donation Point?</label>
+                    <div className="mt-1 container">
+                        <div className="form-check">
+                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" required value={donation} onChange = {() => setDonation("True")}/>
+                            <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                True
+                            </label>
+                        </div>
+
+                        <div className="form-check">
+                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" required value={donation} onChange = {() => setDonation("False")}/>
+                            <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                False
+                            </label>
+                        </div>
+                    </div>
+
                     <label htmlFor = "password" className="form-label"></label>
                     <div className="input-group">
                         <span className="input-group-text">
