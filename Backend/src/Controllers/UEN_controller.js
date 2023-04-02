@@ -26,4 +26,29 @@ UEN_router.get('/UEN/:UEN', async (req,res) => {
     }
 });
 
-module.exports = UEN_router;
+const checkUen = async (UEN) => {
+
+    const params = {
+        resource_id: '5ab68aac-91f6-4f39-9b21-698610bdf3f7',
+    };
+
+    const UEN_url = 'https://data.gov.sg/api/action/datastore_search' + '?resource_id=' + params.resource_id + '&q=' + UEN; 
+
+    try {
+        const verify = await axios.get(UEN_url);
+        const verify_JSON = verify.data;
+
+        if (verify_JSON.result.total == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch(err){
+        throw new Error(err.message);
+    }
+};
+
+//module.exports = UEN_router;
+module.exports = {
+    checkUen,
+}
