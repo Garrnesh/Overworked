@@ -4,7 +4,7 @@ const { Orders, Orderitems } = require("../firebase.js");
 const getOrder = async (req,res) => {
     try{
         const order_coll = await Orders.get();
-        const order = order_coll.docs.map((doc) => doc.data());
+        const order = order_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(order);
     }catch(err){
         res.status(500).send(err.message);
@@ -54,7 +54,7 @@ const removeOrder = async (order_id) => {
 
 const getOrderByBuyerUsername = async(buyer_username) => {
     const order_coll = await Orders.where('buyer_username', '==', buyer_username).get();
-    const order = order_coll.docs.map((doc) => doc.data());
+    const order = order_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(order.length>0){
         return order;
     }else{
@@ -65,7 +65,8 @@ const getOrderByBuyerUsername = async(buyer_username) => {
 //Orderitem_table
 const getOrderItems = async (req,res) => {
     try{
-        const order_item = await Orderitems.get();
+        const order_item_coll = await Orderitems.get();
+        const order_item = order_item_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(order_item.data());
     }catch(err){
         res.status(500).send(err.message);
@@ -113,7 +114,8 @@ const removeOrderItem = async (orderitem_id) => {
 };
 
 const getOrderItemByOrderId = async(order_id) => {
-    const order_item = await Orderitems.where('order_id', '==', order_id).get();
+    const order_item_coll = await Orderitems.where('order_id', '==', order_id).get();
+    const order_item = order_item_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(order_item.length>0){
         return order_item;
     }else{

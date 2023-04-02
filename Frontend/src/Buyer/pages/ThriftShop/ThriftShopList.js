@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -42,96 +42,49 @@ const ThriftShopList = ({ thriftshops }) => {
   console.log(latitude, longitude)
   console.log(thriftshop)
 
-  // async function Sort_location() {
-  //   const [distance_shops, setDistanceShops] = useState({});
-  //   thriftshop && thriftshop.map((thriftshop) => { 
-  //     const location_pre = {
-  //       "latitude_person": String(latitude),
-  //       "longitude_person": String(longitude),
-  //       "business_username": String(thriftshop.id),
-  //       "route_type": "drive"
-  //     };
-  //     try {
-  //       const response =  fetch('http://localhost:8000/locations/routes', {
-  //         method: 'POST',
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(location_pre)
-  //       });
-  //       if (response.ok) {
-  //         // console.log(response)
-  //         const response_json =  response.json();
-  //         console.log(response_json)
-  //         const distance = response_json["route_summary"]["total_distance"];
-  //         distance_shops[thriftshop.id] = distance;
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   })
-  //   setDistanceShops(distance_shops);
-  //   const sortedShops = distance_shops.sort((a, b) => a.distance - b.distance);
-  //   console.log(sortedShops)
-  // }
-
-  async function Sort_location() {
-    const [distance_shops, setDistanceShops] = useState({});
-      const location_pre = {
-        "latitude_person": latitude,
-        "longitude_person": longitude,
-        "business_username": "Bayan Hall",
-        "route_type": "drive"
-      };
-      try {
-        const response = await fetch('http://localhost:8000/locations/routes', {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(location_pre)
-        });
-        if (response.ok) {
-          // console.log(response)
-          const response_json = await response.json();
-          console.log(response_json)
-          // const distance = response_json["route_summary"]["total_distance"];
-          // distance_shops[thriftshop[i].id] = distance;
-        }
-      } catch (err) {
-        console.log(err);
-      }
+  async function getRoute(username){
+    const check = {
+      "latitude_person": String(latitude),
+      "longitude_person": String(longitude),
+      "business_username": username,
+      "route_type": "drive"
+    };
+    const response = await fetch('http://localhost:8000/locations/routes', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(check)
+    });
+    if(response.ok){
+      const response_json = await response.json()
+      const distance = response_json["route_summary"]["total_distance"]
+      return distance
     }
   }
-
-  // async function Sort_location() {
-  //   const [distance_shops, setDistanceShops] = useState({});
-  //   for (let i = 0; i < thriftshop.length; i++) {
-  //     const location_pre = {
-  //       "latitude_person": latitude,
-  //       "longitude_person": longitude,
-  //       "business_username": thriftshop[i].id,
-  //       "route_type": "drive"
-  //     };
-  //     try {
-  //       const response = await fetch('http://localhost:8000/locations/routes', {
-  //         method: 'POST',
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(location_pre)
-  //       });
-  //       if (response.ok) {
-  //         // console.log(response)
-  //         const response_json = await response.json();
-  //         console.log(response_json)
-  //         const distance = response_json["route_summary"]["total_distance"];
-  //         distance_shops[thriftshop[i].id] = distance;
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
+  // const [before_sort, setbefore_sort] = useState({})
+  // useEffect(() => {
+  //   if (latitude !== null && longitude !== null) {
+  //     for (let i=0; i<thriftshop.length; i++){
+  //       const username = thriftshop[i].id
+  //       setbefore_sort({...before_sort, username: getRoute(username)})
   //     }
+  //     console.log(before_sort)
   //   }
-  //   setDistanceShops(distance_shops);
-  //   const sortedShops = distance_shops.sort((a, b) => a.distance - b.distance);
-  //   console.log(sortedShops)
-  // }
+  // }, [latitude, longitude, thriftshop])
 
-  Sort_location();
+  const before_sort = {};
+  const sorting = [];
+
+  if (latitude !== null && longitude !== null) {
+    for (let i=0; i<thriftshop.length; i++){
+      const username = thriftshop[i].id
+      before_sort[username] = getRoute(username)
+      sorting[i] = getRoute(username)
+    }
+    const sorted = sorting.sort()
+    console.log(sorted)
+  }
+  
+
   return (
     <>
       {/* <h2 className="text-center text-info">Browse Thrift Shops</h2> */}

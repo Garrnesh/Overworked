@@ -586,8 +586,8 @@ router.delete('/cartitems/:cartitem_id', async(req,res) => {
 router.get('/cartitems/cart_id/:cart_id', async(req,res) => {
     const cart_id = req.params.cart_id;
     try{
-        const cart = await cartC.getCartItemByCartId(cart_id);
-        res.status(200).json(cart.data());
+        const cartitem = await cartC.getCartItemByCartId(cart_id);
+        res.status(200).json(cartitem);
     }catch(err){ 
         res.status(404).send("Cart item not found");
     }

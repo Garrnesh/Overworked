@@ -132,7 +132,8 @@ const removeCartItem = async (cartitem_id) => {
 };
 
 const getCartItemByCartId = async(cart_id) => {
-    const cartitem = await Cartitems.where('cart_id', '==', cart_id).get();
+    const cartitem_coll = await Cartitems.where('cart_id', '==', cart_id).get();
+    const cartitem = cartitem_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(cartitem.length>0){
         return cartitem;
     }else{
