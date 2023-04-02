@@ -8,6 +8,18 @@ const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
 const buyerC = require('../Controllers/BuyerProfile_controller');
 const addressC = require('../Controllers/Address_controller');
+//Generate random id
+
+function generateRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
 
 //Products routes
 router.get('/products', productC.getProducts);
@@ -22,7 +34,9 @@ router.get('/products/:product_id', async (req,res) => {
 });
 
 router.post('/products', async(req,res) => {
-    const { product_id, product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity} = req.body;
+    const { product_image, product_description, product_brand, listing_name, product_price, product_size, business_username, category, tags, product_quantity} = req.body;
+    const product_id = "product" + generateRandomString(20);
+    
     try{
         await productC.checkProductID(product_id);
     }catch(err){
@@ -145,7 +159,9 @@ router.get('/orders/:order_id', async(req,res) => {
 });
 
 router.post('/orders', async(req,res) => {
-    const { order_id, buyer_username, total_price, date, status } = req.body;
+    const { buyer_username, total_price, date, status } = req.body;
+    const order_id = "order" + generateRandomString(20);
+    
     try{
         await orderC.checkOrderID(order_id);
     }catch(err){
@@ -198,7 +214,8 @@ router.get('/orderitems/:orderitem_id', async(req,res) => {
 });
 
 router.post('/orderitems', async(req,res) => {
-    const { orderitem_id, order_id, product_id, quantity } = req.body;
+    const { order_id, product_id, quantity } = req.body;
+    const orderitem_id = "orderitem" + generateRandomString(20);
     try{
         await orderC.checkOrderItemID(orderitem_id);
     }catch(err){
@@ -269,7 +286,9 @@ router.get('/payments/:payment_id', async (req,res) => {
 });
 
 router.post('/payments', async(req,res) => {
-    const { payment_id, buyer_username, card_number, name_on_card, exp_date, cvc } = req.body;
+    const { buyer_username, card_number, name_on_card, exp_date, cvc } = req.body;
+    const payment_id = "pay" + generateRandomString(20);
+
     try{
         await paymentC.checkPaymentID(payment_id);
     }catch(err){
@@ -323,7 +342,8 @@ router.get('/address/:address_id', async (req,res) => {
 });
 
 router.post('/address', async(req,res) => {
-    const { address_id, buyer_username, address_str, postal_code } = req.body;
+    const { buyer_username, address_str, postal_code } = req.body;
+    const address_id = "address" + generateRandomString(20);
     try{
         await addressC.checkAddressID(address_id);
     }catch(err){
@@ -514,7 +534,9 @@ router.get('/cartitems/:cartitem_id', async(req,res) => {
 })
 
 router.post('/cartitems', async(req,res) => {
-    const { cartitem_id, cart_id, product_id, quantity } = req.body;
+    const { cart_id, product_id, quantity } = req.body;
+    const cartitem_id = "cartitem" + generateRandomString(20);
+    
     try{
         await cartC.checkCartItemID(cartitem_id);
     }catch(err){
