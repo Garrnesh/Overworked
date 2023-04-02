@@ -3,37 +3,50 @@ import useFetch from "../../../useFetch";
 import Carousel from 'react-bootstrap/Carousel';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup'
+import InputGroup from 'react-bootstrap/InputGroup';
+import axios from 'axios';
 import { useState } from 'react';
+
 const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, error, isPending } = useFetch('http://localhost:8000/products/' + id);
-  console.log(product);
+
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(false);
   // const[quantity, setQuantity] = useState(1);
   const [size, setSize] = useState('S');
 
   const handleAddToCart = () => {
-    const cartproduct = {
-      cartproduct_id: product.Listing_id,
-      cartproduct_name:  product.product_name,
-      cartproduct_soldat: product.sold_at,
-      cartproduct_quantity: 1,
-      cartproduct_size: size,
-      cartproduct_price: product.product_price,
-      cartproduct_image: product.product_image,
+
+    const cartitem = {
+        "cartitem_id": String(12),
+        "cart_id" : 'Sally',
+        "product_id": id,
+        "quantity": 1
 
     };
-    console.log(cartproduct);
-    fetch('http://localhost:8000/cart/', {
+    console.log("cartitem", cartitem);
+    fetch('http://localhost:8000/cartitems', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(cartproduct)
+      body: JSON.stringify(cartitem)
     }).then(() => {
       navigate(-1);
       window.location.reload(false);
+
+    }).catch((err) => {
+      console.log(err);
     })
+    /*axios.post('http://localhost:8000/cartitems', JSON.stringify(cartitem),
+    {headers: {"Content-Type": "application/json"}})
+    .then((res) => {
+      console.log(res);
+      navigate(-1);
+      window.location.reload(false);
+    }
+    ).catch((err) => {
+      console.log(err);
+    });*/
 
   }
   const handleButtonClick = (buttonId) => {
@@ -61,15 +74,10 @@ const ProductDetails = () => {
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {product && (
-        // <article>
-        //   <h2>{product.Product_name }</h2>
-        //   <p>Brand: { product.Product_brand }</p>
-        //   <div>{product.Product_description }</div>
-        //   <button onClick={handleClick}>delete</button>
-        // </article>
+
         <div className="container-lg">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-5 text-center d-none d-md-block ml-4">
+          <div className="row justify-content-center align-items-center">
+            <div className="col-md-5 text-center d-none d-md-block ml-4">
               <Carousel className = 'carousel-dark'>
                 <Carousel.Item>
                   <img
@@ -124,27 +132,9 @@ const ProductDetails = () => {
               <p className="product description">{product.product_description}</p>
 
               {/* // <!-- add button for sizes--> */}
-              <div>
-                <Form.Select value = {size} onChange = {(event) => setSize(event.target.value)}>
-                  <option value = "XS">
-                  <Button value = "XS" style={selectedButton === 1 ? selectedButtonStyle : buttonStyle} onClick={() => handleButtonClick(1)}>XS</Button>
-                  </option>
-                  <option value = "S">
-                    <Button value = "S" style={selectedButton === 2 ? selectedButtonStyle : buttonStyle} onClick={() => handleButtonClick(2)}>S</Button>
-                  </option>
-                  <option value = "M">
-                  <Button value = "M" style={selectedButton === 3 ? selectedButtonStyle : buttonStyle} onClick={() => handleButtonClick(3)}>M</Button>
-                  </option>
-                  <option value = "M">
-                  <Button value = "L" style={selectedButton === 4 ? selectedButtonStyle : buttonStyle} onClick={() => handleButtonClick(4)}>L</Button>
-                  </option>
-                  <option value = "L">
-                  <Button value = "XL" style={selectedButton === 5 ? selectedButtonStyle : buttonStyle} onClick={() => handleButtonClick(5)}>XL</Button>
-                  </option>
-                </Form.Select>   
-                <Button type="addtocart" className="btn btn-dark btn-block btn-lg col-12" style = {{margin: "10px"}} onClick ={handleAddToCart}>Add To Cart</Button>
-       
-              </div>
+
+              <Button type="addtocart" className="btn btn-dark btn-block btn-lg col-12" style = {{margin: "10px"}} onClick ={handleAddToCart}>Add To Cart</Button>
+
             </div>
           </div>
         </div>

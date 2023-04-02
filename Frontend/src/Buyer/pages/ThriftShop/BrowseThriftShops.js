@@ -1,9 +1,9 @@
 import React from 'react'
-import ThriftShopList from './ThriftShopList';
 import useFetch from '../../../useFetch';
+import ThriftShopList from './ThriftShopList';
 
 const BrowseThriftShops = () => {
-  const {error, isPending, data: thriftshops} = useFetch('http://localhost:8000/thriftshops')
+  const {error, isPending, data: thriftshops} = useFetch('http://localhost:8000/shops')
 
   return (
       <div className="BrowseTS">

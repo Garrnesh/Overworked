@@ -11,158 +11,186 @@ import { GlobeAmericas } from "react-bootstrap-icons";
 import useFetch from "../../../useFetch";
 
 
-const PayAddress = () => {
-    const [Name, setName] = useState('');
-    const [phoneNumber, setphoneNumber] = useState('');
-    const [pincode, setPincode] = useState('');
-    const [txtaddress, setTxtaddress] = useState('');
-    const [locality, setLocality] = useState('');
-    const [city, setCity] = useState('');
+const CheckoutPage = () => {
     const navigate = useNavigate();
 
-    const { data: addresses, isPending, error } = useFetch('http://localhost:8000/addresses');
-
-    const handleSubmit = (e) => {
-        const address_1 = { Name, phoneNumber, pincode, txtaddress, locality, city};
-        console.log(address_1);
-        fetch('http://localhost:8000/addresses/', {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(address_1)
-        })
-        window.location.reload(false);
+    const { data: addresses, error, isPending } = useFetch('http://localhost:8000/addresses');
+    const { data: payments } = useFetch('http://localhost:8000/payments');
+    const { data: orders } = useFetch('http://localhost:8000/cart');
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [chosenaddress, setChosenaddress] = useState({});
+    const [chosenpayment, setChosenpayment] = useState({});
+    
+    const total = orders ? orders.reduce((acc, item) => acc + parseFloat(item.cartproduct_price)*parseFloat(item.cartproduct_quantity), 0) : 0;
+    
+    //choose payment 
+    const handlePayment = (cardNumber, nameCard, expiryDate, cvv) => {
+        const payment = {
+            "cardNumber": cardNumber,
+            "nameCard": nameCard,
+            "expiryDate": expiryDate,
+            "CVV": cvv
+        };
+        setChosenpayment(payment);
+        console.log(payment);
     }
 
-    const handleClick = (id) => {
-        fetch('http://localhost:8000/addresses/' + id, {
-          method: 'DELETE'
+    // const total = orders.reduce((price, order) => price + parseFloat(order.cartproduct_price), 0);
+
+   
+    //choose address
+    const handleAddress = (pincode, txtaddress, locality, city) => {
+        const address = {
+            "pincode": pincode,
+            "txtaddress": txtaddress,
+            "locality": locality,
+            "city": city
+        };
+        setChosenaddress(address);
+        console.log(address);
+    }
+    //when button is pressed 
+    const handleConfirm = () => {
+        
+        const confirmation = {
+            "orders": orders,
+            "totalPrice": 300,
+            "address": chosenaddress,
+            "payment": chosenpayment
+        }
+        console.log(confirmation)
+        fetch('http://localhost:8000/confirmation/', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(confirmation)
+        }).then(() => {
+            navigate(-1);
+            window.location.reload(false);
         })
-        window.location.reload(false);
     }
 
-  return (
-    <div className="address-list border p-5 mb-5 container-sm">
-        {error && <div>{ error }</div> }
-        {isPending && <div>Loading...</div>}
-        <div className="text-center mb-2">
-            <h1>Choose Address</h1>
-        </div>
-
-        <div className="border rounded mt-3">
-            <div className="d-flex justify-content-between">
-                <h4 className="mt-3 ms-3 me-3 mb-3">
-                    Saved Addresses
-                </h4>
+    return (
+        <div className="address-list p-5 mb-5 container-sm">
+            {error && <div>{error}</div>}
+            {isPending && <div>Loading...</div>}
+            {/* //choose address */}
+            <div className="text-center mb-2 mt-2">
+                <h1>Checkout Details</h1>
             </div>
-            
-            {addresses && addresses.map(address => (
-                <div className="address-list" key={address.id}> 
-                    <div className="container mb-3">
-                        <div className="card border">
-                            <div className="card-body text-start py-4">
-                                <h5 className="card-title">{address.Name}</h5>
-                                <p className="card-text m-0">{address.txtaddress}</p>
-                                <p className="card-text m-0">{ address.pincode}</p>
-                                <p className="card-text m-0">{address.city}</p>
-                                <p className="card-text">Phone Number: {address.phoneNumber}</p>
-                            </div>
-                            <button onClick={() => {handleClick(address.id)}} className="container text-center border-top border-danger py-3 text-black">
-                                Remove
-                            </button>
+            <div className="container rounded mt-3">
+                <div className="row">
+                    <div className="rounded mt-3 col-6">
+                        <div className="d-flex ">
+                            <h4 className="mt-3 ms-3 me-3 mb-3">
+                                Choose Address
+                            </h4>
                         </div>
+
+
+                        {/* choose address */}
+                        <form>
+                            {addresses && addresses.map(address => (
+                                
+                                <div className="address-list" key={address.id}>
+                                    <div className="container mb-3">
+                                        <div className="card border">
+                                            <div className="row">
+                                                <div class="col-2">
+
+                                                    <label class="btn py-4 mt-5" for="address">
+                                                        <input name="address" type="radio" onClick={() => handleAddress(address.pincode, address.txtaddress, address.locality, address.city)} />
+                                                    </label>
+
+                                                </div>
+                                                <div className="card-body text-start py-4 col-10">
+                                                    <h5 className="card-title">{address.Name}</h5>
+                                                    <p className="card-text m-0">{address.txtaddress}</p>
+                                                    <p className="card-text m-0">{address.pincode}</p>
+                                                    <p className="card-text m-0">{address.city}</p>
+                                                    <p className="card-text">Phone Number: {address.phoneNumber}</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            ))}
+                        </form>
+
+                        {/* choose payment */}
+
+                        <div className="d-flex ">
+                            <h4 className="mt-3 ms-3 me-3 mb-3">
+                                Choose Payment
+                            </h4>
+                        </div>
+                        <form>
+                            {payments && payments.map(payment => (
+                                <div className="address-list" key={payment.id}>
+                                    <div className="container mb-3">
+                                        <div className="card border">
+                                            <div className="row">
+                                                <div class="col-2">
+                                                    <label class="btn py-4 mt-3" for="address">
+                                                        <input name="address" type="radio" onClick={() => handlePayment(payment.cardNumber, payment.nameCard, payment.expiryDate, payment.CVV)} />
+                                                    </label>
+                                                </div>
+                                                <div className="card-body text-start py-4 col-10">
+                                                    <h5 className="card-title">{payment.cardNumber}</h5>
+                                                    <p className="card-text m-0">{payment.nameCard}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            ))}
+                        </form>
+                    </div>
+                    <div className="rounded mt-3 col-6">
+                        <div className="mb-3 mt-2 border">
+                            <h4 className="mt-3 ms-3 me-3 mb-3">
+                                Order Summary
+                            </h4>
+
+                            {/* choose payment */}
+                            {orders && orders.map(order => (
+
+                                <div className="address-list" key={order.id}>
+                                    {/* <div>{totalPrice} += parseFloat({order.cartproduct_price})*parseFloat({order.cartproduct_quantity})</div> */}
+                                    <div className="container mb-3">
+                                        <div className="row">
+                                            <div className="col-sm-6">{order.cartproduct_name}</div>
+                                            <div className="col-sm-3">Qty: {order.cartproduct_quantity}</div>
+                                            <div className="col-sm-3">${order.cartproduct_price}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            ))}
+
+                            <div className="container mb-3">
+                                <div className="row">
+                                    <div className="col-sm-9 fw-bold">Total Price:</div>
+
+                                    <div className="col-sm-3">${total}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {/* <button type="checkout" class="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order</button> */}
+                        <Link to="/confirmationpage" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
+                        </Link>
                     </div>
                 </div>
+            </div>
 
-            ))}
 
-            
-            
+
         </div>
-
-
-        
-        <div className="text-center mb-2 mt-4">
-            <h3>Add New Address?</h3>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-            <div>
-                <h2 className="lead display-sm fw-bold">Contact Details</h2>
-            </div>
-            <div className="justify-content-around">
-                <div className ="border border-black p-2">
-                    <div className="row justify-content-center">
-                        <div className="col text-center">
-                            <label htmlFor="name" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <PersonCircle/>
-                                </span>
-                                <input type="name" className="form-control" id="name" placeholder="Enter Name" required value={Name} onChange = {(e) => setName(e.target.value)}/>
-                            </div>
-                            <label htmlFor="phoneNumber" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <Telephone/>
-                                </span>
-                                <input type="number" className="form-control" id="phoneNumber" placeholder="Enter Phone Number" required value={phoneNumber} onChange = {(e) => setphoneNumber(e.target.value)}/>
-                            </div>
-    
-                        </div>
-                    </div>
-                </div>   
-            </div>
-    
-            <div className="mt-4">
-                <h2 className="lead display-sm fw-bold">Address Details</h2>
-            </div>
-            <div className="justify-content-around">
-                <div className ="border border-black p-2">
-                    <div className="row justify-content-center">
-                        <div className="col text-center">
-                            <label htmlFor="pincode" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <Hash/>
-                                </span>
-                                <input type="number" className="form-control" id="pincode" placeholder="Enter Pin Code" required value={pincode} onChange = {(e) => setPincode(e.target.value)}/>
-                            </div>
-                            <label htmlFor="address" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <GeoAlt/>
-                                </span>
-                                <input type="text" className="form-control" id="address" placeholder="Address(House No, Building, Street, Area)" required value={txtaddress} onChange = {(e) => setTxtaddress(e.target.value)}/>
-                            </div>
-                            <label htmlFor="locality" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <Map/>
-                                </span>
-                                <input type="text" className="form-control" id="locality" placeholder="Locality" required value={locality} onChange = {(e) => setLocality(e.target.value)}/>
-                            </div>
-                            <label htmlFor="city" className="form-label"></label>
-                            <div className="input-group">
-                                <span className="input-group-text">
-                                    <GlobeAmericas/>
-                                </span>
-                                <input type="text" className="form-control" id="city" placeholder="City" required value={city} onChange = {(e) => setCity(e.target.value)}/>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>   
-            </div>
-            
-            <div className= "mt-5 text-center">
-                <button className= "btn btn-outline-primary justify-content-center">
-                    Add Address
-                </button>
-            </div>
-        </form>
-        
-    </div>
-  );
+    );
 }
- 
-export default PayAddress;
+
+
+export default CheckoutPage;
