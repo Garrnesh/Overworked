@@ -32,7 +32,7 @@ const PortalNavbar = () => {
         <React.Fragment>
         <Navbar bg="light" expand="lg">
         <Container>
-            <Navbar.Brand href="/home"><img src={logo} className="img-responsive" height="144" /></Navbar.Brand>
+        <Navbar.Brand href="/home"><img src={logo} className="img-responsive" height="72" /></Navbar.Brand>
             {/* <Navbar.Brand href="/home">ThriftIt</Navbar.Brand> */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

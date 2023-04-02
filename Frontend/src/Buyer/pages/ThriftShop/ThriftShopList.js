@@ -9,6 +9,7 @@ import Card from 'react-bootstrap/Card';
 const ThriftShopList = ({ thriftshops }) => {
 
   const [thriftshop, setThriftShop] = useState(thriftshops);
+  
   const filterResult = (dp_ornot) => {
     const result = thriftshops.filter((curData) => {
       return curData.donation === dp_ornot;
@@ -25,7 +26,7 @@ const ThriftShopList = ({ thriftshops }) => {
         <div className="row mt-5 mx-2">
           <div className="col-md-3">
             <h2 className="text">Filter Thrift Shops</h2>
-            <button className="btn btn-outline-dark w-100 mb-4" onClick = {()=>filterResult('true')}>Donation Point</button>
+            <button className="btn btn-outline-dark w-100 mb-4" onClick = {()=>filterResult('True')}>Donation Point</button>
             <button className="btn btn-outline-dark w-100 mb-4" onClick = {() => setThriftShop(thriftshops)}>All Thrift Shops</button>
           </div>
 
@@ -57,7 +58,7 @@ const ThriftShopList = ({ thriftshops }) => {
         </div>
       </div>
 
-      );
+  
     </>
   )
 }
