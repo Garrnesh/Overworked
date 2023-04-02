@@ -79,7 +79,16 @@ const getRoute = async (latitude_person, longitude_person, latitude_business, lo
         // const token = await getToken();
         const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwMDc1LCJ1c2VyX2lkIjoxMDA3NSwiZW1haWwiOiJ0aHJpZnRpdGF1dGhAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjgwMzMxMzgzLCJleHAiOjE2ODA3NjMzODMsIm5iZiI6MTY4MDMzMTM4MywianRpIjoiZjE0OTdmYjgwYjE4ZDYzY2ExZjkyMWZlZTE5M2Q2ZTgifQ.ZKxXQpiTRX-zIPCZq50aRXVoryyLGnOtj5YUCNvRfx8'
         if (route_type != "pt"){
-            const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`);
+            console.log(latitude_person);
+            console.log(longitude_person);
+            console.log(latitude_business);
+            console.log(longitude_business);
+            console.log(route_type);
+            console.log(token);
+            const url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`
+            console.log(url);
+            const route_unfiltered = await fetch(url);
+            console.log("Made it mast fetch")
             const route_unfiltered_json = route_unfiltered.data;
             console.log(route_unfiltered_json);
             return route_unfiltered_json;
