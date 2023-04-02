@@ -12,12 +12,11 @@ const getShops = async (req,res) => {
     }
 };
 
-const getShopByBusinessUsername = async (busines_username) => { 
-    const shop = await Shops.doc(busines_username).get();
+const getShopByBusinessUsername = async (business_username) => { 
+    const shop = await Shops.doc(business_username).get();
     if(shop.exists){
         return shop;
-    }
-    else{
+    }else{
         throw new Error("This shop does not exist!")
     }
 };

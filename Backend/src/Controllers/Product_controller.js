@@ -126,4 +126,5 @@ module.exports = {
     getProductByBusinessUsername,
     removeProductByBusinessUsername,
     getProductByProductType,
+    updateProductQuantity,
 }

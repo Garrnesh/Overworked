@@ -105,7 +105,7 @@ router.delete('/products/business_username/:business_username', async(req,res) =
 });
 
 router.get('/products/category/:category', async(req,res) => {
-    const { category } = req.params.category;
+    const { category } = req.params;
     try{
         const product = await productC.getProductByProductType(category);
         res.status(200).json(product);
@@ -366,7 +366,7 @@ router.get('/address/buyer_username/:buyer_username', async(req,res) => {
 
 //Shop routes
 router.get('/shops', shopC.getShops);
-router.get('/shop/:business_username', async(req,res) => {
+router.get('/shops/:business_username', async(req,res) => {
     const business_username = req.params.business_username;
     try{
         const shop = await shopC.getShopByBusinessUsername(business_username);
@@ -501,7 +501,7 @@ router.delete('/carts/buyer_username/:buyer_username', async(req,res) => {
     }
 });
 
-router.get('cartitems', cartC.getCartItems);
+router.get('/cartitems', cartC.getCartItems);
 
 router.get('/cartitems/:cartitem_id', async(req,res) => {
     const cartitem_id = req.params.cartitem_id;
@@ -787,3 +787,68 @@ module.exports = router;
 //         }
 //     }
 // });
+
+
+// const [filteredProducts, setFilteredProducts] = useState([]);
+
+// const FilterResult = async (categoryname) => {
+//   const category = categoryname.toUpperCase();
+//   console.log('test1');
+//   try {
+//     const response = await fetch("http://localhost:8000/products/category/" + category, {
+//       method: 'GET',
+//     });
+//     const response_Data = await response.json(); 
+//     console.log(response_Data);
+//     setFilteredProducts(response_Data);
+//     setIsfilteredEffect(isFilterEffect => !isFilterEffect);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   console.log(filteredProducts);
+// };
+
+// import React, { useState } from "react";
+// const [mapSrc, setMapSrc] = useState("");
+// const returnMap = async(business_username) => {
+//     try{
+//         const response = await fetch("http://localhost:8000/locations/" + business_username, {
+//             method: 'GET',
+//         });
+//         const response_json = await response.json()
+//         const latitude = response_json["latitude"]
+//         const longitude = response_json["longitude"]
+//         const postal_code = response_json["postal_code"]
+//         const url = `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal${postal_code}&zoom=17&height=512&width=512&points=[${latitude}, ${longitude},"255,255,178","A"]`
+//         return url
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+
+
+
+
+// fetch(`https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal${postal_code}&zoom=17&height=512&width=512&points=[${latitude}, ${longitude},"255,255,178","A"]`)
+
+
+
+// async function fetchMap() {
+//     try {
+//     const response = await fetch("http://localhost:8000/locations/" + id, {
+//         method: 'GET',
+//     });
+//     const response_json = await response.json(); // await is needed here
+//     const latitude = response_json["latitude"];
+//     const longitude = response_json["longitude"];
+//     const postal_code = response_json["postal_code"];
+//     console.log(latitude, longitude, postal_code);
+//     const url = `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal=${postal_code}&zoom=17&height=512&width=512&points=[${latitude},${longitude},"255,255,178","A"]`;
+//     // const mapResponse = await fetch(https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&postal=636960&zoom=17&height=512&width=512&points=[1.35381999263169,%20103.688242893188,%22255,255,178%22,%22A%22]);
+//     return url
+//     }catch(err) {
+//         console.log(err);
+//     }
+// }
+
+  

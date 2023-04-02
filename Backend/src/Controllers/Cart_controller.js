@@ -71,8 +71,9 @@ const removeCartByBuyerUsername = async(buyer_username) => {
 //Cartitem table
 const getCartItems = async (req,res) => {
     try{
-        const cartitem = await Cartitems.get();
-        res.status(200).json(cartitem.data());
+        const cart_coll = await Cartitems.get();
+        const cartitem = cart_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        res.status(200).json(cartitem);
     }catch(err){
         res.status(500).send(err.message);
     }
