@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddNewPayment = () => {
     const [card_number, setCardNumber] = useState('');
-    const [card_on_name, setNameCard] = useState('');
+    const [name_on_card, setNameCard] = useState('');
     const [exp_date, setExpiryDate] = useState('');
     const [cvc, setCVC] = useState('');
     const [buyer_username, setusername] = useState(localStorage.getItem('username'));
@@ -12,7 +12,7 @@ const AddNewPayment = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      const payment = { card_number, card_on_name, exp_date, cvc};
+      const payment = { buyer_username, card_number, name_on_card, exp_date, cvc};
       console.log(payment);
       fetch('http://localhost:8000/payments/', {
         method: 'POST',
@@ -20,7 +20,7 @@ const AddNewPayment = () => {
         body: JSON.stringify(payment)
       })
       .then(() => {
-          navigate(-1);
+          //navigate(-1);
           window.location.reload(false);
       })
     }
@@ -66,7 +66,7 @@ const AddNewPayment = () => {
                     <div className="d-flex justify-content-center">
                       <div className="w-50 mb-2 align-items-center justify-content-center">
                         <label htmlFor="card_on_name" className="form-label mb-1">Name on Card</label>
-                        <input type="text" className="form-control" id="card_on_name" placeholder="Full Name" required value={card_on_name} onChange = {(e) => setNameCard(e.target.value)}/>
+                        <input type="text" className="form-control" id="card_on_name" placeholder="Full Name" required value={name_on_card} onChange = {(e) => setNameCard(e.target.value)}/>
                       </div>
                     </div>
                     <div className="d-flex justify-content-center">
@@ -79,7 +79,7 @@ const AddNewPayment = () => {
                         </div>
                         <div className="col-md-6">
                           <div className="mb-2 align-items-center justify-content-center">
-                            <label htmlFor="cvc" className="form-label mb-1">CVV</label>
+                            <label htmlFor="cvc" className="form-label mb-1">CVC</label>
                             <input type="text" className="form-control" id="cvc" placeholder="CVC" required value={cvc} onChange = {(e) => setCVC(e.target.value)}/>
                           </div>
                         </div>

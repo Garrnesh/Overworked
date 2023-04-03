@@ -19,7 +19,7 @@ const AddAddress = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(address)
         }).then(() => {
-            //navigate(); //will have to edit this later
+            navigate(-1); //will have to edit this later
         })
     }
 

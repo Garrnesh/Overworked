@@ -61,7 +61,7 @@ const PayAddress = (props) => {
         
         <div className="text-center mb-2 mt-4">
             <button>
-                <Link>
+                <Link to = "/addnewaddress">
                     <h3>Add New Address?</h3>
                 </Link>
             </button>
