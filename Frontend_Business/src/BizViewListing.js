@@ -7,8 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
-import getCurrentUser from "./getCurrentUser";
-
 
 const BizViewListing = (props) => {
     const [listing_name, setlistingName] = useState('');
@@ -21,15 +19,16 @@ const BizViewListing = (props) => {
     const [product_size, setSizeofProduct] = useState('');
     const [product_quantity, setQuantityofProduct] = useState('');
     const [product_image, setproductImage] = useState('');
+    const [tags, setTags] = useState('');
 
     const navigate = useNavigate();
 
-    const username = getCurrentUser();
-    console.log(username);
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    //console.log(username);
 
-    const { data: listings, isPending, error } = useFetch('http://localhost:8003/listings');
+    const { data: listings, isPending, error } = useFetch('http://localhost:8000/products/business_username/' + username);
 
-    const handleSubmit = (e) => {
+    /*const handleSubmit = (e) => {
         e.preventDefault();
         const listing = { listing_name, product_brand, product_description, category, product_price, product_size, product_quantity, product_image};
         fetch('http://localhost:8000/listings', {
@@ -39,10 +38,10 @@ const BizViewListing = (props) => {
         }).then(() => {
             navigate('/viewlisting'); //will have to edit this later
         })
-    }
+    }*/
 
     const handleClick = (id) => {
-        fetch('http://localhost:8003/listings/' + id, {
+        fetch('http://localhost:8000/products/' + id, {
           method: 'DELETE'
         })
         window.location.reload(false);
@@ -65,11 +64,7 @@ const BizViewListing = (props) => {
                             <div className="card-body text-start py-4">
                                 <div className="row d-flex justify-content-between align-items-center">
                                     <div className="col-md-2 col-lg-2 col-xl-2">
-                                        <button>
-                                            <Link to="/">
-                                                <img src={listing.imageFile} className="img-fluid rounded-3" alt="ProductImage"/>
-                                            </Link>
-                                        </button>
+                                        <img src={listing.product_image} className="img-responsive img-fluid rounded-3" alt="ProductImage"/>
                                     </div>
                     
                                     <div className="col-md-3 col-lg-3 col-xl-3">

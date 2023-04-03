@@ -46,7 +46,8 @@ const addProduct = async (product_id, product_image, product_description, produc
             tags: tags,
             product_quantity: product_quantity,});
     }catch(err){
-        throw new Error("Unable to create new product");
+        throw new Error(err.message);
+        //throw new Error("Unable to create new product");
     }
 };
 
@@ -90,7 +91,8 @@ const removeProductByBusinessUsername = async(business_username) => {
     try{
         await Products.where('business_username', '==', business_username).delete();
     }catch(err){
-        throw new Error("Unable to delete product");
+        throw new Error(err.message);
+        //throw new Error("Unable to delete product");
     }
 }
 

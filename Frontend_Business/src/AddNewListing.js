@@ -8,6 +8,8 @@ import { CurrencyDollar } from "react-bootstrap-icons";
 import { UniversalAccess} from "react-bootstrap-icons";
 import { BagPlus} from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { Bag } from "react-bootstrap-icons";
+import axios from 'axios';
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,19 +29,33 @@ const AddNewListing = () => {
     const [product_size, setSizeofProduct] = useState('');
     const [product_quantity, setQuantityofProduct] = useState('');
     const [product_image, setproductImage] = useState('');
+    const [tags, setTags] = useState('');
+
+    const [business_username, setUsername] = useState(localStorage.getItem('username'));
+    //console.log(business_username);
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const listing = { listing_name, product_brand, product_description, category, product_price, product_size, product_quantity, product_image};
-        console.log(listing);
-        fetch('http://localhost:8000/listings', {
+        const listing = { product_image, product_description, product_brand, listing_name, product_price, 
+            product_size, business_username, category, tags, product_quantity};
+        console.log(JSON.stringify(listing));
+        /*fetch('http://localhost:8000/products', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(listing)
         }).then(() => {
-            //navigate('/bizviewlisting'); //will have to edit this later
+            navigate('/viewlisting');
+        }).catch((err) => {
+            console.log(err);
+        })*/
+        axios.post('http://localhost:8000/products', JSON.stringify(listing), {headers: { "Content-Type": "application/json" }})
+        .then((res) => {
+            console.log(res);
+            navigate('/viewlisting');
+        }).catch((err) => {
+            console.log(err);
         })
     }
 
@@ -65,7 +81,6 @@ const AddNewListing = () => {
                         <input type="text" className = "form-control" id = "productname" placeholder = "Enter product name" required value={listing_name} onChange = {(e) => setlistingName(e.target.value)}/>
                     
                     </div>
-
             
                     <label htmlFor = "productbrand" className="form-label mt-1"></label>
                     <div className="input-group">
@@ -73,6 +88,14 @@ const AddNewListing = () => {
                             <Envelope/>
                         </span>
                         <input type="text" className = "form-control" id = "productbrand" placeholder = "Enter brand of the product" required value={product_brand} onChange = {(e) => setproductBrand(e.target.value)}/>
+                    </div>
+
+                    <label htmlFor = "productTag" className="form-label"></label>
+                    <div className="input-group">
+                        <span className="input-group-text">
+                            <Bag/>
+                        </span>
+                        <input type="text" className = "form-control" id = "productTag" placeholder = "Enter product identifier" required value={tags} onChange = {(e) => setTags(e.target.value)}/>                    
                     </div>
 
                     <div className ="form-floating mt-2">
@@ -153,11 +176,13 @@ const AddNewListing = () => {
                         
                     </div>
                     
-                    <label className="custom-file-label mb-2 fw-bold" htmlFor="customFile">Upload image of product</label>
-                    <div className="custom-file mb-4">
-                        <div>
-                            <input type="file" className="custom-file-input mb-4" id="customFile" required value={product_image} onChange = {(e) => setproductImage(e.target.value)}/>
-                        </div>
+                    <label htmlFor = "productimage" className="form-label"></label>
+                    <div className="input-group">
+                        <span className="input-group-text">
+                            <BagPlus/>
+                        </span>
+                        <input type="text" className = "form-control" id = "productimage" placeholder = "Upload image link" required value={product_image} onChange = {(e) => setproductImage(e.target.value)}/>
+                    
                     </div>
 
                     
