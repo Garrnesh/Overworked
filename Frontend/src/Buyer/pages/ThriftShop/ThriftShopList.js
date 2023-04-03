@@ -76,6 +76,7 @@ const ThriftShopList = ({ thriftshops }) => {
     if (latitude !== null && longitude !== null) {
       for (let i=0; i<thriftshop.length; i++){
         const username = thriftshop[i].id
+        console.log("testcheck1")
         before_sort[username] = await getRoute(username)
       }
       const sortedArray = Object.entries(before_sort).sort((a, b) => a[1] - b[1]);
@@ -88,6 +89,7 @@ const ThriftShopList = ({ thriftshops }) => {
           }
         }
       }
+      console.log("testcheck")
       setThriftShop(thriftshopsorted);
       // setIsLoading(false);
     }
