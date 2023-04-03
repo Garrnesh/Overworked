@@ -31,14 +31,16 @@ const checkOrderID = async (order_id) => {
     }
 };
 
-const addOrder = async (order_id, buyer_username, total_price, date, status) => {
+const addOrder = async (order_id, order_address, order_card, buyer_username, date, status, total_price) => {
     const order = Orders.doc(order_id);
     try{
         await order.set({
+            order_address: order_address,
+            order_card: order_card, 
             buyer_username: buyer_username, 
-            total_price: total_price, 
             date: date, 
-            status: status});
+            status: status,
+            total_price: total_price});
     }catch(err){
         throw new Error("Unable to create new order");
     }
