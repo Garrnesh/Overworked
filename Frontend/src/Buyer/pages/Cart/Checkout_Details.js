@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 // import logo from './thriftitlogo.png'
 import { PersonCircle } from "react-bootstrap-icons";
 import { Telephone } from "react-bootstrap-icons";
@@ -13,91 +13,128 @@ import useFetch from "../../../useFetch";
 
 
 const CheckoutPage = (props) => {
-    const {productItemss} = props; 
     const navigate = useNavigate();
-
-    const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address');
-    const { data: payments } = useFetch('http://localhost:8000/payments');
-
     const [name, setName] = useState("Teddy");
-    const { data: orderitems} = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    const { data: orderitems } = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    //THIS HAS TO ALL CHANGE ONCE WE CAN ACCESS USER SPECIFIC
+    const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/John35');
+    const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/Jenri59');
+    //TO REPLACE ONCE WE STANDARDISE
+    // const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/' + name);
+    // const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/' + name);
+    //END REPLACEMENT
+    const [orderAddress, setorderAddress] = useState('');
+    const [card, setCard] = useState('');
+    //generate random string for order
+    function generateRandomString(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 
-    const [totalPrice, setTotalPrice] = useState(0);
-    // const [chosenaddress, setChosenaddress] = useState("");
-    // const [chosenpayment, setChosenpayment] = useState("");
-        
-   const [orderAddress, setorderAddress] = useState('');
-   const [card, setCard] = useState('');
+    const [orderID, setOrderID] = useState("order" + generateRandomString(20));
+    console.log(orderID);
+    //generate date of order
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString();
+    //end of date of order
+    console.log(formattedDate);
+    const handleConfirm = () => {
 
-    // const handleConfirm = () => {
-        
-    //     const confirmation = {
-    //         // "orders": orders,
-    //         // "totalPrice": total,
-    //         "address": chosenaddress,
-    //         "payment": chosenpayment
-    //     }
-    //     console.log(confirmation)
-    //     fetch('http://localhost:8000/confirmation/', {
-    //         method: 'POST',
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(confirmation)
-    //     }).then(() => {
-    //         navigate(-1);
-    //         window.location.reload(false);
-    //     })
-    // }
+        const confirmation = {
+            "order": orderID,
+            "order_address": orderAddress,
+            "order_card": card,
+            "buyer_username": "Teddy",
+            "date": formattedDate,
+            "status": "Processing",
+            "total_price": total
+
+        }
+        console.log(confirmation)
+        fetch('http://localhost:8000/orders/', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(confirmation)
+        }).then(() => {
+            navigate(-1);
+            window.location.reload(false);
+        })
+
+    }
     //to mask the credit card details for safety
     const maskNumber = (number) => {
         const lastFourDigits = number.slice(-4);
         const maskedNumber = "*".repeat(number.length - 4) + lastFourDigits;
         return maskedNumber;
-      };
+    };
 
-      //show order details
-      const [productItems, setProductItems] = useState([]);
+    //show order details
+    const [productItems, setProductItems] = useState([]);
 
-      async function addProductToCart(item) {
+    async function addProductToCart(item) {
         try {
-          const response = await fetch("http://localhost:8000/products/" + item.product_id, {
-            method: "GET"
-          });
-          const productData = await response.json();
-          const newProductItem = {
-            Pid :  item.product_id,
-            Pimage: productData.product_image,
-            Productname: productData.listing_name,
-            Productprice: productData.product_price,
-            Productsize: productData.product_size,
-            cart_id: item.id,
-            quantity: item.quantity
-          };
-          setProductItems(prevItems => [...prevItems, newProductItem]);
+            const response = await fetch("http://localhost:8000/products/" + item.product_id, {
+                method: "GET"
+            });
+            const productData = await response.json();
+            const newProductItem = {
+                Pid: item.product_id,
+                Pimage: productData.product_image,
+                Productname: productData.listing_name,
+                Productprice: productData.product_price,
+                Productsize: productData.product_size,
+                cart_id: item.id,
+                quantity: item.quantity
+            };
+            setProductItems(prevItems => [...prevItems, newProductItem]);
         } catch (err) {
-          console.log(err);
+            console.log(err);
         }
-      }
-      const total = productItems ? productItems.reduce((acc, item) => acc + parseFloat(item.Productprice)*parseFloat(item.quantity), 0) : 0;
+    }
+    const addProductToOrder = (item) => {
+        
+        const newProductItem = {
+          "order_id" : orderID,
+          "product_id": item.product_id,
+          "quantity": item.quantity,
+        }
+        fetch('http://localhost:8000/orderitems/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newProductItem)
+      }).then(() => {
+          navigate(-1); //will have to edit this later
+      })
 
-      const handleAddress =(id) =>{
+      }
+
+    const total = productItems ? productItems.reduce((acc, item) => acc + parseFloat(item.Productprice) * parseFloat(item.quantity), 0) : 0;
+
+    const handleAddress = (id) => {
         setorderAddress(id);
-      }
+    }
 
-      const handlePayment =(id) =>{
+    const handlePayment = (id) => {
         setCard(id);
-      }
+    }
 
-      console.log(orderAddress, card)
-      
-      useEffect(() => {
+    console.log(orderAddress, card)
+
+    useEffect(() => {
         if (orderitems) {
-          orderitems.forEach(item => {
-            addProductToCart(item);
-          });
+            orderitems.forEach(item => {
+                addProductToCart(item);
+                addProductToOrder(item);
+            });
         }
-      }, [orderitems]);
-      
-      console.log(productItems);
+    }, [orderitems]);
+
+    console.log(productItems);
 
     return (
         <div className="address-list p-5 mb-5 container-sm">
@@ -120,21 +157,21 @@ const CheckoutPage = (props) => {
                         {/* choose address */}
                         <form>
                             {addresses && addresses.map(address => (
-                                
+
                                 <div className="address-list">
                                     <div className="container mb-3">
                                         <div className="card border">
                                             <div className="row">
                                                 <div class="col-2">
                                                     <label class="btn py-4 mt-2" for="address">
-                                                        <input name="address" type="radio" onClick={() => handleAddress(address.address_id)} />
+                                                        <input name="address" type="radio" onClick={() => handleAddress(address.id)} />
                                                         {/* <input name="address" type="radio"/> */}
 
                                                     </label>
 
                                                 </div>
                                                 <div className="card-body text-start py-4 col-10">
-                                                    <p className="card-text m-0">{address.address_id}</p>
+                                                    {/* <p className="card-text m-0">{address.id}</p> */}
                                                     <p className="card-text m-0">{address.address}</p>
                                                     <p className="card-text m-0">{address.postal_code}</p>
                                                     {/* <p className="card-text m-0">{address.city}</p> */}
@@ -164,12 +201,12 @@ const CheckoutPage = (props) => {
                                             <div className="row">
                                                 <div class="col-2">
                                                     <label class="btn py-4 mt-3" for="address">
-                                                        <input name="address" type="radio" onClick={() => handlePayment(payment.payment_id)} />
+                                                        <input name="address" type="radio" onClick={() => handlePayment(payment.id)} />
 
                                                     </label>
                                                 </div>
                                                 <div className="card-body text-start py-4 col-10">
-                                                    <h5 className="card-title">{payment.payment_id}</h5>
+                                                    {/* <h5 className="card-title">{payment.id}</h5> */}
                                                     <h5 className="card-title">{payment.name_on_card}</h5>
                                                     <p className="card-text m-0">{maskNumber(payment.card_number)}</p>
                                                 </div>
@@ -211,9 +248,12 @@ const CheckoutPage = (props) => {
                             </div>
 
                         </div>
-                        <button type="checkout" class="btn btn-secondary btn-dark btn-block btn-lg col-12">Proceed to Order</button>
-                        {/* <Link to="/confirmationpage" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
+                        {/* <button type="checkout" class="btn btn-secondary btn-dark btn-block btn-lg col-12">Proceed to Order</button> */}
+                        {/* <Link to={{ pathname: "/confirmationpage", state: { prop: orderID } }} className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
                         </Link> */}
+                        <Link to="/confirmation" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
+                        </Link>
+
                     </div>
                 </div>
             </div>

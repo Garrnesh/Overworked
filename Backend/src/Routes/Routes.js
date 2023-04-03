@@ -159,7 +159,7 @@ router.get('/orders/:order_id', async(req,res) => {
 });
 
 router.post('/orders', async(req,res) => {
-    const { order_address, order_card, buyer_username, date, status, total_price } = req.body;
+    const { buyer_username, total_price, date, status } = req.body;
     const order_id = "order" + generateRandomString(20);
     
     try{
@@ -169,7 +169,7 @@ router.post('/orders', async(req,res) => {
     }
 
     try{
-        await orderC.addOrder(order_id, order_address, order_card, buyer_username, date, status, total_price);
+        await orderC.addOrder(order_id, buyer_username, total_price, date, status);
         res.status(201).send('Order has been added to database');
     }catch(err){
         res.status(500).send(err.message);
