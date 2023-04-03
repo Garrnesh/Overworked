@@ -19,7 +19,7 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
 
     const cartitem = {
-        "cart_id" : 'Pooh',
+        "cart_id" : 'Teddy',
         "product_id": id,
         "quantity": 1,
     };

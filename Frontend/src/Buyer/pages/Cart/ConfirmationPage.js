@@ -16,7 +16,6 @@ const ConfirmationPage = () => {
     const { data: orderitems} = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
     // const {data: orderDetails} = useFetch('http://localhost:8000/orders/buyer_username/' + name)
     const [totalPrice, setTotalPrice] = useState(0);
-    const navigate = useNavigate();
     
     const [productItems, setProductItems] = useState([]);
 
@@ -98,9 +97,9 @@ const ConfirmationPage = () => {
                             </div>
                         {/* address details */}
                         {/* <div className="mb-3 mt-2 border"> */}
-                        <h4 className="text-center mt-3 ms-3 me-3 mb-3">
+                        {/* <h4 className="text-center mt-3 ms-3 me-3 mb-3">
                                 Delivery Details
-                            </h4>
+                            </h4> */}
 
                             {/* choose payment */}
                             {/* {address && address.map(ad => (

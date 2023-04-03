@@ -35,7 +35,6 @@ const CheckoutPage = (props) => {
         }
         return result;
     }
-
     const [orderID, setOrderID] = useState("order" + generateRandomString(20));
     console.log(orderID);
     //generate date of order
@@ -44,9 +43,8 @@ const CheckoutPage = (props) => {
     //end of date of order
     console.log(formattedDate);
     const handleConfirm = () => {
-
         const confirmation = {
-            "order": orderID,
+            "order_id": orderID,
             "order_address": orderAddress,
             "order_card": card,
             "buyer_username": "Teddy",
@@ -61,7 +59,6 @@ const CheckoutPage = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(confirmation)
         }).then(() => {
-            navigate(-1);
             window.location.reload(false);
         })
 
@@ -96,22 +93,33 @@ const CheckoutPage = (props) => {
             console.log(err);
         }
     }
-    const addProductToOrder = (item) => {
-        
-        const newProductItem = {
-          "order_id" : orderID,
-          "product_id": item.product_id,
-          "quantity": item.quantity,
-        }
-        fetch('http://localhost:8000/orderitems/', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProductItem)
-      }).then(() => {
-          navigate(-1); //will have to edit this later
-      })
 
-      }
+    async function addProductToOrder(item) {
+        console.log("item", item.product_id)
+        const newProductItem = {
+            order_id: orderID, // make sure that orderID is set correctly
+            product_id: item.product_id,
+            quantity: item.quantity,
+        }
+        try {
+            const response = await fetch('http://localhost:8000/orderitems/', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newProductItem)
+            });
+            if (response.ok) {
+                // clear the newProductItem object after the POST request is successful
+                newProductItem.order_id = null;
+                newProductItem.product_id = null;
+                newProductItem.quantity = null;
+                console.log('POST request successful');
+            } else {
+                console.log('POST request failed');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const total = productItems ? productItems.reduce((acc, item) => acc + parseFloat(item.Productprice) * parseFloat(item.quantity), 0) : 0;
 
@@ -123,18 +131,19 @@ const CheckoutPage = (props) => {
         setCard(id);
     }
 
-    console.log(orderAddress, card)
-
+    console.log(orderAddress, card);
     useEffect(() => {
         if (orderitems) {
             orderitems.forEach(item => {
+                //COMMENT OUT FIRST COS I DOING OTHER THINGS
+                // addProductToOrder(item);
+                console.log("product", item.product_id);
                 addProductToCart(item);
-                addProductToOrder(item);
             });
         }
     }, [orderitems]);
 
-    console.log(productItems);
+
 
     return (
         <div className="address-list p-5 mb-5 container-sm">
@@ -147,12 +156,14 @@ const CheckoutPage = (props) => {
             <div className="container rounded mt-3">
                 <div className="row">
                     <div className="rounded mt-3 col-6">
-                        <div className="d-flex ">
+                        <div className="d-flex">
                             <h4 className="mt-3 ms-3 me-3 mb-3">
-                                Choose Address
+                                Choose Address 
                             </h4>
+                            <h4><Link to="/addnewaddress" className="btn btn-sm fw-bold btn-outline-primary">+ ADD NEW ADDRESS</Link></h4>
+                            
                         </div>
-
+                        
 
                         {/* choose address */}
                         <form>
@@ -191,6 +202,9 @@ const CheckoutPage = (props) => {
                         <div className="d-flex ">
                             <h4 className="mt-3 ms-3 me-3 mb-3">
                                 Choose Payment
+                            </h4>
+                            <h4>
+                            <Link to="/addnewpayment" className="btn btn-sm fw-bold btn-outline-primary">+ ADD NEW PAYMENT</Link>
                             </h4>
                         </div>
                         <form>
@@ -251,7 +265,7 @@ const CheckoutPage = (props) => {
                         {/* <button type="checkout" class="btn btn-secondary btn-dark btn-block btn-lg col-12">Proceed to Order</button> */}
                         {/* <Link to={{ pathname: "/confirmationpage", state: { prop: orderID } }} className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
                         </Link> */}
-                        <Link to="/confirmation" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
+                        <Link to="/confirmationpage" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick={handleConfirm}>Proceed to Order
                         </Link>
 
                     </div>

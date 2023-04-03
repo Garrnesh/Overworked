@@ -169,7 +169,7 @@ router.post('/orders', async(req,res) => {
     }
 
     try{
-        await orderC.addOrder(order_id, buyer_username, total_price, date, status);
+        await orderC.addOrder(order_id, order_address, order_card, buyer_username, date, status, total_price);
         res.status(201).send('Order has been added to database');
     }catch(err){
         res.status(500).send(err.message);
