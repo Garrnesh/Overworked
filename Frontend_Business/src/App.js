@@ -3,8 +3,20 @@ import BizSignUp from './BizSignUp';
 import AddNewListing from './AddNewListing';
 import BizViewListing from './BizViewListing';
 import LoginForm from './LoginForm';
+import BizNavBar from './BizNavBar';
+import { useState, useEffect } from 'react';
+
+import AuthStateObserver from './Global/AuthStateObserver';
 
 function App() {
+  AuthStateObserver();
+
+  const [authenticated, setAuthenticated] = useState(localStorage.getItem('authenticated') === 'true');
+
+  useEffect(() => {
+    setAuthenticated(localStorage.getItem('authenticated') === 'true');
+  }, []);
+
   return (
     <Router>
       <div className="App">

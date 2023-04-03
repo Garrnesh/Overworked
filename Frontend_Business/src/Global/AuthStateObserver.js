@@ -3,29 +3,27 @@ import { auth } from "../Config/Firebase";
 import axios from "axios";
 //import { useNavigate, Navigate } from "react-router-dom";
 
-const AuthStateObserver = () => {
+const AuthStateObserver = async () => {
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
 
     if (user) {
         // Set authenticated state
-        localStorage.setItem("authenticated", true);
-        user.getIdToken(false)
-        .then((idToken) => {
-            return axios.get(
-                "http://localhost:8000/business",
-                { headers: {
-                    "Content-Type": "application/json",
-                    "idtoken": idToken } }
-            )
-        })
-        .then((response) => {
+        try {
+            const idToken = await user.getIdToken(false);
+            const response = await axios.get(
+                    "http://localhost:8000/business",
+                    { headers: {
+                        "Content-Type": "application/json",
+                        "idtoken": idToken } }
+                )
+            localStorage.setItem("authenticated", true);
             localStorage.setItem("username", response.data.userName);
-        })
-        .catch((error) => {
+            console.log("Username updated");
+            console.log("User " + localStorage.getItem("username") + " is signed in");
+        } catch (error) {
             console.log(error);
-        });
-        console.log("User " + localStorage.getItem("username") + " is signed in");
+        }
     } else {
         // Set unauthenticated state
         localStorage.setItem("authenticated", false);

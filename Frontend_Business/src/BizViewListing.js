@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "./useFetch";
+import axios from "axios";
+import BizNavBar from "./BizNavBar";
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
@@ -26,7 +28,27 @@ const BizViewListing = (props) => {
     const [username, setUsername] = useState(localStorage.getItem('username'));
     //console.log(username);
 
-    const { data: listings, isPending, error } = useFetch('http://localhost:8000/products/business_username/' + username);
+    const [listings, setListings] = useState(null);
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
+    //const { data: listings, isPending, error } = useFetch('http://localhost:8000/products/business_username/' + username);
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+        if (username.toString() === "null") { return; }
+        axios.get('http://localhost:8000/products/business_username/' + username)
+        .then((response) => {
+            setListings(response.data);
+            setIsPending(false);
+        })
+        .catch((error) => {
+            setListings(null);
+            isPending = false;
+            setError(error.message);
+        })
+    }, []);
 
     /*const handleSubmit = (e) => {
         e.preventDefault();
@@ -49,7 +71,12 @@ const BizViewListing = (props) => {
 
   return (
     <div className="address-list border p-5 mb-5 container-sm">
+        <div className="navbar">
+          <BizNavBar/>
+        </div>
+        {username && <div></div> }
         {error && <div>{ error }</div> }
+
         {isPending && <div>Loading...</div>}
         <div className="text-center mb-2">
             <h1>Your Product Inventory</h1>
@@ -105,7 +132,6 @@ const BizViewListing = (props) => {
 
         
         <Link to="/addnewlisting" className="btn btn-outline-primary mt-3 ms-3 me-3 fw-bold">+ ADD NEW LISTING</Link>
-
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { UniversalAccess} from "react-bootstrap-icons";
 import { BagPlus} from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Bag } from "react-bootstrap-icons";
+import BizNavBar from "./BizNavBar";
 import axios from 'axios';
 
 // Bootstrap CSS
@@ -61,6 +62,9 @@ const AddNewListing = () => {
 
   return (
     <div className="AddNewListing">
+        <div className="navbar">
+          <BizNavBar/>
+        </div>
         <div className="text-center my-5">
             <img src= {thriftCrop} className = "img-responsive" height = "72"/>
         </div>
