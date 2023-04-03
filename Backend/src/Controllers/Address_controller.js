@@ -3,8 +3,7 @@ const { Address } = require("../firebase.js");
 
 const getAddress = async (req,res) => { 
     try{
-        const address_coll = await Address.get();
-        const address = address_coll.docs.map((doc) => doc.data());
+        const address = await Address.get();
         res.status(200).json(address);
     }catch(err){
         res.status(500).send(err.message);
@@ -13,6 +12,7 @@ const getAddress = async (req,res) => {
 
 const getAddressByID = async (address_id) => { 
     const address = await Address.doc(address_id).get();
+    // const address = address_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(address.exists){
         return address;
     }
@@ -57,7 +57,7 @@ const removeAddress = async (address_id) => {
 
 const getAddressByBuyerUsername = async(buyer_username) => {
     const address_coll = await Address.where('buyer_username', '==', buyer_username).get();
-    const address = address_coll.docs.map((doc) => doc.data());
+    const address = address_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(address.length >0){
         return address;
     }
