@@ -126,7 +126,6 @@ const CheckoutPage = (props) => {
                                         <div className="card border">
                                             <div className="row">
                                                 <div class="col-2">
-
                                                     <label class="btn py-4 mt-2" for="address">
                                                         <input name="address" type="radio" onClick={() => handleAddress(address.address_id)} />
                                                         {/* <input name="address" type="radio"/> */}
@@ -135,8 +134,7 @@ const CheckoutPage = (props) => {
 
                                                 </div>
                                                 <div className="card-body text-start py-4 col-10">
-                                                    {/* <h5 className="card-title">{address.Name}</h5> */}
-                                                    <p className="card-text m-0">{address.id}</p>
+                                                    <p className="card-text m-0">{address.address_id}</p>
                                                     <p className="card-text m-0">{address.address}</p>
                                                     <p className="card-text m-0">{address.postal_code}</p>
                                                     {/* <p className="card-text m-0">{address.city}</p> */}
