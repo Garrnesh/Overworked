@@ -113,7 +113,7 @@ const Cart = () => {
             {
 
                     productItems && productItems.map(item => {
-                    // const productInfo = getInfo(item.product_id); 
+
                     return (
                         <div className="container-sm">
 
