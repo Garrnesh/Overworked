@@ -19,11 +19,9 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
 
     const cartitem = {
-        "cartitem_id": String(12),
-        "cart_id" : 'Sally',
+        "cart_id" : 'Pooh',
         "product_id": id,
-        "quantity": 1
-
+        "quantity": 1,
     };
     console.log("cartitem", cartitem);
     fetch('http://localhost:8000/cartitems', {
@@ -37,16 +35,8 @@ const ProductDetails = () => {
     }).catch((err) => {
       console.log(err);
     })
-    /*axios.post('http://localhost:8000/cartitems', JSON.stringify(cartitem),
-    {headers: {"Content-Type": "application/json"}})
-    .then((res) => {
-      console.log(res);
-      navigate(-1);
-      window.location.reload(false);
-    }
-    ).catch((err) => {
-      console.log(err);
-    });*/
+    //to notify that item has been added to cart!
+    alert("Added to Cart!")
 
   }
   const handleButtonClick = (buttonId) => {
@@ -133,7 +123,7 @@ const ProductDetails = () => {
 
               {/* // <!-- add button for sizes--> */}
 
-              <Button type="addtocart" className="btn btn-dark btn-block btn-lg col-12" style = {{margin: "10px"}} onClick ={handleAddToCart}>Add To Cart</Button>
+              <Button type="addtocart" className="btn btn-dark btn-block btn-lg col-12" style = {{margin: "10px"}} onClick ={() => handleAddToCart()}>Add To Cart</Button>
 
             </div>
           </div>
