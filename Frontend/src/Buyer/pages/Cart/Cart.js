@@ -82,28 +82,28 @@ const Cart = () => {
 
                     <div className="container-sm">
 
-                    <div class="card rounded-3 mb-4">
-                        <div class="card-body p-4">
-                            <div class="row d-flex justify-content-between align-items-center">
+                    <div className="card rounded-3 mb-4">
+                        <div className="card-body p-4">
+                            <div className="row d-flex justify-content-between align-items-center">
                                 {/* <!-- add checkbox to add to checkout-->
-                                <div class="form-check col-md-1 col-lg-1 col-xl-1">
-                                    <label class="btn" for="addtocheckout">
+                                <div className="form-check col-md-1 col-lg-1 col-xl-1">
+                                    <label className="btn" for="addtocheckout">
                                         <input name="cartoptions" type="checkbox" onClick={() => { handleAddToCheckout(item.cartproduct_name, item.cartproduct_soldat, item.cartproduct_quantity, item.cartproduct_size, item.cartproduct_price) }} />
                                     </label>
                                 </div> */}
                                 {/* <!-- add image of picture--> */}
-                                <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
+                                <div className="col-md-2 col-lg-2 col-xl-2 m-lg-0">
                                     <img className="img-fluid rounded-3" style={{ height: "200px", objectFit: 'contain' }} src={item.cartproduct_image} />
                                 </div>
                                 {/* <!-- name of the shirt, size and color--> */}
-                                <div class="col-md-3 col-lg-3 col-xl-3">
-                                    <p class="lead fw-bold mb-2">{item.cartproduct_name}</p>
-                                    <p><span class="text-muted">Size: </span>{item.cartproduct_size}</p>
-                                    <h5 class="mb-0">${item.cartproduct_price}</h5>
+                                <div className="col-md-3 col-lg-3 col-xl-3">
+                                    <p className="lead fw-bold mb-2">{item.cartproduct_name}</p>
+                                    <p><span className="text-muted">Size: </span>{item.cartproduct_size}</p>
+                                    <h5 className="mb-0">${item.cartproduct_price}</h5>
                                 </div>
                                 {/* <!-- this for the quantity--> */}
-                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                    <p class="mb-2 fw-normal">Qty:</p>
+                                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                    <p className="mb-2 fw-normal">Qty:</p>
                                     {/* <button class="btn btn-link px-2"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                                         <i class="fas fa-minus"></i>
@@ -123,7 +123,7 @@ const Cart = () => {
                                 </div>
 
                                 {/* <!-- button to delete the order--> */}
-                                <div class="col-md-1 col-lg-1 col-xl-1">
+                                <div className="col-md-1 col-lg-1 col-xl-1">
                                     <Button onClick={() => { handleClick(item.id) }} variant="light">
                                         <BsFillTrashFill size={24} />
                                     </Button>

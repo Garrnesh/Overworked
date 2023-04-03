@@ -3,24 +3,23 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Hash } from "react-bootstrap-icons";
 import { GeoAlt } from "react-bootstrap-icons";
-import { Map } from "react-bootstrap-icons";
 
-const AddNewAddress = () => {
-    const [username, setName] = useState('');
+const AddAddress = () => {
+    const [buyer_username, setusername] = useState(localStorage.getItem('username'));
     const [postal_code, setPincode] = useState('');
-    const [address, setTxtaddress] = useState('');
+    const [address_str, setTxtaddress] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const address = { username, postal_code, address};
+        const address = { buyer_username, address_str, postal_code};
         console.log(address);
-        fetch('http://localhost:8001/addresses/', {
+        fetch('http://localhost:8000/address/', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(address)
         }).then(() => {
-            navigate(-1); //will have to edit this later
+            //navigate(); //will have to edit this later
         })
     }
 
@@ -53,7 +52,7 @@ const AddNewAddress = () => {
                                 <span className="input-group-text">
                                     <GeoAlt/>
                                 </span>
-                                <input type="text" className="form-control" id="address" placeholder="Address(House No, Building, Street, Area)" required value={address} onChange = {(e) => setTxtaddress(e.target.value)}/>
+                                <input type="text" className="form-control" id="address" placeholder="Address(House No, Building, Street, Area)" required value={address_str} onChange = {(e) => setTxtaddress(e.target.value)}/>
                             </div>
                             
                         </div>
@@ -72,4 +71,4 @@ const AddNewAddress = () => {
   );
 }
  
-export default AddNewAddress;
+export default AddAddress;

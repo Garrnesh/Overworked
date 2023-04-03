@@ -7,6 +7,7 @@ const AddNewPayment = () => {
     const [card_on_name, setNameCard] = useState('');
     const [exp_date, setExpiryDate] = useState('');
     const [cvc, setCVC] = useState('');
+    const [buyer_username, setusername] = useState(localStorage.getItem('username'));
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {

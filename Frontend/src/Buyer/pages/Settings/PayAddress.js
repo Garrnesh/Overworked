@@ -1,37 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import thriftCrop from './thriftCrop.png';
-import { PersonCircle } from "react-bootstrap-icons";
-import { Telephone } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-import { Hash } from "react-bootstrap-icons";
-import { GeoAlt } from "react-bootstrap-icons";
-import { Map } from "react-bootstrap-icons";
-import { GlobeAmericas } from "react-bootstrap-icons";
+
 import useFetch from "./useFetch";
 
 
 const PayAddress = (props) => {
-    const [username, setName] = useState('');
     const [postal_code, setPincode] = useState('');
-    const [address, setTxtaddress] = useState('');
+    const [address_str, setTxtaddress] = useState('');
     const navigate = useNavigate();
+    const [buyer_username, setusername] = useState(localStorage.getItem('username'));
 
-    const { data: addresses, isPending, error } = useFetch('http://localhost:8001/addresses');
+    const { data: addresses, isPending, error } = useFetch('http://localhost:8000/address/buyer_username/' + buyer_username);
 
-    const handleSubmit = (e) => {
-        const address_1 = { username, postal_code, address};
-        console.log(address_1);
-        fetch('http://localhost:8001/addresses/', {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(address_1)
-        })
-        window.location.reload(false);
-    }
 
     const handleClick = (id) => {
-        fetch('http://localhost:8001/addresses/' + id, {
+        fetch('http://localhost:8000/address/' + id, {
           method: 'DELETE'
         })
         window.location.reload(false);
@@ -57,7 +41,7 @@ const PayAddress = (props) => {
                     <div className="container mb-3">
                         <div className="card border">
                             <div className="card-body text-start py-4">
-                                <p className="card-text m-0">{address.address}</p>
+                                <p className="card-text m-0">{address.address_str}</p>
                                 <p className="card-text m-0">{ address.postal_code}</p>
                             </div>
                             <button onClick={() => {handleClick(address.id)}} className="container text-center border-top border-danger py-3 text-black">

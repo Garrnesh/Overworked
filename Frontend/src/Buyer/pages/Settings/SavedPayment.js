@@ -9,6 +9,7 @@ const SavPayment = () => {
     const [expiryDate, setExpiryDate] = useState('');
     const [CVV, setCVV] = useState('');
     const navigate = useNavigate();
+    const [buyer_username, setuserName] = useState(localStorage.getItem('username'));
 
     const { data: payments, isPending, error } = useFetch('http://localhost:8000/payments');
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useFetch from "../useFetch";
+import axios from "axios";
 
 import { auth } from "../Config/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -54,7 +55,7 @@ const LoginForm = () => {
       })
       .then((idToken) => {
         return axios.get(
-          "http://localhost:8000/business",
+          "http://localhost:8000/buyer",
             { headers: {
               "Content-Type": "application/json",
               "idtoken": idToken } }
