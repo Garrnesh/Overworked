@@ -82,7 +82,9 @@ const TSDetails = () => {
     const type_pt = "pt"
     if (latitude !== null && longitude !== null) {
       route_drive = await getRoute(id, type_drive)
+      console.log(route_drive)
       route_pt = await getRoute(id, type_pt)
+      console.log(route_pt)
       //Formating route_drive
       final_route_drive["Distance"] = String((route_drive["route_summary"]["total_distance"])/1000) + " km"
       final_route_drive["Time"] = String(Math.floor((route_drive["route_summary"]["total_time"])/60)) + " min"
@@ -95,8 +97,23 @@ const TSDetails = () => {
         }
       }
       final_route_drive["Directions"] = route_direction_drive;
+      // console.log(final_route_drive)
+      const route_info_pt= route_pt["plan"]["itineraries"][0]
 
-      //Formatting route_pt
+      // Formatting route_pt
+      final_route_pt["Time"] = String(Math.floor((route_info_pt["duration"])/60)) + " min"
+      final_route_pt["Walking distance"] = String(route_info_pt["walkDistance"]) + " meters"
+      let route_direction_pt = []
+      for (let j=0; j<route_info_pt["legs"].length; j++){
+        if (((route_info_pt["legs"])[j])["mode"] === "SUBWAY"){
+          route_direction_pt[j] = "BOARD TRAIN AT " + ((route_info_pt["legs"])[j])["from"]["stopCode"] + " " + ((route_info_pt["legs"])[j])["from"]["name"] + " AND ALIGHT AT " + ((route_info_pt["legs"])[j])["to"]["stopCode"] + " " + ((route_info_pt["legs"])[j])["to"]["name"];
+        }
+        if(((route_info_pt["legs"])[j])["mode"] === "BUS"){
+          route_direction_pt[j] = "BOARD BUS " + ((route_info_pt["legs"])[j])["route"] + " AT " + ((route_info_pt["legs"])[j])["from"]["stopCode"] + " " + ((route_info_pt["legs"])[j])["from"]["name"] + " AND ALIGHT AT " + ((route_info_pt["legs"])[j])["to"]["stopCode"] + " " + ((route_info_pt["legs"])[j])["to"]["name"];
+        }
+      }
+      final_route_pt["Directions"] = route_direction_pt
+      console.log(final_route_pt)
     }
   }
 
