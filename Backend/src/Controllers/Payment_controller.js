@@ -58,7 +58,7 @@ const removePayment = async (payment_id) => {
 
 const getPaymentsByBuyerUsername = async(buyer_username) => {
     const payment_coll = await Payments.where('buyer_username', '==', buyer_username).get();
-    const payment = payment_coll.docs.map((doc) => doc.data());
+    const payment = payment_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     if(payment.length >0){
         return payment;
     }
