@@ -17,6 +17,13 @@ const ThriftShopList = ({ thriftshops }) => {
     setThriftShop(result);
   }
 
+  const filterResultNo = (dp_ornot) => {
+    const result = thriftshops.filter((curData) => {
+      return curData.donation === dp_ornot;
+    });
+    return result
+  }
+
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [error, setError] = useState(null);
@@ -39,8 +46,6 @@ const ThriftShopList = ({ thriftshops }) => {
       setError("Geolocation is not supported by this browser.");
     }
   }
-  console.log(latitude, longitude)
-  console.log(thriftshop)
 
   async function getRoute(username){
     const check = {
@@ -60,28 +65,61 @@ const ThriftShopList = ({ thriftshops }) => {
       return distance
     }
   }
-  // const [before_sort, setbefore_sort] = useState({})
-  // useEffect(() => {
-  //   if (latitude !== null && longitude !== null) {
-  //     for (let i=0; i<thriftshop.length; i++){
-  //       const username = thriftshop[i].id
-  //       setbefore_sort({...before_sort, username: getRoute(username)})
-  //     }
-  //     console.log(before_sort)
-  //   }
-  // }, [latitude, longitude, thriftshop])
 
-  const before_sort = {};
-  const sorting = [];
+  async function sortShop(){
+    const before_sort = {};
+    const thriftshopsorted = [];
+    getLocation();
+    console.log(latitude);
+    console.log(longitude);
 
-  if (latitude !== null && longitude !== null) {
-    for (let i=0; i<thriftshop.length; i++){
-      const username = thriftshop[i].id
-      before_sort[username] = getRoute(username)
-      sorting[i] = getRoute(username)
+    if (latitude !== null && longitude !== null) {
+      for (let i=0; i<thriftshop.length; i++){
+        const username = thriftshop[i].id
+        before_sort[username] = await getRoute(username)
+      }
+      const sortedArray = Object.entries(before_sort).sort((a, b) => a[1] - b[1]);
+      const sortedObj = Object.fromEntries(sortedArray); //This will sort the object
+      const sortedKeys = Object.keys(sortedObj); //This will return the sorted keys as an array
+      for (let j=0; j<sortedKeys.length; j++){
+        for(let k=0; k<thriftshop.length; k++){
+          if(sortedKeys[j] === thriftshop[k].id){
+            thriftshopsorted[j] = thriftshop[k]
+          }
+        }
+      }
+      setThriftShop(thriftshopsorted);
+      // setIsLoading(false);
     }
-    const sorted = sorting.sort()
-    console.log(sorted)
+  }
+
+  async function sortDonation(){
+    const result = filterResultNo('True');
+    console.log(result)
+    const before_sort_donation = {};
+    const resultsorted = [];
+    getLocation();
+    console.log(latitude);
+    console.log(longitude);
+
+    if (latitude !== null && longitude !== null) {
+      for (let i=0; i<result.length; i++){
+        const username = result[i].id
+        before_sort_donation[username] = await getRoute(username)
+      }
+      const sortedArray_Donation = Object.entries(before_sort_donation).sort((a, b) => a[1] - b[1]);
+      const sortedObj_Donation = Object.fromEntries(sortedArray_Donation); //This will sort the object
+      const sortedKey_Donation = Object.keys(sortedObj_Donation); //This will return the sorted keys as an array
+      for (let j=0; j<sortedKey_Donation.length; j++){
+        for(let k=0; k<result.length; k++){
+          if(sortedKey_Donation[j] === result[k].id){
+            resultsorted[j] = result[k]
+          }
+        }
+      }
+      setThriftShop(resultsorted);
+      // setIsLoading(false);
+    }
   }
   
 
@@ -95,8 +133,10 @@ const ThriftShopList = ({ thriftshops }) => {
           <div className="col-md-3">
             <h2 className="text">Filter Thrift Shops</h2>
             <button className="btn btn-outline-dark w-100 mb-4" onClick = {()=>filterResult('True')}>Donation Point</button>
+            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortDonation}>Sort by Location</button>
             <button className="btn btn-outline-dark w-100 mb-4" onClick = {() => setThriftShop(thriftshops)}>All Thrift Shops</button>
-            <button className="btn btn-outline-dark w-100 mb-4" onClick={getLocation}>Sort by Location</button>
+            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortShop}>Sort by Location</button>
+
           </div>
 
           <div className="col-md-9">
