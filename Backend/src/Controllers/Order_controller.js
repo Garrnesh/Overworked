@@ -69,7 +69,7 @@ const getOrderItems = async (req,res) => {
     try{
         const order_item_coll = await Orderitems.get();
         const order_item = order_item_coll.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        res.status(200).json(order_item.data());
+        res.status(200).json(order_item);
     }catch(err){
         res.status(500).send(err.message);
     }
