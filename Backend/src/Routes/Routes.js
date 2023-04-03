@@ -668,6 +668,64 @@ router.delete('/buyer', async(req,res) => {
 // ----------------------------------
 
 // ----------------------------------
+// Business routes start
+// ----------------------------------
+
+router.get('/business/isusernameunique/:username', async(req,res) => {
+    const username = req.params.username;
+    try{
+        if (await businessC.isUserNameUnique(username)) {
+            res.status(200).send("Username is unique");
+        }
+        else {
+            res.status(409).send("Username is not unique");
+        }
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+router.get('/business', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await businessC.getBusinessProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.post('/business', async(req,res) => {
+    const idToken = req.headers.idtoken;
+    const { userName, shopDesc, shopAddr, postalCode, uen, phoneNumber, donation } = req.body;
+    try {
+        const response = await businessC.createNewBusiness(idToken, userName, phoneNumber, uen, donation, 
+            shopDesc, shopAddr, postalCode, userName);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.delete('/business', async(req,res) => {
+    try {
+        const idToken = req.headers.idtoken;
+        const response = await businessC.deleteBusinessProfile(idToken);
+        res.status(response.statusCode).send(response.body);
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// ----------------------------------
+// Business routes end
+// ----------------------------------
+
+
+// ----------------------------------
 // Location routes start
 // ----------------------------------
 router.get('/locations', locationC.getLocation);

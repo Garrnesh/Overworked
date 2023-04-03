@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
+import getCurrentUser from "./getCurrentUser";
+
 
 const BizViewListing = (props) => {
     const [listing_name, setlistingName] = useState('');
@@ -19,14 +21,18 @@ const BizViewListing = (props) => {
     const [product_size, setSizeofProduct] = useState('');
     const [product_quantity, setQuantityofProduct] = useState('');
     const [product_image, setproductImage] = useState('');
+
     const navigate = useNavigate();
+
+    const username = getCurrentUser();
+    console.log(username);
 
     const { data: listings, isPending, error } = useFetch('http://localhost:8003/listings');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const listing = { listing_name, product_brand, product_description, category, product_price, product_size, product_quantity, product_image};
-        fetch('http://localhost:8003/listings', {
+        fetch('http://localhost:8000/listings', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(listing)
