@@ -136,7 +136,7 @@ const CheckoutPage = (props) => {
         if (orderitems) {
             orderitems.forEach(item => {
                 //COMMENT OUT FIRST COS I DOING OTHER THINGS
-                // addProductToOrder(item);
+                addProductToOrder(item);
                 console.log("product", item.product_id);
                 addProductToCart(item);
             });
