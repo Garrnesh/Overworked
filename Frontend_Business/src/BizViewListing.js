@@ -71,9 +71,9 @@ const BizViewListing = (props) => {
 
   return (
     <div className="address-list border p-5 mb-5 container-sm">
-        <div className="navbar">
-          <BizNavBar/>
-        </div>
+        {/* <div className="navbar">
+          
+        </div> */}
         {username && <div></div> }
         {error && <div>{ error }</div> }
 

@@ -62,9 +62,9 @@ const AddNewListing = () => {
 
   return (
     <div className="AddNewListing">
-        <div className="navbar">
+        {/* <div className="navbar">
           <BizNavBar/>
-        </div>
+        </div> */}
         <div className="text-center my-5">
             <img src= {thriftCrop} className = "img-responsive" height = "72"/>
         </div>

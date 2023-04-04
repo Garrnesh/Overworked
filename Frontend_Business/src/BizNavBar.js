@@ -43,7 +43,9 @@ const BizNavBar = () => {
                 <Nav className="me-auto">
                     <Nav.Link href="/addnewlisting" element = {<AddNewListing />}>Add New Listing</Nav.Link>
                     <Nav.Link href="/viewlisting" element = {<BizViewListing />}>View Listings</Nav.Link>
-                    <Nav.Link>
+                </Nav>
+                <Nav>
+                <Nav.Link>
                         <Button className="back_button" onClick={logout}>Logout
                         </Button>
                     </Nav.Link>
