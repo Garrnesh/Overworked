@@ -14,14 +14,15 @@ import useFetch from "../../../useFetch";
 
 const CheckoutPage = (props) => {
     const navigate = useNavigate();
-    const [name, setName] = useState("Teddy");
-    const { data: orderitems } = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    // const [name, setName] = useState("Teddy");
+    const { data: orderitems } = useFetch('http://localhost:8000/cartitems/cart_id/' + username);
     //THIS HAS TO ALL CHANGE ONCE WE CAN ACCESS USER SPECIFIC
-    const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/John35');
-    const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/Jenri59');
+    // const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/John35');
+    // const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/Jenri59');
     //TO REPLACE ONCE WE STANDARDISE
-    // const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/' + name);
-    // const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/' + name);
+    const { data: addresses, error, isPending } = useFetch('http://localhost:8000/address/buyer_username/' + username);
+    const { data: payments } = useFetch('http://localhost:8000/payments/buyer_username/' + username);
     //END REPLACEMENT
     const [orderAddress, setorderAddress] = useState('');
     const [card, setCard] = useState('');
@@ -41,7 +42,7 @@ const CheckoutPage = (props) => {
     for (let key in orderitems) {
         count++;
     }
-    console.log("Count", count); 
+    console.log("Count",count); 
 
     const [orderID, setOrderID] = useState("order" + generateRandomString(20));
     console.log(orderID);
@@ -55,7 +56,7 @@ const CheckoutPage = (props) => {
             "order_id": orderID,
             "order_address": orderAddress,
             "order_card": card,
-            "buyer_username": "Teddy",
+            "buyer_username": username,
             "date": formattedDate,
             "status": "Processing",
             "total_price": total
@@ -182,7 +183,7 @@ const CheckoutPage = (props) => {
                                         <div className="card border">
                                             <div className="row">
                                                 <div class="col-2">
-                                                    <label class="btn py-4 mt-2" for="address">
+                                                    <label className="btn py-4 mt-2" for="address">
                                                         <input name="address" type="radio" onClick={() => handleAddress(address.id)} />
                                                         {/* <input name="address" type="radio"/> */}
 
@@ -222,7 +223,7 @@ const CheckoutPage = (props) => {
                                         <div className="card border">
                                             <div className="row">
                                                 <div class="col-2">
-                                                    <label class="btn py-4 mt-3" for="address">
+                                                    <label className="btn py-4 mt-3" for="address">
                                                         <input name="address" type="radio" onClick={() => handlePayment(payment.id)} />
 
                                                     </label>

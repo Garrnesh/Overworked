@@ -10,6 +10,7 @@ import { useState } from 'react';
 const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, error, isPending } = useFetch('http://localhost:8000/products/' + id);
+  const [username, setUsername] = useState(localStorage.getItem('username'));
 
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(false);
@@ -19,7 +20,7 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
 
     const cartitem = {
-        "cart_id" : 'Teddy',
+        "cart_id" : username,
         "product_id": id,
         "quantity": 1,
     };

@@ -8,8 +8,8 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { Button, Container, Nav } from "react-bootstrap";
 // import PortalNavbar from "../../Navbar";
 const Cart = () => {
-    const [name, setName] = useState("Teddy");
-    const { data: cartitems, isPending, error } = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const { data: cartitems, isPending, error } = useFetch('http://localhost:8000/cartitems/cart_id/' + username);
     const navigate = useNavigate();
     let count = 0;
     for (let key in cartitems) {
@@ -113,26 +113,26 @@ const Cart = () => {
   <>
     {productItems && productItems.map(item => (
       <div className="container-sm">
-        <div class="card rounded-3 mb-4">
-          <div class="card-body p-4">
-            <div class="row d-flex justify-content-between align-items-center">
+        <div className="card rounded-3 mb-4">
+          <div className="card-body p-4">
+            <div className="row d-flex justify-content-between align-items-center">
               {/* <!-- add image of picture--> */}
-              <div class="col-md-2 col-lg-2 col-xl-2 m-lg-0">
+              <div className="col-md-2 col-lg-2 col-xl-2 m-lg-0">
                 <img className="img-fluid rounded-3" style={{ height: "200px", objectFit: 'contain' }} src={item.Pimage} />
               </div>
               {/* <!-- name of the shirt, size and color--> */}
-              <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-bold mb-2">{item.Productname}</p>
-                <p><span class="text-muted">Size: </span>{item.Productsize}</p>
-                <p><span class="text-muted">$</span>{item.Productprice}</p>
+              <div className="col-md-3 col-lg-3 col-xl-3">
+                <p className="lead fw-bold mb-2">{item.Productname}</p>
+                <p><span className="text-muted">Size: </span>{item.Productsize}</p>
+                <p><span className="text-muted">$</span>{item.Productprice}</p>
               </div>
               {/* <!-- this for the quantity--> */}
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+              <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                 {/* <p class="mb-2 fw-normal">Qty:</p> */}
-                <button class="btn btn-outline-light text-dark" type="button" onClick={() => handleMinus(item.cart_id, item.quantity)}>-</button>
-                <input type="text" class="form-control text-center" style={{ width: "45px" }} value={parseFloat(item.quantity)} />
-                <div class="input-group-prepend">
-                  <button class="btn btn-outline-light text-dark" type="button" onClick={() => handleAdd(item.cart_id, item.quantity)}>+</button>
+                <button className="btn btn-outline-light text-dark" type="button" onClick={() => handleMinus(item.cart_id, item.quantity)}>-</button>
+                <input type="text" className="form-control text-center" style={{ width: "45px" }} value={parseFloat(item.quantity)} />
+                <div className="input-group-prepend">
+                  <button className="btn btn-outline-light text-dark" type="button" onClick={() => handleAdd(item.cart_id, item.quantity)}>+</button>
                   {/* <!-- this all for the quantity--> */}
                 </div>
               </div>

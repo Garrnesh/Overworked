@@ -12,8 +12,8 @@ const ConfirmationPage = () => {
     // const { data: address } = useFetch('http://localhost:8000/confirmation/address');
     //  const { data: payment } = useFetch('http://localhost:8000/confirmation/payment');
     // const myProp = props?.location?.state?.myProp;
-    const [name, setName] = useState("Teddy");
-    const { data: orderitems} = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const { data: orderitems} = useFetch('http://localhost:8000/cartitems/cart_id/' + username);
     // const {data: orderDetails} = useFetch('http://localhost:8000/orders/buyer_username/' + name)
     const [totalPrice, setTotalPrice] = useState(0);
     
@@ -26,7 +26,7 @@ const ConfirmationPage = () => {
             method: 'DELETE'
         })
     })
-    alert("Cart items cleared!")
+    // alert("Cart items cleared!")
     }
 
     async function addProductToCart(item) {
@@ -105,27 +105,6 @@ const ConfirmationPage = () => {
                                 </div>
                             </div>
                             </div>
-                        {/* address details */}
-                        {/* <div className="mb-3 mt-2 border"> */}
-                        {/* <h4 className="text-center mt-3 ms-3 me-3 mb-3">
-                                Delivery Details
-                            </h4> */}
-
-                            {/* choose payment */}
-                            {/* {address && address.map(ad => (
-
-                                <div className="address-list" key={ad.id}>
-                                    <div className="container mb-3">
-                                        <div className="row">
-                                            <div>Address: {ad.txtaddress}</div>
-                                            <div>Locality: {ad.locality}</div>
-                                            <div>Postal Code:{ad.pincode}</div>
-                                            <div>City: {ad.city}</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            ))} */}
                     </div>
                     <Link to="/home" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick = {() => handleClick()}> Back to Homepage
                         </Link>
