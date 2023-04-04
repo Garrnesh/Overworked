@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useFetch from "../useFetch";
+import axios from "axios";
 
 import { auth } from "../Config/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -50,10 +51,27 @@ const LoginForm = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate("/home");
+        return user.getIdToken(false)
+      })
+      .then((idToken) => {
+        return axios.get(
+          "http://localhost:8000/buyer",
+            { headers: {
+              "Content-Type": "application/json",
+              "idtoken": idToken } }
+        )
+      })
+      .then((response) => {
+        return response.data.userName;
+      })
+      .then((username) => {
+        localStorage.setItem("authenticated", true);
+        localStorage.setItem("username", username);
+        navigate("/viewlisting");
       })
       .catch((error) => {
         setErrorMessages({ name: "wrongCredentials", message: errors.wrongCredentials });
+        console.log(error);
       });
     return;
   };

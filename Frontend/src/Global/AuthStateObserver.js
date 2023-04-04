@@ -13,6 +13,7 @@ const AuthStateObserver = () => {
     } else {
         // Set unauthenticated state
         localStorage.setItem("authenticated", false);
+        localStorage.removeItem("username");
         console.log("User is signed out");
     }
     });

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../../useFetch";
 
-const SavPayment = () => {
+const Payment = () => {
     const [card_number, setCardNumber] = useState('');
     const [card_on_name, setNameCard] = useState('');
     const [exp_date, setExpiryDate] = useState('');
@@ -27,7 +27,7 @@ const SavPayment = () => {
         {error && <div>{ error }</div> }
         {isPending && <div>Loading...</div>}
         <div class="container-md mb-3">
-        <h1 class="text-center m-5">Edit Payment Methods</h1>
+        <h1 class="text-center m-5">Choose Payment Methods</h1>
         <div class="border rounded mt-3">
             <div class="d-flex justify-content-between">
                 <h4 class="mt-4 ms-3 me-3">
@@ -61,4 +61,4 @@ const SavPayment = () => {
   );
 }
  
-export default SavPayment;
+export default Payment;
