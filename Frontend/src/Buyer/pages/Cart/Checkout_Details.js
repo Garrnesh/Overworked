@@ -35,6 +35,14 @@ const CheckoutPage = (props) => {
         }
         return result;
     }
+
+    //get number of items in cart
+    let count = 0;
+    for (let key in orderitems) {
+        count++;
+    }
+    console.log("Count", count); 
+
     const [orderID, setOrderID] = useState("order" + generateRandomString(20));
     console.log(orderID);
     //generate date of order

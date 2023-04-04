@@ -19,6 +19,16 @@ const ConfirmationPage = () => {
     
     const [productItems, setProductItems] = useState([]);
 
+    const handleClick = () => {
+        orderitems.forEach(item => {
+            console.log(item.id)
+        fetch('http://localhost:8000/cartitems/' + item.id, {
+            method: 'DELETE'
+        })
+    })
+    alert("Cart items cleared!")
+    }
+
     async function addProductToCart(item) {
       try {
         const response = await fetch("http://localhost:8000/products/" + item.product_id, {
@@ -117,7 +127,7 @@ const ConfirmationPage = () => {
 
                             ))} */}
                     </div>
-                    <Link to="/home" className="btn btn-secondary btn-dark btn-block btn-lg col-12" > Back to Homepage
+                    <Link to="/home" className="btn btn-secondary btn-dark btn-block btn-lg col-12" onClick = {() => handleClick()}> Back to Homepage
                         </Link>
         </div>
     );
