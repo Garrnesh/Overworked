@@ -9,6 +9,9 @@ const TSDetails = () => {
   const navigate = useNavigate();
 
   const [mapSource, setMapSource] = useState(null);
+  const [err, setError] = useState(null);
+  const [HtmlComponent, setHtmlComponent] = useState(null);
+
   console.log(id);
   async function fetchMap(id) {
     try {
@@ -29,8 +32,6 @@ const TSDetails = () => {
   } 
   console.log(fetchMap(id));
 
-  const [htmlCode, setHtmlCode] = useState("");
-  const [err, setError] = useState(null);
 
   // function getLocation() {
   //   if ("geolocation" in navigator) {
@@ -87,17 +88,9 @@ const TSDetails = () => {
   }
 
   async function getDirections(){
-    // while(latitude === null && longitude === null){
-    //   getLocation();
-    //   await new Promise(resolve => setTimeout(resolve, 4000));
-    //   console.log(latitude);
-    //   console.log(longitude);
-    // }
 
-    
     const coords = await getLocation()
-
-    console.log("Got latitude and longitude");
+    
     let route_drive = {}
     let route_pt = {}
     let final_route_drive = {}
@@ -109,6 +102,7 @@ const TSDetails = () => {
       console.log(route_drive)
       route_pt = await getRoute(id, type_pt, coords.latitude, coords.longitude);
       console.log(route_pt)
+      
       //Formating route_drive
       final_route_drive["Distance"] = String((route_drive["route_summary"]["total_distance"])/1000) + " km"
       final_route_drive["Time"] = String(Math.floor((route_drive["route_summary"]["total_time"])/60)) + " min"
@@ -140,26 +134,36 @@ const TSDetails = () => {
       }
       final_route_pt["Directions"] = route_direction_pt
 
-      //Generate new HTML code
-      setHtmlCode(
+      const result1 = (`
         <div class="container">
           <h3>To get there by driving:</h3>
           <p>Total distance for travel: { final_route_drive["distance"] }</p>
           <p>Total time for travel: { final_route_drive["Time"] }</p>
           <h4>Navigation:</h4>
           <ol>
-            {final_route_drive["Directions"].map((instruction, i) => <li key={i}>{{ instruction }}</li>)}
+            {final_route_drive["Directions"].map((instruction, i) => <li key={i}>{instruction}</li>)}
           </ol>
+        </div>`
+      );
+    
+      const result2 = (`
+        <div class="container">
           <h3>To get there by Public Transport:</h3>
           <p>Total walking distance: { final_route_pt["distance"] }</p>
           <p>Total time for travel: { final_route_pt["Time"] }</p>
           <h4>Navigation:</h4>
           <ol>
-            {final_route_pt["Directions"].map((instruction, i) => <li key={i}>{{ instruction }}</li>)}
+            {final_route_pt["Directions"].map((instruction, i) => <li key={i}>{instruction}</li>)}
           </ol>
+        </div>`
+      );
+    
+      setHtmlComponent(
+        <div>
+          {result1}
+          {result2}
         </div>
-        
-      )
+      );
     }
   }
 
@@ -183,6 +187,7 @@ const TSDetails = () => {
               {/* <p className="address"><span className="text-muted">Address: </span> <span>{thriftshop.shop_address }</span></p> */}
               <div className="d-grid gap-2">
                 <button className="btn btn-primary" onClick={getDirections}>Get directions</button>
+                {HtmlComponent && <HtmlComponent />}
               </div>
 
             </div>
