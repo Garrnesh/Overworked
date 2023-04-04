@@ -156,7 +156,7 @@ const Cart = () => {
                             </div>
                         </div>)
                 })}
-            <Link to= {{ pathname: "/checkout", state : {productItems}}} className="btn btn-secondary btn-dark btn-block btn-lg col-12">Add To Checkout
+            <Link to="/checkout" className="btn btn-secondary btn-dark btn-block btn-lg col-12">Add To Checkout
             </Link>
         </div>
     )

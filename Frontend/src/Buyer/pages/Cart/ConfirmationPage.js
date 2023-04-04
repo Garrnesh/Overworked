@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 // import logo from './thriftitlogo.png';
 import useFetch from "../../../useFetch";
-
+import { useNavigate } from "react-router-dom";
 
 const ConfirmationPage = () => {
     // const navigate = useNavigate();
@@ -11,12 +11,12 @@ const ConfirmationPage = () => {
     // const { data: totalPrice } = useFetch('http://localhost:8000/confirmation/totalPrice');
     // const { data: address } = useFetch('http://localhost:8000/confirmation/address');
     //  const { data: payment } = useFetch('http://localhost:8000/confirmation/payment');
+    // const myProp = props?.location?.state?.myProp;
     const [name, setName] = useState("Teddy");
     const { data: orderitems} = useFetch('http://localhost:8000/cartitems/cart_id/' + name);
+    // const {data: orderDetails} = useFetch('http://localhost:8000/orders/buyer_username/' + name)
     const [totalPrice, setTotalPrice] = useState(0);
-
-    // const { data: address } = useFetch('http://localhost:8000/address');
-
+    
     const [productItems, setProductItems] = useState([]);
 
     async function addProductToCart(item) {
@@ -46,12 +46,17 @@ const ConfirmationPage = () => {
       if (orderitems) {
         orderitems.forEach(item => {
           addProductToCart(item);
+        //   addProductToOrder(item);
         });
       }
     }, [orderitems]);
     
-    console.log(productItems);
     const total = productItems ? productItems.reduce((acc, item) => acc + parseFloat(item.Productprice)*parseFloat(item.quantity), 0) : 0;
+    //this is to add items to orderitems
+
+
+
+    //trasnfer items to orderitem
     return (
         <div className="address-list p-5 mb-5 container-sm">
             {/* {error && <div>{error}</div>}
@@ -92,9 +97,9 @@ const ConfirmationPage = () => {
                             </div>
                         {/* address details */}
                         {/* <div className="mb-3 mt-2 border"> */}
-                        <h4 className="text-center mt-3 ms-3 me-3 mb-3">
+                        {/* <h4 className="text-center mt-3 ms-3 me-3 mb-3">
                                 Delivery Details
-                            </h4>
+                            </h4> */}
 
                             {/* choose payment */}
                             {/* {address && address.map(ad => (
@@ -117,6 +122,7 @@ const ConfirmationPage = () => {
         </div>
     );
 }
+
 
 
 export default ConfirmationPage;

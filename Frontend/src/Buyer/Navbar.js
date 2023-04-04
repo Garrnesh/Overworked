@@ -42,7 +42,8 @@ const PortalNavbar = () => {
                     
                     <Nav.Link href="/thriftshops" element = {<BrowseThriftShops />}>Browse Thrift Shops</Nav.Link>
                     <Nav.Link href="/products" element = {<BrowseProducts />}>Browse Products</Nav.Link>
-                    <Nav.Link href="/search" element = {<SearchBar />}>Search for Clothes</Nav.Link>
+                </Nav>
+                <Nav>    
                     <Nav.Link href="/cart" element = {<Cart />}><BsFillCartFill size={24} /></Nav.Link>
                     <Nav.Link href="/settings" element = {<Settings />}><BsPersonCircle size={24} /></Nav.Link>
                     <Nav.Link>
