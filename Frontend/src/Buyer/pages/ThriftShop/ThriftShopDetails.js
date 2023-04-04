@@ -29,30 +29,46 @@ const TSDetails = () => {
   } 
   console.log(fetchMap(id));
 
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [htmlCode, setHtmlCode] = useState("");
   const [err, setError] = useState(null);
 
+  // function getLocation() {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       function(position) {
+  //         setLatitude(position.coords.latitude);
+  //         setLongitude(position.coords.longitude);
+  //         setError(null);
+  //       },
+  //       function(err_m) {
+  //         console.err("Error getting current position: " + err_m.message);
+  //         setError("Error getting current position. Please try again later.");
+  //       }
+  //     );
+  //   } else {
+  //     console.err("Geolocation is not supported by this browser.");
+  //     setError("Geolocation is not supported by this browser.");
+  //   }
+  // }
+
   function getLocation() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          setError(null);
-        },
-        function(err_m) {
-          console.err("Error getting current position: " + err_m.message);
-          setError("Error getting current position. Please try again later.");
-        }
-      );
-    } else {
-      console.err("Geolocation is not supported by this browser.");
-      setError("Geolocation is not supported by this browser.");
-    }
+    return new Promise((resolve, reject) => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            resolve(position.coords);
+          },
+          function(err) {
+            reject(err.message);
+          }
+        );
+      } else {
+        reject("Geolocation is not supported by this browser.");
+      }
+    });
   }
 
-  async function getRoute(username, type){
+  async function getRoute(username, type, latitude, longitude){
     const check = {
       "latitude_person": String(latitude),
       "longitude_person": String(longitude),
@@ -71,19 +87,27 @@ const TSDetails = () => {
   }
 
   async function getDirections(){
-    getLocation();
-    console.log(latitude);
-    console.log(longitude);
+    // while(latitude === null && longitude === null){
+    //   getLocation();
+    //   await new Promise(resolve => setTimeout(resolve, 4000));
+    //   console.log(latitude);
+    //   console.log(longitude);
+    // }
+
+    
+    const coords = await getLocation()
+
+    console.log("Got latitude and longitude");
     let route_drive = {}
     let route_pt = {}
     let final_route_drive = {}
     let final_route_pt = {}
     const type_drive = "drive"
     const type_pt = "pt"
-    if (latitude !== null && longitude !== null) {
-      route_drive = await getRoute(id, type_drive)
+    if (coords.latitude !== null && coords.longitude !== null) {
+      route_drive = await getRoute(id, type_drive, coords.latitude, coords.longitude);
       console.log(route_drive)
-      route_pt = await getRoute(id, type_pt)
+      route_pt = await getRoute(id, type_pt, coords.latitude, coords.longitude);
       console.log(route_pt)
       //Formating route_drive
       final_route_drive["Distance"] = String((route_drive["route_summary"]["total_distance"])/1000) + " km"
@@ -97,7 +121,6 @@ const TSDetails = () => {
         }
       }
       final_route_drive["Directions"] = route_direction_drive;
-      // console.log(final_route_drive)
       const route_info_pt= route_pt["plan"]["itineraries"][0]
 
       // Formatting route_pt
@@ -116,7 +139,27 @@ const TSDetails = () => {
         }
       }
       final_route_pt["Directions"] = route_direction_pt
-      console.log(final_route_pt)
+
+      //Generate new HTML code
+      setHtmlCode(
+        <div class="container">
+          <h3>To get there by driving:</h3>
+          <p>Total distance for travel: { final_route_drive["distance"] }</p>
+          <p>Total time for travel: { final_route_drive["Time"] }</p>
+          <h4>Navigation:</h4>
+          <ol>
+            {final_route_drive["Directions"].map((instruction, i) => <li key={i}>{{ instruction }}</li>)}
+          </ol>
+          <h3>To get there by Public Transport:</h3>
+          <p>Total walking distance: { final_route_pt["distance"] }</p>
+          <p>Total time for travel: { final_route_pt["Time"] }</p>
+          <h4>Navigation:</h4>
+          <ol>
+            {final_route_pt["Directions"].map((instruction, i) => <li key={i}>{{ instruction }}</li>)}
+          </ol>
+        </div>
+        
+      )
     }
   }
 
@@ -143,6 +186,7 @@ const TSDetails = () => {
               </div>
 
             </div>
+            
 
           </div>
 

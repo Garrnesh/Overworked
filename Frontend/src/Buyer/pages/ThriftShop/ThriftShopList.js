@@ -24,30 +24,26 @@ const ThriftShopList = ({ thriftshops }) => {
     return result
   }
 
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
   const [error, setError] = useState(null);
 
   function getLocation() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          setError(null);
-        },
-        function(error) {
-          console.error("Error getting current position: " + error.message);
-          setError("Error getting current position. Please try again later.");
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-      setError("Geolocation is not supported by this browser.");
-    }
+    return new Promise((resolve, reject) => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            resolve(position.coords);
+          },
+          function(err) {
+            reject(err.message);
+          }
+        );
+      } else {
+        reject("Geolocation is not supported by this browser.");
+      }
+    });
   }
 
-  async function getRoute(username){
+  async function getRoute(username, latitude, longitude){
     const check = {
       "latitude_person": String(latitude),
       "longitude_person": String(longitude),
@@ -69,15 +65,14 @@ const ThriftShopList = ({ thriftshops }) => {
   async function sortShop(){
     const before_sort = {};
     const thriftshopsorted = [];
-    getLocation();
-    console.log(latitude);
-    console.log(longitude);
+    const coords = await getLocation()
+    // console.log(latitude);
+    // console.log(longitude);
 
-    if (latitude !== null && longitude !== null) {
+    if (coords.latitude !== null && coords.longitude !== null) {
       for (let i=0; i<thriftshop.length; i++){
         const username = thriftshop[i].id
-        console.log("testcheck1")
-        before_sort[username] = await getRoute(username)
+        before_sort[username] = await getRoute(username, coords.latitude, coords.longitude)
       }
       const sortedArray = Object.entries(before_sort).sort((a, b) => a[1] - b[1]);
       const sortedObj = Object.fromEntries(sortedArray); //This will sort the object
@@ -89,7 +84,6 @@ const ThriftShopList = ({ thriftshops }) => {
           }
         }
       }
-      console.log("testcheck")
       setThriftShop(thriftshopsorted);
       // setIsLoading(false);
     }
@@ -97,17 +91,17 @@ const ThriftShopList = ({ thriftshops }) => {
 
   async function sortDonation(){
     const result = filterResultNo('True');
-    console.log(result)
+    // console.log(result)
     const before_sort_donation = {};
     const resultsorted = [];
-    getLocation();
-    console.log(latitude);
-    console.log(longitude);
+    const coords = await getLocation()
+    // console.log(latitude);
+    // console.log(longitude);
 
-    if (latitude !== null && longitude !== null) {
+    if (coords.latitude !== null && coords.longitude !== null) {
       for (let i=0; i<result.length; i++){
         const username = result[i].id
-        before_sort_donation[username] = await getRoute(username)
+        before_sort_donation[username] = await getRoute(username, coords.latitude, coords.longitude)
       }
       const sortedArray_Donation = Object.entries(before_sort_donation).sort((a, b) => a[1] - b[1]);
       const sortedObj_Donation = Object.fromEntries(sortedArray_Donation); //This will sort the object

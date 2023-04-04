@@ -76,8 +76,7 @@ const identifyLocation = async (postal_code) => {
 const getRoute = async (latitude_person, longitude_person, latitude_business, longitude_business, route_type) => {
     try{
         const routeType = route_type;
-        // const token = await getToken();
-        const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwMDc1LCJ1c2VyX2lkIjoxMDA3NSwiZW1haWwiOiJ0aHJpZnRpdGF1dGhAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjgwMzMxMzgzLCJleHAiOjE2ODA3NjMzODMsIm5iZiI6MTY4MDMzMTM4MywianRpIjoiZjE0OTdmYjgwYjE4ZDYzY2ExZjkyMWZlZTE5M2Q2ZTgifQ.ZKxXQpiTRX-zIPCZq50aRXVoryyLGnOtj5YUCNvRfx8'
+        const token = await getToken();
         if (route_type != "pt"){
             const route_unfiltered = await axios.get(`https://developers.onemap.sg/privateapi/routingsvc/route?start=${latitude_person},${longitude_person}&end=${latitude_business},${longitude_business}&routeType=${routeType}&token=${token}`);
             const route_unfiltered_json = route_unfiltered.data;
