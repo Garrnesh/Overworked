@@ -30,19 +30,20 @@ const BizNavBar = () => {
             .catch((error) => {
                 console.log(error);
             });
-        }
+    }
 
     return (
         <React.Fragment>
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="white" className="navbar navbar-expand-md navbar-light pb-4 shadow" expand="lg">
         <Container>
         <Navbar.Brand href="/home"><img src={logo} className="img-responsive" height="72" /></Navbar.Brand>
             {/* <Navbar.Brand href="/home">ThriftIt</Navbar.Brand> */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    <Nav.Link href="/addnewlisting" element = {<AddNewListing />}>Add New Listing</Nav.Link>
-                    <Nav.Link href="/viewlisting" element = {<BizViewListing />}>View Listings</Nav.Link>
+                <Nav className="me-auto ">
+                    
+                    <Nav.Link href="/addnewlisting" className="fw-bold" element = {<AddNewListing />}>Add New Listing</Nav.Link>
+                    <Nav.Link href="/viewlisting"  className="fw-bold" element = {<BizViewListing />}>View Listings</Nav.Link>
                 </Nav>
                 <Nav>
                 <Nav.Link>

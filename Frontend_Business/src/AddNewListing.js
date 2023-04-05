@@ -11,12 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Bag } from "react-bootstrap-icons";
 import BizNavBar from "./BizNavBar";
 import axios from 'axios';
-
+import BizViewListing from "./BizViewListing";
+import logo from './thriftCrop.png';
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
-
+import { auth } from "./Config/Firebase";
 
 
 const AddNewListing = () => {
@@ -36,6 +37,18 @@ const AddNewListing = () => {
     //console.log(business_username);
 
     const navigate = useNavigate();
+
+    const logout = () => {
+        auth.signOut()
+            .then(() => {
+                localStorage.removeItem("username");
+                localStorage.removeItem("authenticated");
+                navigate("/");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -65,11 +78,9 @@ const AddNewListing = () => {
         {/* <div className="navbar">
           <BizNavBar/>
         </div> */}
-        <div className="text-center my-5">
-            <img src= {thriftCrop} className = "img-responsive" height = "72"/>
-        </div>
+        <BizNavBar/>
 
-        <div className="container-lg">
+        <div className="container-lg mt-5">
             <div className="text-center">
                 <h2>Add New Listing</h2>
             </div>
@@ -191,7 +202,7 @@ const AddNewListing = () => {
 
                     
 
-                    <button className="d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-success btn-lg btn-block" value = "AddListing">
+                    <button className="d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-success btn-lg btn-block mt-5 mb-5" value = "AddListing">
                         Add New Listing
                     </button>
                     

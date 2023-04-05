@@ -20,7 +20,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {authenticated && <BizNavBar />}
+      
         <div className = "content">
           <Routes>
             <Route path ="/" element = {<LoginForm/>}/>

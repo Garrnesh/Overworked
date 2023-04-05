@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "./useFetch";
 import axios from "axios";
 import BizNavBar from "./BizNavBar";
+import AddNewListing from "./AddNewListing";
+import logo from './thriftCrop.png';
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
-
+import { auth } from "./Config/Firebase";
 
 const BizViewListing = (props) => {
     const [listing_name, setlistingName] = useState('');
@@ -69,18 +71,31 @@ const BizViewListing = (props) => {
         window.location.reload(false);
     }
 
+    const logout = () => {
+        auth.signOut()
+            .then(() => {
+                localStorage.removeItem("username");
+                localStorage.removeItem("authenticated");
+                navigate("/");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
   return (
     
-    <div className="address-list p-5 mb-5 container-sm">
+    <div className="BizViewListing">
         
         {username && <div></div> }
         {error && <div>{ error }</div> }
-
         {isPending && <div>Loading...</div>}
-        <div className="text-center mb-2">
+
+        <BizNavBar/>
+        
+        <div className="text-center mt-4 mb-2">
             <h1>Your Product Inventory</h1>
         </div>
-
         <div className="mt-3">
             
             {listings && listings.map(listing => (
@@ -115,7 +130,7 @@ const BizViewListing = (props) => {
 
 
 
-                            <button onClick={() => {handleClick(listing.id)}} className="container text-center border-top border-danger py-3 text-black">
+                            <button onClick={() => {handleClick(listing.id)}} className="btn btn-outline-danger justify-content-center">
                                 Remove
                             </button>
                         </div>
@@ -124,13 +139,13 @@ const BizViewListing = (props) => {
 
             ))}
 
-            
+        <Link to="/addnewlisting" className="btn btn-outline-primary mt-3 me-3 ms-5 mb-4 fw-bold">+ ADD NEW LISTING</Link>
             
         </div>
 
 
         
-        <Link to="/addnewlisting" className="btn btn-outline-primary mt-3 ms-3 me-3 fw-bold">+ ADD NEW LISTING</Link>
+        
     </div>
   );
 }
