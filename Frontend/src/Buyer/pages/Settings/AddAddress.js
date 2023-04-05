@@ -61,7 +61,7 @@ const AddAddress = () => {
             </div>
             
             <div className= "mt-5 text-center">
-                <button className= "btn btn-outline-primary justify-content-center">
+                <button className= "btn btn-outline-danger justify-content-center">
                     Add Address
                 </button>
             </div>

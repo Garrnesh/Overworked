@@ -96,10 +96,11 @@ const ProductList = ({ products }) => {
                                             <div key={id} className="col-md-3 mb-4" >
 
                                                 <Link to={`/products/${id}`} style={{ textDecoration: 'none', color: '#000000' }}>
-                                                    <div className="card" style={{ height: "350px", width: "200px" }}>
+                                                    <div className="card" style={{ height: "550px", width: "400px" }}>
                                                         <div className="card-body">
                                                             {/* <img src = {Product_image} className = "card-img-top"></img> */}
-                                                            <img src={product_image} className="card-img-top"></img>
+                                                            <img src={product_image} className="card-img-top" style={{width: "100%", height: "40vh", objectFit: 'contain'}}></img>
+                                                            <p></p>
                                                             <h6 className="card-title">{product_brand}</h6>
                                                             <h5 className="card-title">{listing_name}</h5>
                                                             <h5 className="card-title">${product_price}</h5>

@@ -43,7 +43,7 @@ const PayAddress = (props) => {
                                 <p className="card-text m-0">{address.address_str}</p>
                                 <p className="card-text m-0">{ address.postal_code}</p>
                             </div>
-                            <button onClick={() => {handleClick(address.id)}} className="container text-center border-top border-danger py-3 text-black">
+                            <button onClick={() => {handleClick(address.id)}} className="container text-center border-top border-danger py-3 text-black btn btn-outline-danger justify-content-center">
                                 Remove
                             </button>
                         </div>
@@ -59,11 +59,11 @@ const PayAddress = (props) => {
 
         
         <div className="text-center mb-2 mt-4">
-            <button className="btn btn-outline-primary">
-                <Link to ="/addnewaddress">
-                    <h5>Add New Address?</h5>
-                </Link>
-            </button>
+            
+            <Link to ="/addnewaddress" className="btn btn-outline-primary justify-content-center">
+                <h5>Add New Address?</h5>
+            </Link>
+            
            
         </div>
         

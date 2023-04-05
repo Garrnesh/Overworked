@@ -20,7 +20,7 @@ const AddNewPayment = () => {
         body: JSON.stringify(payment)
       })
       .then(() => {
-          //navigate(-1);
+          navigate(-1);
           window.location.reload(false);
       })
     }

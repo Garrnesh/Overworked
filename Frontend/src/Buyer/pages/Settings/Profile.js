@@ -238,9 +238,6 @@ const Profile = () => {
                         Save Details
                     </button>
 
-                    <Link className="mt-4 d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-primary btn-lg btn-block" to="/password">
-                        Change Password?
-                    </Link>
                     
                 </div>
             </form>
