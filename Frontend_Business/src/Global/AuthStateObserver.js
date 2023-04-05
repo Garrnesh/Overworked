@@ -3,31 +3,34 @@ import { auth } from "../Config/Firebase";
 import axios from "axios";
 //import { useNavigate, Navigate } from "react-router-dom";
 
-const AuthStateObserver = async () => {
+const AuthStateObserver = () => {
 
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
 
     if (user) {
         // Set authenticated state
-        try {
-            const idToken = await user.getIdToken(false);
-            const response = await axios.get(
+        if (localStorage.getItem("username") === undefined) {
+            // Set username
+            user.getIdToken(false).then((idToken) => {
+                axios.get(
                     "http://localhost:8000/business",
                     { headers: {
                         "Content-Type": "application/json",
                         "idtoken": idToken } }
-                )
-            localStorage.setItem("authenticated", true);
-            localStorage.setItem("username", response.data.userName);
-            console.log("Username updated");
-            console.log("User " + localStorage.getItem("username") + " is signed in");
-        } catch (error) {
-            console.log(error);
+                ).then((response) => {
+                    localStorage.setItem("username", response.data.userName);
+                    console.log("Username updated");
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
         }
+        localStorage.setItem("authenticated", true);
+        console.log("User is signed in");
     } else {
         // Set unauthenticated state
         localStorage.setItem("authenticated", false);
-        localStorage.setItem("username", null);
+        localStorage.removeItem("username");
         console.log("User is signed out");
     }
     });
