@@ -57,6 +57,7 @@ const SignUp = () => {
                         "idtoken": idToken } } 
             )})
             .then((response) => {
+                localStorage.setItem("username", userName);
                 navigate("/home");
             })
             .catch((error) => {

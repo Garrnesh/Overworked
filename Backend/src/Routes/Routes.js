@@ -7,6 +7,7 @@ const paymentC = require('../Controllers/Payment_controller');
 const productC = require('../Controllers/Product_controller');
 const shopC = require('../Controllers/Shop_controller');
 const buyerC = require('../Controllers/BuyerProfile_controller');
+const businessC = require('../Controllers/BusinessProfile_controller');
 const addressC = require('../Controllers/Address_controller');
 //Generate random id
 
@@ -40,7 +41,7 @@ router.post('/products', async(req,res) => {
     try{
         await productC.checkProductID(product_id);
     }catch(err){
-        res.status(500).send("Product already exists");
+        res.status(409).send("Product already exists");
     }
 
     try{

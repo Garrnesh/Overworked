@@ -3,7 +3,7 @@ import { Button, Nav } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Navigate, useNavigate } from "react-router-dom";
-import logo from './thriftitlogo.png';
+import logo from './thriftCrop.png';
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,7 +12,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 
 
-import { auth } from "../Config/Firebase";
+import { auth } from "./Config/Firebase";
 
 import AddNewListing from "./AddNewListing";
 import BizViewListing from "./BizViewListing";
@@ -23,7 +23,9 @@ const BizNavBar = () => {
     const logout = () => {
         auth.signOut()
             .then(() => {
-                navigate("/login");
+                localStorage.removeItem("username");
+                localStorage.removeItem("authenticated");
+                navigate("/");
             })
             .catch((error) => {
                 console.log(error);
@@ -41,7 +43,9 @@ const BizNavBar = () => {
                 <Nav className="me-auto">
                     <Nav.Link href="/addnewlisting" element = {<AddNewListing />}>Add New Listing</Nav.Link>
                     <Nav.Link href="/viewlisting" element = {<BizViewListing />}>View Listings</Nav.Link>
-                    <Nav.Link>
+                </Nav>
+                <Nav>
+                <Nav.Link>
                         <Button className="back_button" onClick={logout}>Logout
                         </Button>
                     </Nav.Link>
