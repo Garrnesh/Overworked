@@ -10,7 +10,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import { auth } from "../Config/Firebase";
 
 import BrowseThriftShops from "./pages/ThriftShop/BrowseThriftShops";
-import Cart from "./pages/Cart/Cart";
+import Cart from "./pages/Cart/Cart2";
 import Settings from "./pages/Settings/Settings";
 import SearchBar from "./pages/SearchClothes/SearchClothes";
 import BrowseProducts from "./pages/Products/BrowseProducts";
