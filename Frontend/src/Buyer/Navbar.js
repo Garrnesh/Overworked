@@ -38,7 +38,7 @@ const PortalNavbar = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     
-                    <Nav.Link href="/home">Home</Nav.Link>
+                    {/* <Nav.Link href="/home">Home</Nav.Link> */}
                     
                     <Nav.Link href="/thriftshops" element = {<BrowseThriftShops />}>Browse Thrift Shops</Nav.Link>
                     <Nav.Link href="/products" element = {<BrowseProducts />}>Browse Products</Nav.Link>
