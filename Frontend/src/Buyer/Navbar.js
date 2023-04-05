@@ -10,7 +10,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import { auth } from "../Config/Firebase";
 
 import BrowseThriftShops from "./pages/ThriftShop/BrowseThriftShops";
-import Cart from "./pages/Cart/Cart";
+import Cart from "./pages/Cart/Cart2";
 import Settings from "./pages/Settings/Settings";
 import SearchBar from "./pages/SearchClothes/SearchClothes";
 import BrowseProducts from "./pages/Products/BrowseProducts";
@@ -38,7 +38,7 @@ const PortalNavbar = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     
-                    <Nav.Link href="/home">Home</Nav.Link>
+                    {/* <Nav.Link href="/home">Home</Nav.Link> */}
                     
                     <Nav.Link href="/thriftshops" element = {<BrowseThriftShops />}>Browse Thrift Shops</Nav.Link>
                     <Nav.Link href="/products" element = {<BrowseProducts />}>Browse Products</Nav.Link>

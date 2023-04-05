@@ -127,11 +127,12 @@ const ThriftShopList = ({ thriftshops }) => {
       <div className="container-fluid mx-2">
         <div className="row mt-5 mx-2">
           <div className="col-md-3">
-            <h2 className="text">Filter Thrift Shops</h2>
+            <h3 className="text">Filter Thrift Shops</h3>
             <button className="btn btn-outline-dark w-100 mb-4" onClick = {()=>filterResult('True')}>Donation Point</button>
-            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortDonation}>Sort by Location</button>
+            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortDonation}>Donation Point: Sort by Location</button>
+            <div className = "mt-5 mb-5"></div>
             <button className="btn btn-outline-dark w-100 mb-4" onClick = {() => setThriftShop(thriftshops)}>All Thrift Shops</button>
-            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortShop}>Sort by Location</button>
+            <button className="btn btn-outline-dark w-100 mb-4" onClick={sortShop}>Thrift Shop: Sort by Location</button>
 
           </div>
 
@@ -141,16 +142,16 @@ const ThriftShopList = ({ thriftshops }) => {
               {/* display products */}
               {/* the first thriftshop is from the usestate thriftshop */}
               {thriftshop.map((thriftshop) => {
-                const{id, shop_name, shop_address} = thriftshop;
+                const{id, shop_name, Shop_address} = thriftshop;
                 return(
                 <>
-                  <div key={id} className="col mb-2" >
+                  <div key={id} className="col-md-9 mb-2" >
 
                       <Link to={`/thriftshops/${id}`} style={{ textDecoration: 'none', color: '#000000' }}>
                         <Card className="card" style={{ width: '45rem' }}>
                           <Card.Body>
                             <Card.Title>{shop_name}</Card.Title>
-                            <Card.Text>Address: {shop_address}
+                            <Card.Text>Address: {Shop_address}
                             </Card.Text>
                           </Card.Body>
                         </Card>
