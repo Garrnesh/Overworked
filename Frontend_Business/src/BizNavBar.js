@@ -36,7 +36,7 @@ const BizNavBar = () => {
         <React.Fragment>
         <Navbar bg="white" className="navbar navbar-expand-md navbar-light pb-4 shadow" expand="lg">
         <Container>
-        <Navbar.Brand href="/home"><img src={logo} className="img-responsive" height="72" /></Navbar.Brand>
+        <Navbar.Brand href="/viewlisting"><img src={logo} className="img-responsive" height="72" /></Navbar.Brand>
             {/* <Navbar.Brand href="/home">ThriftIt</Navbar.Brand> */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
