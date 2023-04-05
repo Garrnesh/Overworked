@@ -77,6 +77,8 @@ const BizSignUp = () => {
             })
             .then ((response) => {
                 setError(null);
+                localStorage.setItem("authenticated", true);
+                localStorage.setItem("username", userName);
                 navigate("/viewlisting");
             })
             .catch((error) => {
