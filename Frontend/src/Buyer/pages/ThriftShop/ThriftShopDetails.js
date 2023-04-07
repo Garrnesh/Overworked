@@ -137,7 +137,7 @@ const TSDetails = () => {
         <div className ="card col-sm-6 border-0">
           <div className ="card-body">
           <h3 className = "card-title">To get there by Public Transport:</h3>
-          <p>Total walking distance: { parseFloat(final_route_pt["Walking distance"]).toFixed(2)} km</p>
+          <p>Total walking distance: { parseFloat(final_route_pt["Walking distance"]).toFixed(2)} m</p>
           <p>Total time for travel: { final_route_pt["Time"] }</p>
           <h4>Navigation:</h4>
           <ol>

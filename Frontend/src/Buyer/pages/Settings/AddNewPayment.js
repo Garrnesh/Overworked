@@ -20,8 +20,8 @@ const AddNewPayment = () => {
         body: JSON.stringify(payment)
       })
       .then(() => {
-          navigate(-1);
           window.location.reload(false);
+          navigate(-1);
       })
     }
   return (

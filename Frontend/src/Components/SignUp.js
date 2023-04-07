@@ -63,7 +63,12 @@ const SignUp = () => {
             })
             .catch((error) => {
                 console.log(error);
-                setMessage("Error: " + error);
+                if (error.response.data !== undefined) {
+                    setMessage("Error: " + error.response.data);
+                }
+                else {
+                    setMessage(error.message);
+                }
             });
     }
 
@@ -123,16 +128,13 @@ const SignUp = () => {
                         </span>
                         <input type="password" className = "form-control" id = "confirmpassword" placeholder = "Re-enter password" required value={confirmpassword} onChange = {(e) => setCPassword(e.target.value)}/>
                     </div>
-
+                    { message && <div className="alert alert-danger" role="alert">{message}</div> }
                     { password===confirmpassword && <button className="d-grid gap-2 col-6 mx-auto justify-content-center btn btn-outline-success btn-lg btn-block" value = "Signup">
                         Signup
                     </button>}
                     
                 </div>
             </form>
-            {message && (
-                 <div className="error"> {message} </div>
-            )}
         </div>
     </div>
   );

@@ -156,8 +156,8 @@ const CheckoutPage = (props) => {
 
     return (
         <div className="address-list p-5 mb-5 container-sm">
-            {error && <div>{error}</div>}
-            {isPending && <div>Loading...</div>}
+            {/* {error && <div>{error}</div>}
+            {isPending && <div>Loading...</div>} */}
             {/* //choose address */}
             <div className="text-center mb-2 mt-2">
                 <h1>Checkout Details</h1>
@@ -192,7 +192,7 @@ const CheckoutPage = (props) => {
                                                 </div>
                                                 <div className="card-body text-start py-4 col-10">
                                                     {/* <p className="card-text m-0">{address.id}</p> */}
-                                                    <p className="card-text m-0">{address.address}</p>
+                                                    <p className="card-text m-0">{address.address_str}</p>
                                                     <p className="card-text m-0">{address.postal_code}</p>
                                                     {/* <p className="card-text m-0">{address.city}</p> */}
                                                     {/* <p className="card-text">Phone Number: {address.phoneNumber}</p> */}

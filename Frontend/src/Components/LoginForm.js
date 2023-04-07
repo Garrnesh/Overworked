@@ -23,8 +23,10 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
+  const [message, setMessage] = useState(null);
 
   const errors = {
+    username : "Invalid username",
     wrongCredentials: "Incorrect username or password",
     noUsername: "Please enter your username",
     noPassword: "Please enter your password",
@@ -71,6 +73,8 @@ const LoginForm = () => {
       })
       .catch((error) => {
         setErrorMessages({ name: "wrongCredentials", message: errors.wrongCredentials });
+        <p>{error}</p>
+        setMessage("Invalid username or password");
         console.log(error);
       });
     return;
@@ -106,6 +110,7 @@ const LoginForm = () => {
           />
           {renderErrorMsg("password")}
           {renderErrorMsg("noPassword")}
+          { message && <div className="error"> {message}</div>}
         </div>
         <input type="submit" value="Log In" className="login_button" />
       </form>
