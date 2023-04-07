@@ -17,11 +17,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
-<<<<<<< HEAD
   const [message, setMessage] = useState(null);
-=======
-  const [message, setMessage] = useState("");
->>>>>>> 7d005ca6e4f6f4ece510975aad2febae34dea811
 
   const errors = {
     wrongCredentials: "Incorrect username or password",
@@ -70,11 +66,7 @@ const LoginForm = () => {
       })
       .catch((error) => {
         setErrorMessages({ name: "wrongCredentials", message: errors.wrongCredentials });
-<<<<<<< HEAD
         setMessage("Invalid email or password");
-=======
-        setMessage("Invalid username or password");
->>>>>>> 7d005ca6e4f6f4ece510975aad2febae34dea811
         console.log(error);
       });
     return;
@@ -107,14 +99,10 @@ const LoginForm = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
+            />
           {renderErrorMsg("password")}
           {renderErrorMsg("noPassword")}
-<<<<<<< HEAD
           { message && <div className="error">{message}</div>}
-=======
-          { message && <p className="error_msg">{message}</p> }
->>>>>>> 7d005ca6e4f6f4ece510975aad2febae34dea811
         </div>
         <input type="submit" value="Log In" className="login_button" />
       </form>
