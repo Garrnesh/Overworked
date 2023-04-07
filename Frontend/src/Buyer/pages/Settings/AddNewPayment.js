@@ -80,7 +80,7 @@ const AddNewPayment = () => {
                         <div className="col-md-6">
                           <div className="mb-2 align-items-center justify-content-center">
                             <label htmlFor="cvc" className="form-label mb-1">CVC</label>
-                            <input type="text" className="form-control" id="cvc" placeholder="CVC" required value={cvc} onChange = {(e) => setCVC(e.target.value)}/>
+                            <input type="password" className="form-control" id="cvc" placeholder="CVC" required value={cvc} onChange = {(e) => setCVC(e.target.value)}/>
                           </div>
                         </div>
                       </div>
