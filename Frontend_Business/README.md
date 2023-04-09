@@ -2,6 +2,10 @@
 Welcome to the Business Frontend! This serves as the UI for ThriftIt Business Application.
 
 ## Requirements
+This component requires these set-ups already in place before installation to function properly:
+
+- Node.js version 19.8.1
+- npm version 9.5.1
 - Firebase SDK config (Get it at your Console -> Project Settings -> Your apps -> SDK setup and configuration)
 
 For more information please check https://firebase.google.com/docs/web/learn-more#config-object
