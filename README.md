@@ -9,3 +9,6 @@ This repo contains 3 component codebases:
 - Frontend_Business: Web application UI for Businesses.
 
 For more information on each components, including install guide, please refer to README files inside each component.
+
+## Clone this repository
+`git clone https://github.com/Garrnesh/Overworked.git`
