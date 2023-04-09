@@ -106,5 +106,5 @@ Frontend/.tern-port
 
 #This is just for Frontend only! If want for Backend also, can copy-paste and change un-commented (No #) lines, they are path to the files that git will ignore when commit and push. Or maybe can change the path from Frontend/something -> */something. Should work although me not sure.
 node_modules
-Frontend/node_modules/
-Backend/node_modules/
+Frontend/node_modules
+Backend/node_modules

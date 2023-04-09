@@ -3,70 +3,70 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { Carts, Cartitems } = require("../firebase.js");
 
 //Cart table
-const getCart = async (req,res) => {
-    try{
-        const cart = await Carts.get();
-        res.status(200).json(cart.data());
-    }catch(err){
-        res.status(500).send(err.message);
-    }
-}
+// const getCart = async (req,res) => {
+//     try{
+//         const cart = await Carts.get();
+//         res.status(200).json(cart.data());
+//     }catch(err){
+//         res.status(500).send(err.message);
+//     }
+// }
 
-const getCartByID = async (cart_id) => {
-    const cart = await Carts.doc(cart_id).get();
-    if(cart.exists){
-        return cart;
-    }else{
-        throw new Error("Cart does not exist");
-    }
-};
+// const getCartByID = async (cart_id) => {
+//     const cart = await Carts.doc(cart_id).get();
+//     if(cart.exists){
+//         return cart;
+//     }else{
+//         throw new Error("Cart does not exist");
+//     }
+// };
 
-const checkCartID = async (cart_id) => {
-    try{
-        const cart = await Carts.doc(cart_id).get();
-        if(cart.exists){
-            throw new Error("Cart with cart id already exists");
-        }
-    }catch(err){
-        throw new Error("Cart with cart id already exists");
-    }
-};
+// const checkCartID = async (cart_id) => {
+//     try{
+//         const cart = await Carts.doc(cart_id).get();
+//         if(cart.exists){
+//             throw new Error("Cart with cart id already exists");
+//         }
+//     }catch(err){
+//         throw new Error("Cart with cart id already exists");
+//     }
+// };
 
-const addCart = async (cart_id, buyer_username) => {
-    const cart = Carts.doc(cart_id);
-    try{
-        await cart.set({
-            buyer_username: buyer_username,
-        });
-    }catch(err){
-        throw new Error("Unable to create new cart");
-    }
-};
+// const addCart = async (cart_id, buyer_username) => {
+//     const cart = Carts.doc(cart_id);
+//     try{
+//         await cart.set({
+//             buyer_username: buyer_username,
+//         });
+//     }catch(err){
+//         throw new Error("Unable to create new cart");
+//     }
+// };
 
-const removeCart = async (cart_id) => {
-    try{
-        await Carts.doc(cart_id).delete();
-    }catch(err){
-        throw new Error("Unable to delete order");
-    }
-};
+// const removeCart = async (cart_id) => {
+//     try{
+//         await Carts.doc(cart_id).delete();
+//     }catch(err){
+//         throw new Error("Unable to delete order");
+//     }
+// };
 
-const getCartByBuyerUsername = async(buyer_username) => {
-    const cart = await Carts.where('buyer_Id', '==', buyer_username).get();
-    if(cart.length>0){
-        return cart;
-    }else{
-        throw new Error("No cart with stated buyer ID");
-    }
-}
+// const getCartByBuyerUsername = async(buyer_username) => {
+//     const cart = await Carts.where('buyer_Id', '==', buyer_username).get();
+//     if(cart.length>0){
+//         return cart;
+//     }else{
+//         throw new Error("No cart with stated buyer ID");
+//     }
+// }
 
-const removeCartByBuyerUsername = async(buyer_username) => {
-    try{
-        await Orders.where("buyer_username", "==", buyer_username).delete();
-    }catch(err){
-        throw new Error("Unable to delete cart");
-    }
-}
+// const removeCartByBuyerUsername = async(buyer_username) => {
+//     try{
+//         await Orders.where("buyer_username", "==", buyer_username).delete();
+//     }catch(err){
+//         throw new Error("Unable to delete cart");
+//     }
+// }
 
 //Cartitem table
 const getCartItems = async (req,res) => {
