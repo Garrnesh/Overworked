@@ -120,6 +120,9 @@ const ProductDetails = () => {
               <h4>
                 <div className="product_price">${product.product_price}</div>
               </h4>
+              <h6>
+                <div className="product_price">Thrift Shop: {product.business_username}</div>
+              </h6>
               <p className="product description">{product.product_description}</p>
 
               {/* // <!-- add button for sizes--> */}
