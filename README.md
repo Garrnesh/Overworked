@@ -1,6 +1,4 @@
 # ThriftIt
-We are team 'Overworked'
-
 Our project, 'ThriftIt', is an e-commerce app in the second-hand clothing market. Individuals (called Buyers) can purchase second-hand clothing items at great prices. Businesses can sell items through our portal too!
 
 This repo contains 3 component codebases:
